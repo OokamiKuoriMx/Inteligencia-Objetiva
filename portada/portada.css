@@ -1,0 +1,137 @@
+/*
+ * Inteligencia Objetiva 2.0 — Portada
+ * Requiere: tema/io-theme.css (tokens y modo oscuro) y Bootstrap 5.1 (ya presente en el sitio).
+ * Tono: filosofía y espiritualidad. Serif de autor (Cormorant Garamond) para titulares y citas,
+ * Roboto (fuente actual del sitio) para interfaz y lectura.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Roboto:wght@300;400;500;700&display=swap");
+
+.io2 { --io2-noche: #0b0c10; --io2-oro: #d9b77a; --io2-papel: #f6f3ee; font-family: Roboto, system-ui, sans-serif; }
+.io2 .serif { font-family: "Cormorant Garamond", Georgia, serif; }
+.io2 img { max-width: 100%; display: block; }
+.io2 section { position: relative; }
+.io2 .eyebrow { font-size: 12px; letter-spacing: .28em; text-transform: uppercase; font-weight: 500; color: var(--io-rojo); }
+.io2 .lead-io { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.75; color: var(--io-texto-suave); font-weight: 300; }
+
+/* Botones */
+.io2 .btn-io2 { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border-radius: 999px; font-weight: 500; letter-spacing: .02em; text-decoration: none; transition: transform .25s ease, background .25s ease, box-shadow .25s ease; }
+.io2 .btn-io2.primario { background: var(--io-rojo); color: #fff; box-shadow: 0 10px 30px -10px rgba(207, 23, 23, .7); }
+.io2 .btn-io2.primario:hover { transform: translateY(-2px); background: var(--io-rojo-hover); color: #fff; }
+.io2 .btn-io2.fantasma { color: #fff; border: 1px solid rgba(255, 255, 255, .45); backdrop-filter: blur(6px); }
+.io2 .btn-io2.fantasma:hover { border-color: #fff; background: rgba(255, 255, 255, .08); color: #fff; }
+.io2 .btn-io2 svg { width: 18px; height: 18px; }
+
+/* ---------- HÉROE ---------- */
+.io2-hero { min-height: min(100svh, 920px); display: flex; align-items: center; overflow: hidden; color: #fff; background: var(--io2-noche); isolation: isolate; }
+.io2-hero .fondo { position: absolute; inset: 0; z-index: -2; }
+.io2-hero .fondo img { width: 100%; height: 100%; object-fit: cover; object-position: 70% center; transform: scale(1.06); animation: io2-respira 22s ease-in-out infinite alternate; }
+.io2-hero::before { content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(8, 9, 14, .92) 0%, rgba(8, 9, 14, .65) 40%, rgba(8, 9, 14, .05) 75%),
+              linear-gradient(0deg, rgba(8, 9, 14, .85) 0%, transparent 35%); }
+.io2-hero h1 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500; font-size: clamp(44px, 6.4vw, 92px); line-height: 1.02; letter-spacing: -.01em; margin: 18px 0 22px; color: #fff !important; }
+.io2-hero h1 em { font-style: italic; color: var(--io2-oro); }
+.io2-hero .lead-io { color: rgba(255, 255, 255, .78); max-width: 34em; }
+.io2-hero .eyebrow { color: #ff8a8a; }
+.io2-hero .acciones { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+.io2-hero .prueba { margin-top: 46px; display: flex; gap: 34px; flex-wrap: wrap; font-size: 13px; color: rgba(255, 255, 255, .6); }
+.io2-hero .prueba b { display: block; font-family: "Cormorant Garamond", serif; font-size: 34px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 4px; }
+.io2-hero .scroll { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); width: 1px; height: 54px; background: linear-gradient(rgba(255,255,255,.7), transparent); animation: io2-baja 2.4s ease-in-out infinite; }
+@keyframes io2-respira { from { transform: scale(1.06); } to { transform: scale(1.14) translateX(-1.5%); } }
+@keyframes io2-baja { 0%, 100% { opacity: .2; transform: translate(-50%, -6px); } 50% { opacity: 1; transform: translate(-50%, 6px); } }
+
+/* ---------- CITA / MANIFIESTO ---------- */
+.io2-cita { padding: clamp(80px, 11vw, 150px) 0; text-align: center; background: var(--io-fondo); }
+.io2-cita blockquote { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400; font-size: clamp(28px, 3.6vw, 50px); line-height: 1.25; max-width: 22em; margin: 0 auto; color: var(--io-marino); }
+.io2-cita blockquote::before { content: "“"; display: block; font-size: 1.8em; line-height: .6; color: var(--io-rojo); margin-bottom: 14px; }
+.io2-cita cite { display: block; margin-top: 26px; font-style: normal; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: var(--io-texto-suave); }
+.io2-cita .linea { width: 1px; height: 70px; margin: 44px auto 0; background: linear-gradient(var(--io-rojo), transparent); }
+
+/* ---------- QUÉ ES (texto + video) ---------- */
+.io2-que { padding: clamp(70px, 9vw, 130px) 0; background: var(--io-fondo-alt); }
+.io2-que h2 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(34px, 4vw, 56px); line-height: 1.08; color: var(--io-marino) !important; margin: 14px 0 22px; }
+.io2-que .video { position: relative; border-radius: 22px; overflow: hidden; aspect-ratio: 16 / 10; background: #000; box-shadow: var(--io-sombra); cursor: pointer; }
+.io2-que .video img { width: 100%; height: 100%; object-fit: cover; opacity: .82; transition: opacity .3s, transform .6s; }
+.io2-que .video:hover img { opacity: 1; transform: scale(1.03); }
+.io2-que .video .play { position: absolute; inset: 0; margin: auto; width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.5); backdrop-filter: blur(8px); color: #fff; }
+.io2-que .video .play svg { width: 28px; height: 28px; margin-left: 4px; }
+.io2-que .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.io2-pilares { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 16px; }
+.io2-pilares li { display: flex; gap: 14px; align-items: flex-start; color: var(--io-texto); }
+.io2-pilares li span { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: "Cormorant Garamond", serif; font-size: 17px; color: var(--io-rojo); border: 1px solid currentColor; }
+
+/* ---------- CAMINOS (categorías) ---------- */
+.io2-caminos { padding: clamp(70px, 9vw, 130px) 0; background: var(--io-fondo); }
+.io2-caminos h2, .io2-membresias h2, .io2-voces h2 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(34px, 4vw, 54px); color: var(--io-marino) !important; margin: 12px 0 0; }
+.io2-grid-caminos { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; margin-top: 48px; }
+.io2-camino { position: relative; border-radius: 22px; overflow: hidden; min-height: 420px; color: #fff; text-decoration: none; display: flex; align-items: flex-end; isolation: isolate; grid-column: span 4; }
+.io2-camino.ancho { grid-column: span 8; }
+.io2-camino img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.io2-camino::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(6, 7, 11, .92) 0%, rgba(6, 7, 11, .25) 55%, transparent 100%); transition: background .4s; }
+.io2-camino:hover img { transform: scale(1.07); }
+.io2-camino .contenido { padding: 30px; width: 100%; }
+.io2-camino .num { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 18px; color: var(--io2-oro); }
+.io2-camino h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(26px, 2.4vw, 36px); margin: 4px 0 8px; color: #fff !important; }
+.io2-camino p { margin: 0; font-size: 14.5px; color: rgba(255,255,255,.75) !important; max-width: 30em; }
+.io2-camino .ir { margin-top: 18px; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #fff; }
+.io2-camino .ir i { display: inline-block; width: 28px; height: 1px; background: currentColor; transition: width .3s; }
+.io2-camino:hover .ir i { width: 48px; }
+.io2-camino .etiqueta { position: absolute; top: 20px; left: 20px; padding: 5px 12px; border-radius: 999px; font-size: 11.5px; letter-spacing: .06em; background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.25); backdrop-filter: blur(6px); }
+
+/* ---------- MÉTODO (3 pasos) ---------- */
+.io2-metodo { padding: clamp(60px, 8vw, 110px) 0; background: var(--io-fondo-alt); }
+.io2-paso { padding: 34px 28px; border-radius: 20px; background: var(--io-superficie); border: 1px solid var(--io-borde); height: 100%; transition: transform .3s, border-color .3s; }
+.io2-paso:hover { transform: translateY(-4px); border-color: var(--io-rojo); }
+.io2-paso .n { font-family: "Cormorant Garamond", serif; font-size: 54px; line-height: 1; color: var(--io-rojo); opacity: .85; }
+.io2-paso h3 { font-size: 19px; font-weight: 500; margin: 14px 0 8px; color: var(--io-texto) !important; }
+.io2-paso p { font-size: 14.5px; color: var(--io-texto-suave) !important; margin: 0; line-height: 1.65; }
+
+/* ---------- MEMBRESÍAS ---------- */
+.io2-membresias { padding: clamp(80px, 10vw, 150px) 0; color: #fff; overflow: hidden; background: var(--io2-noche); isolation: isolate; }
+.io2-membresias .fondo { position: absolute; inset: 0; z-index: -2; }
+.io2-membresias .fondo img { width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.io2-membresias::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at center, rgba(8,9,14,.35) 0%, rgba(8,9,14,.92) 70%); }
+.io2-membresias h2 { color: #fff !important; }
+.io2-membresias .lead-io { color: rgba(255,255,255,.7); }
+.io2-plan { position: relative; height: 100%; padding: 38px 34px; border-radius: 24px; background: rgba(18, 19, 26, .62); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(14px); display: flex; flex-direction: column; }
+.io2-plan.destacado { border-color: rgba(217, 183, 122, .7); box-shadow: 0 0 0 1px rgba(217,183,122,.25), 0 30px 80px -30px rgba(217, 183, 122, .45); }
+.io2-plan .sello { position: absolute; top: -13px; left: 34px; padding: 4px 14px; border-radius: 999px; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; background: var(--io2-oro); color: #1b1407; font-weight: 700; }
+.io2-plan h3 { font-family: "Cormorant Garamond", serif; font-size: 32px; font-weight: 500; color: #fff !important; margin: 0; }
+.io2-plan .precio { margin: 18px 0 6px; font-family: "Cormorant Garamond", serif; font-size: 58px; line-height: 1; color: #fff; }
+.io2-plan .precio small { font-family: Roboto, sans-serif; font-size: 14px; color: rgba(255,255,255,.6); letter-spacing: .02em; }
+.io2-plan ul { list-style: none; padding: 0; margin: 24px 0 30px; display: grid; gap: 12px; flex: 1; align-content: start; }
+.io2-plan li { display: flex; gap: 12px; font-size: 14.5px; color: rgba(255,255,255,.85) !important; }
+.io2-plan li::before { content: ""; flex: none; width: 7px; height: 7px; margin-top: 8px; border-radius: 50%; background: var(--io2-oro); }
+.io2-plan .nota { font-size: 12px; color: rgba(255,255,255,.5) !important; }
+
+/* ---------- VOCES (testimonios) ---------- */
+.io2-voces { padding: clamp(70px, 9vw, 130px) 0; background: var(--io-fondo); }
+.io2-voz { height: 100%; padding: 34px 30px; border-radius: 20px; background: var(--io-superficie); border: 1px solid var(--io-borde); display: flex; flex-direction: column; }
+.io2-voz p { font-family: "Cormorant Garamond", serif; font-size: 22px; line-height: 1.4; font-style: italic; color: var(--io-texto) !important; flex: 1; }
+.io2-voz .quien { margin-top: 22px; display: flex; align-items: center; gap: 12px; }
+.io2-voz .ini { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--io-marino); color: var(--io-fondo); font-weight: 500; }
+html[data-io-theme="dark"] .io2-voz .ini { color: #111; }
+.io2-voz .quien b { display: block; font-size: 14.5px; font-weight: 500; color: var(--io-texto); }
+.io2-voz .quien span { font-size: 12.5px; color: var(--io-texto-suave); }
+
+/* ---------- CIERRE ---------- */
+.io2-cierre { padding: clamp(80px, 10vw, 140px) 0; text-align: center; color: #fff; background: radial-gradient(ellipse at 50% 120%, #4a0f12 0%, #12131a 55%, #0b0c10 100%); }
+.io2-cierre h2 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(36px, 5vw, 70px); line-height: 1.05; color: #fff !important; max-width: 14em; margin: 0 auto 18px; }
+.io2-cierre h2 em { color: var(--io2-oro); }
+.io2-cierre p { color: rgba(255,255,255,.7) !important; }
+
+/* ---------- Aparición al hacer scroll ---------- */
+.io2.js-revela [data-revela] { opacity: 0; transform: translateY(28px); transition: opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1); }
+.io2.js-revela [data-revela].visible { opacity: 1; transform: none; }
+.io2.js-revela [data-revela="2"] { transition-delay: .12s; } .io2.js-revela [data-revela="3"] { transition-delay: .24s; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 991px) {
+  .io2-camino, .io2-camino.ancho { grid-column: span 12; min-height: 340px; }
+  .io2-hero { align-items: flex-end; padding: 120px 0 72px; }
+  .io2-hero::before { background: linear-gradient(0deg, rgba(8,9,14,.96) 0%, rgba(8,9,14,.82) 42%, rgba(8,9,14,.12) 78%, rgba(8,9,14,.35) 100%); }
+  .io2-hero .fondo img { object-position: 71% 20%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .io2.js-revela [data-revela] { opacity: 1; transform: none; }
+  .io2-hero .fondo img, .io2-hero .scroll { animation: none; }
+}

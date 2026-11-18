@@ -1,0 +1,5 @@
+modulo-visualizacion/config.php
+*.log
+/dist/
+/_vista/
+portada/img/*.png

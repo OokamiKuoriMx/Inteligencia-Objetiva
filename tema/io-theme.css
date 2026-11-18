@@ -1,0 +1,273 @@
+/*
+ * Inteligencia Objetiva — Tema 2.0 (identidad actual + modo oscuro)
+ * Drop-in: se carga DESPUÉS de los CSS actuales del sitio. No requiere cambiar el HTML.
+ *   <link rel="stylesheet" href="/tema/io-theme.css?v=2.0.0">
+ * Compatible con Bootstrap 5.1.3 y las clases propias del sitio (style.css, styleluis.css).
+ */
+
+/* ---------- 1. Tokens de marca (modo claro) ---------- */
+:root {
+  --io-rojo: #cf1717;
+  --io-rojo-hover: #b01212;
+  --io-rojo-grad-a: #dc3545;
+  --io-rojo-grad-b: #c82333;
+  --io-marino: #272256;
+  --io-grafito: #2c2f30;
+  --io-grafito-2: #454a4d;
+  --io-texto: #3a3a3a;
+  --io-texto-suave: #6b6f76;
+  --io-fondo: #ffffff;
+  --io-fondo-alt: #f7f8fb;
+  --io-superficie: #ffffff;
+  --io-superficie-2: #f7f8fb;
+  --io-borde: #e4e5e9;
+  --io-ayuda-tx: #a52a2b;
+  --io-ayuda-bg-a: #fff8f5;
+  --io-ayuda-bg-b: #ffe6e0;
+  --io-sombra: 0 6px 24px rgba(20, 20, 40, .08);
+  --io-radio: 14px;
+  --io-radio-pill: 999px;
+  --io-foco: 0 0 0 3px rgba(207, 23, 23, .35);
+  color-scheme: light;
+}
+
+/* ---------- 2. Tokens modo oscuro ---------- */
+html[data-io-theme="dark"] {
+  --io-rojo: #ef4444;
+  --io-rojo-hover: #f87171;
+  --io-rojo-grad-a: #b91c1c;
+  --io-rojo-grad-b: #7f1d1d;
+  --io-marino: #c7c3f5;
+  --io-grafito: #e5e7eb;
+  --io-grafito-2: #2a2d34;
+  --io-texto: #d4d4d8;
+  --io-texto-suave: #a1a1aa;
+  --io-fondo: #0e0f12;
+  --io-fondo-alt: #121318;
+  --io-superficie: #17191e;
+  --io-superficie-2: #1d2026;
+  --io-borde: #2a2d34;
+  --io-ayuda-tx: #fca5a5;
+  --io-ayuda-bg-a: #3a1414;
+  --io-ayuda-bg-b: #2a0f0f;
+  --io-sombra: none;
+  color-scheme: dark;
+}
+
+/* ---------- 3. Correcciones generales (ambos modos) ---------- */
+html, body { overflow-x: hidden; }                      /* el carrusel de promos generaba scroll horizontal */
+.promociones-carrusel-container,
+.promociones-swiper { max-width: 100vw; overflow: hidden; }
+
+body {
+  font-family: Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--io-texto);
+  background-color: var(--io-fondo);
+  transition: background-color .2s ease, color .2s ease;
+}
+
+/* Menú principal: el gris claro actual no cumple contraste WCAG AA */
+header .nav-link,
+header nav a,
+.navbar a { color: var(--io-texto) !important; opacity: 1 !important; }
+header .nav-link:hover,
+header .nav-link.active,
+header nav a.active { color: var(--io-rojo) !important; }
+
+a:focus-visible, button:focus-visible, .btn:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: none; box-shadow: var(--io-foco) !important;
+}
+
+/* Botones de marca */
+.btn-io, .btn-danger { background: var(--io-rojo); border-color: var(--io-rojo); color: #fff; border-radius: var(--io-radio-pill); }
+.btn-io:hover, .btn-danger:hover { background: var(--io-rojo-hover); border-color: var(--io-rojo-hover); color: #fff; }
+
+/* Banda de promociones: más compacta */
+.anuncio-promo.bg-gradient-primary { background-image: linear-gradient(135deg, var(--io-rojo-grad-a) 0%, var(--io-rojo-grad-b) 100%) !important; }
+
+/* Tarjetas del catálogo */
+.portfolio-wrap, .card { border-radius: var(--io-radio); }
+
+/* Estrellas sin reseñas: el JS marca .io-sin-resenas y aquí se atenúan */
+.io-sin-resenas .ec-stars-wrapper { opacity: .25; }
+.io-sin-resenas-label { font-size: 12px; color: var(--io-texto-suave); }
+
+/* ---------- 4. Botón de cambio de tema (lo inyecta io-theme.js) ---------- */
+.io-theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; margin: 0 6px;
+  border: 1px solid var(--io-borde); border-radius: var(--io-radio-pill);
+  background: var(--io-superficie); color: var(--io-texto);
+  cursor: pointer; transition: background .2s, border-color .2s;
+}
+.io-theme-toggle:hover { border-color: var(--io-rojo); color: var(--io-rojo); }
+.io-theme-toggle svg { width: 18px; height: 18px; }
+.io-theme-toggle .io-ico-sol { display: none; }
+html[data-io-theme="dark"] .io-theme-toggle .io-ico-sol { display: block; }
+html[data-io-theme="dark"] .io-theme-toggle .io-ico-luna { display: none; }
+
+/* ---------- 5. Modo oscuro sobre el HTML actual ---------- */
+html[data-io-theme="dark"] body,
+html[data-io-theme="dark"] main { background-color: var(--io-fondo) !important; color: var(--io-texto) !important; }
+
+/* Fondos claros de Bootstrap y del sitio */
+html[data-io-theme="dark"] .bg-light,
+html[data-io-theme="dark"] .bg-white,
+html[data-io-theme="dark"] section.bg-light,
+html[data-io-theme="dark"] #footer,
+html[data-io-theme="dark"] .footer-top,
+html[data-io-theme="dark"] .parte2,
+html[data-io-theme="dark"] .swiper-slide { background-color: var(--io-fondo-alt) !important; }
+
+html[data-io-theme="dark"] header,
+html[data-io-theme="dark"] .solo-movil > .bg-light { background-color: var(--io-superficie) !important; border-bottom: 1px solid var(--io-borde); }
+
+/* Texto */
+html[data-io-theme="dark"] h1, html[data-io-theme="dark"] h3,
+html[data-io-theme="dark"] h4, html[data-io-theme="dark"] h5, html[data-io-theme="dark"] h6,
+html[data-io-theme="dark"] p, html[data-io-theme="dark"] li, html[data-io-theme="dark"] label,
+html[data-io-theme="dark"] .card-title, html[data-io-theme="dark"] .card-text,
+html[data-io-theme="dark"] .letras-neg, html[data-io-theme="dark"] .letras-footer,
+html[data-io-theme="dark"] .link-dark, html[data-io-theme="dark"] .text-dark { color: var(--io-texto) !important; }
+html[data-io-theme="dark"] h2, html[data-io-theme="dark"] .section-title h2 { color: var(--io-marino) !important; }
+html[data-io-theme="dark"] .text-muted { color: var(--io-texto-suave) !important; }
+/* Títulos que usan .footer-contacto (azul marino fijo) dentro de h1/h2 */
+html[data-io-theme="dark"] .footer-contacto,
+html[data-io-theme="dark"] h1 b, html[data-io-theme="dark"] h1 strong { color: var(--io-marino) !important; }
+html[data-io-theme="dark"] a:not(.btn):not(.nav-link):not(.dropdown-item) { color: var(--io-texto); }
+html[data-io-theme="dark"] a:not(.btn):hover { color: var(--io-rojo); }
+
+/* Tarjetas, modales, menús desplegables */
+html[data-io-theme="dark"] .card,
+html[data-io-theme="dark"] .portfolio-wrap,
+html[data-io-theme="dark"] .modal-content,
+html[data-io-theme="dark"] .dropdown-menu,
+html[data-io-theme="dark"] header ul,
+html[data-io-theme="dark"] .list-group-item {
+  background-color: var(--io-superficie) !important; color: var(--io-texto) !important;
+  border-color: var(--io-borde) !important; box-shadow: none !important;
+}
+html[data-io-theme="dark"] .modal-header, html[data-io-theme="dark"] .modal-footer,
+html[data-io-theme="dark"] hr, html[data-io-theme="dark"] .border,
+html[data-io-theme="dark"] .linea-horizontal { border-color: var(--io-borde) !important; }
+html[data-io-theme="dark"] hr { background-color: var(--io-borde) !important; }
+html[data-io-theme="dark"] .dropdown-item { color: var(--io-texto) !important; }
+html[data-io-theme="dark"] .dropdown-item:hover { background-color: var(--io-superficie-2) !important; }
+html[data-io-theme="dark"] .btn-close { filter: invert(1) grayscale(1) brightness(1.6); }
+html[data-io-theme="dark"] .shadow { box-shadow: none !important; }
+
+/* Formularios */
+html[data-io-theme="dark"] .form-control,
+html[data-io-theme="dark"] .form-select,
+html[data-io-theme="dark"] .input-group-text,
+html[data-io-theme="dark"] .input-color,
+html[data-io-theme="dark"] textarea, html[data-io-theme="dark"] select,
+html[data-io-theme="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]) {
+  background-color: var(--io-superficie-2) !important; color: var(--io-texto) !important; border-color: var(--io-borde) !important;
+}
+html[data-io-theme="dark"] .form-control::placeholder { color: var(--io-texto-suave); }
+
+/* Botones propios del sitio */
+html[data-io-theme="dark"] .btn-gris1,
+html[data-io-theme="dark"] .contenedor-btnGris .btn,
+html[data-io-theme="dark"] .btn-enterGris2 { background-color: var(--io-rojo) !important; border-color: var(--io-rojo) !important; color: #fff !important; }
+html[data-io-theme="dark"] .btn-blanco1,
+html[data-io-theme="dark"] .btn-enterBlanco2,
+html[data-io-theme="dark"] .btn-secondary { background-color: var(--io-superficie-2) !important; color: var(--io-texto) !important; border-color: var(--io-borde) !important; }
+
+/* Píldora de ayuda */
+html[data-io-theme="dark"] a[href*="ayuda"] { background-image: linear-gradient(135deg, var(--io-ayuda-bg-a), var(--io-ayuda-bg-b)) !important; color: var(--io-ayuda-tx) !important; }
+
+/* Logo: el iO negro se vuelve claro y la firma roja se conserva */
+html[data-io-theme="dark"] .logo img,
+html[data-io-theme="dark"] header img[src*="logo"],
+html[data-io-theme="dark"] footer img[src*="logo"] { filter: invert(1) hue-rotate(180deg) brightness(1.1); }
+
+/* Iconos SVG de trazo oscuro */
+html[data-io-theme="dark"] svg.icon-tabler { stroke: currentColor; }
+/* Íconos de redes (PNG gris claro con glifo blanco): se vuelven círculo gris con glifo oscuro */
+html[data-io-theme="dark"] img[src*="icons/"]:not([src*="logo"]) { filter: invert(.85); }
+
+/* Imágenes de contenido: ligeramente atenuadas para no deslumbrar */
+html[data-io-theme="dark"] .cursos-img img, html[data-io-theme="dark"] .portfolio-wrap img { filter: brightness(.92); }
+
+/* ---------- 6. Componentes nuevos 2.0 (biblioteca, reproductor, accesos) ---------- */
+.io-badge-acceso {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: var(--io-radio-pill);
+  font-size: 12px; font-weight: 500; line-height: 1.6;
+  background: var(--io-superficie-2); color: var(--io-texto); border: 1px solid var(--io-borde);
+}
+.io-badge-acceso.unica { background: rgba(207, 23, 23, .08); color: var(--io-rojo); border-color: rgba(207, 23, 23, .3); }
+.io-badge-acceso.permanente { color: #1f7a4d; border-color: rgba(31, 122, 77, .3); background: rgba(31, 122, 77, .08); }
+html[data-io-theme="dark"] .io-badge-acceso.permanente { color: #6ee7a8; }
+
+.io-progreso { height: 6px; border-radius: 6px; background: var(--io-borde); overflow: hidden; }
+.io-progreso > span { display: block; height: 100%; background: var(--io-rojo); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ---------- 7. Banner de ofertas 2.0 (sobre el HTML actual del carrusel) ---------- */
+.promociones-carrusel-container { position: relative; background: #0b0c10; }
+.promociones-carrusel-container .swiper-slide { background: transparent !important; }
+.anuncio-promo.bg-gradient-primary {
+  position: relative; display: flex !important; align-items: center; justify-content: center; gap: clamp(14px, 3vw, 40px);
+  min-height: 58px; padding: 8px 64px !important; isolation: isolate; overflow: hidden;
+  background-image:
+    radial-gradient(120% 220% at 0% 50%, rgba(207, 23, 23, .55) 0%, rgba(207, 23, 23, 0) 45%),
+    radial-gradient(90% 200% at 100% 50%, rgba(217, 183, 122, .16) 0%, rgba(217, 183, 122, 0) 50%),
+    linear-gradient(90deg, #14060a 0%, #0f1016 55%, #0b0c10 100%) !important;
+  border-bottom: 1px solid rgba(217, 183, 122, .28);
+}
+.anuncio-promo.bg-gradient-primary::after {               /* destello lento */
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .06) 50%, transparent 70%);
+  transform: translateX(-100%); animation: io-promo-brillo 7s ease-in-out infinite;
+}
+@keyframes io-promo-brillo { 60%, 100% { transform: translateX(100%); } }
+.anuncio-promo .promoInline { display: flex !important; align-items: center; gap: 12px; margin: 0 !important; min-width: 0; max-width: 100%; }
+.anuncio-promo .promo { min-width: 0; }
+.anuncio-promo .promoImg { width: 30px !important; height: 30px !important; margin: 0 !important; padding: 6px; border-radius: 50%;
+  background: rgba(207, 23, 23, .9); box-shadow: 0 0 0 4px rgba(207, 23, 23, .2); flex: none; }
+.anuncio-promo .promo p { font-size: 15px !important; font-weight: 500 !important; letter-spacing: .01em; margin: 0 !important; line-height: 1.3; }
+.anuncio-promo .promo p::before { content: "Oferta"; display: inline-block; margin-right: 10px; padding: 2px 9px; border-radius: 999px;
+  font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #1b1407; background: #d9b77a; vertical-align: 2px; }
+.anuncio-promo .contenedor-temporizador { display: flex !important; gap: 6px; margin: 0 !important; padding: 0 !important; list-style: none; }
+.anuncio-promo .contenedor-temporizador li.info { display: flex !important; flex-direction: column; align-items: center; min-width: 44px;
+  margin: 0 !important; padding: 4px 6px !important; border-radius: 8px; background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .1); font-size: 9.5px !important; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .6) !important; line-height: 1.2; }
+.anuncio-promo .contenedor-temporizador .detalle { font-size: 17px !important; font-weight: 600 !important; color: #fff;
+  font-variant-numeric: tabular-nums; letter-spacing: 0; line-height: 1.1; }
+.anuncio-promo.io-urgente .contenedor-temporizador li.info { border-color: rgba(239, 68, 68, .6); background: rgba(239, 68, 68, .14); }
+.anuncio-promo .btnPromo { padding: 8px 18px !important; border-radius: 999px !important; font-size: 13.5px !important; font-weight: 500 !important;
+  background: #cf1717 !important; border: 0 !important; color: #fff !important; white-space: nowrap;
+  box-shadow: 0 6px 18px -6px rgba(207, 23, 23, .9); transition: transform .2s, background .2s; }
+.anuncio-promo .btnPromo:hover { transform: translateY(-1px); background: #e11d1d !important; }
+.promociones-carrusel-container .promo-nav { width: 28px !important; height: 28px !important; margin-top: -14px !important; border-radius: 50%;
+  background: rgba(255, 255, 255, .08) !important; color: #fff !important; }
+.promociones-carrusel-container .promo-nav::after { font-size: 12px !important; font-weight: 700; }
+.promociones-carrusel-container .promo-nav:hover { background: rgba(255, 255, 255, .16) !important; }
+.promociones-carrusel-container .promo-pagination { bottom: 3px !important; }
+.promociones-carrusel-container .promo-pagination .swiper-pagination-bullet { width: 5px; height: 5px; background: #fff; opacity: .35; }
+.promociones-carrusel-container .promo-pagination .swiper-pagination-bullet-active { opacity: 1; background: #d9b77a; }
+.io-promo-cerrar { position: absolute; top: 50%; right: 46px; z-index: 20; transform: translateY(-50%); width: 26px; height: 26px;
+  border: 0; border-radius: 50%; background: transparent; color: rgba(255, 255, 255, .55); font-size: 18px; line-height: 1; cursor: pointer; }
+.io-promo-cerrar:hover { color: #fff; background: rgba(255, 255, 255, .1); }
+.promociones-carrusel-container.io-oculto { display: none !important; }
+@media (max-width: 767px) {
+  .anuncio-promo.bg-gradient-primary { flex-wrap: wrap; gap: 6px 10px; padding: 8px 40px 14px !important; min-height: 0; }
+  .anuncio-promo .promoImg { display: none; }
+  .anuncio-promo > .promoInline { flex: 1 1 100%; justify-content: center; }
+  .anuncio-promo .promo p { font-size: 13.5px !important; text-align: center; white-space: normal; }
+  .anuncio-promo .promo p::before { display: none; }
+  .anuncio-promo .contenedor-temporizador li.info { min-width: 36px; padding: 2px 4px !important; font-size: 8px !important; }
+  .anuncio-promo .contenedor-temporizador .detalle { font-size: 14px !important; }
+  .anuncio-promo .btnPromo { padding: 6px 12px !important; font-size: 12px !important; }
+  .promociones-carrusel-container .promo-nav { display: none !important; }
+  .io-promo-cerrar { right: 6px; top: 16px; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .anuncio-promo.bg-gradient-primary::after { animation: none; display: none; } }

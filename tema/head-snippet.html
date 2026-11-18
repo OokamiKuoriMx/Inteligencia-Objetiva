@@ -1,0 +1,16 @@
+<!-- Inteligencia Objetiva 2.0: pegar en <head>, antes de los <link> de CSS. Evita el parpadeo blanco en modo oscuro. -->
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('io-theme'); } catch (e) {}
+    if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-io-theme', t);
+  })();
+</script>
+<meta name="color-scheme" content="light dark">
+
+<!-- Pegar DESPUÉS de los CSS actuales (style.css, styleluis.css, swiper...): -->
+<link rel="stylesheet" href="/tema/io-theme.css?v=2.0.0">
+
+<!-- Pegar al final del <body>, después de los scripts actuales: -->
+<script src="/tema/io-theme.js?v=2.0.0" defer></script>
