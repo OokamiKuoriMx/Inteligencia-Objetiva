@@ -107,11 +107,9 @@ function pagina(string $titulo, callable $cuerpo, string $activo = ''): void
         ['reglas.php', 'Contenido', 'ver', '<path d="M4 6h16M4 12h16M4 18h10"/>'],
         ['pedidos.php', 'Pedidos y devoluciones', 'pedidos', '<path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h4"/>'],
         ['descuentos.php', 'Cupones y 2×1', 'politicas', '<path d="M3 7h18v10H3zM9 7v10"/>'],
-        ['alertas.php', 'Alertas', 'ver', '<path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>'],
         ['reportes.php', 'Reportes', 'reportes', '<path d="M3 3v18h18M7 15l4-4 3 3 5-6"/>'],
         ['bitacora.php', 'Bitácora', 'bitacora', '<path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/>'],
     ];
-    $pendientes = $a ? (int) (IO::uno('SELECT COUNT(*) n FROM io_alertas WHERE revisada = 0')['n'] ?? 0) : 0;
     ?>
 <!DOCTYPE html>
 <html lang="es-MX" data-io-theme="light">
@@ -121,9 +119,9 @@ function pagina(string $titulo, callable $cuerpo, string $activo = ''): void
 <meta name="robots" content="noindex, nofollow">
 <script>(function(){try{var t=localStorage.getItem('io-theme-bo');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-io-theme',t)}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Roboto:wght@300;400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
 <link rel="stylesheet" href="/tema/io-theme.css?v=2.0.0">
-<link rel="stylesheet" href="/io/backoffice/backoffice.css?v=2.2.0">
+<link rel="stylesheet" href="/io/backoffice/backoffice.css?v=2.3.0">
 </head>
 <body class="bo">
 <?php if ($a): ?>
@@ -131,11 +129,11 @@ function pagina(string $titulo, callable $cuerpo, string $activo = ''): void
   <a class="bo-marca" href="index.php" aria-label="Inteligencia Objetiva · inicio de administración"><img src="/tema/img/io-logo.webp" alt="Inteligencia Objetiva · Martín Aparicio" width="400" height="400"><span>Administración</span></a>
   <nav aria-label="Administración de Inteligencia Objetiva">
   <?php $grupoAnterior = ''; foreach ($menu as [$href, $txt, $perm, $ico]): if (!puede($perm)) continue;
-      $grupo = in_array($href, ['pedidos.php','descuentos.php'], true) ? 'Comercial' : (in_array($href, ['alertas.php','reportes.php','bitacora.php'], true) ? 'Seguimiento' : 'Operación'); ?>
+      $grupo = in_array($href, ['pedidos.php','descuentos.php'], true) ? 'Comercial' : (in_array($href, ['reportes.php','bitacora.php'], true) ? 'Seguimiento' : 'Operación'); ?>
     <?php if ($grupo !== $grupoAnterior): $grupoAnterior = $grupo; ?><span class="bo-nav-grupo"><?= h($grupo) ?></span><?php endif; ?>
     <a href="<?= $href ?>" class="<?= $activo === $href ? 'activo' : '' ?>"<?= $activo === $href ? ' aria-current="page"' : '' ?>>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><?= $ico ?></svg>
-      <?= h($txt) ?><?php if ($href === 'alertas.php' && $pendientes): ?><b class="bo-num"><?= $pendientes ?></b><?php endif; ?>
+      <?= h($txt) ?>
     </a>
   <?php endforeach; ?>
   </nav>

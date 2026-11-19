@@ -14,7 +14,7 @@ Mejoras para el sitio en producción inteligenciaobjetiva.com (PHP + MySQL + jQu
 - Tablas nuevas con prefijo `io_`. Nunca modificar tablas existentes del sitio.
 - Compatibilidad: PHP 7.4+/8.x y **MySQL 5.7 y 8.0**. No usar `VALUES()` en `ON DUPLICATE KEY UPDATE`, ni `;` dentro de comentarios SQL.
 - Toda acción del backoffice que cambie un acceso exige motivo y se registra en `io_bitacora` dentro de la misma transacción.
-- Marca: rojo `#cf1717`, marino `#272256`, grafito `#2c2f30`, Roboto (UI) + Cormorant Garamond (titulares). Colores siempre vía tokens `--io-*`.
+- Marca: rojo `#cf1717`, marino `#272256`, grafito `#2c2f30`, Roboto en todo (como el sitio original; sin tipografías serif). Colores siempre vía tokens `--io-*`.
 - `modulo-visualizacion/config.php` tiene credenciales: no se edita ni se versiona (hook lo bloquea). Usar `config.example.php`.
 - Textos de interfaz en español de México con acentos correctos.
 

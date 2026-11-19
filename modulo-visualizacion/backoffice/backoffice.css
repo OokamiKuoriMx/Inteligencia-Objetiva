@@ -2,7 +2,7 @@
 .bo { --io-bo-rojo: #cf1717; --io-bo-rojo-hover: #b01212; --io-bo-marino: #272256; --io-bo-blanco: #fff; --io-bo-borde-control: #7b808a; --io-bo-acento-texto: var(--io-rojo); --io-estado-ok: #166534; --io-estado-aviso: #92400e; background: var(--io-fondo-alt); color: var(--io-texto); font-family: Roboto, system-ui, sans-serif; font-size: 14.5px; line-height: 1.55; min-height: 100vh; }
 html[data-io-theme="dark"] .bo { --io-estado-ok: #86efac; --io-estado-aviso: #fcd34d; --io-bo-borde-control: #727780; --io-bo-acento-texto: #fca5a5; }
 .bo :focus-visible { outline: 2px solid var(--io-rojo); outline-offset: 2px; box-shadow: none !important; }
-.bo .serif { font-family: "Cormorant Garamond", Georgia, serif; }
+.bo .serif { font-family: Roboto, system-ui, sans-serif; font-weight: 300; }
 .bo a { color: inherit; }
 
 .bo-lateral { position: fixed; inset: 0 auto 0 0; width: 272px; display: flex; flex-direction: column; padding: 20px 18px; background: var(--io-superficie); border-right: 1px solid var(--io-borde); z-index: 10; }
@@ -30,7 +30,7 @@ html[data-io-theme="dark"] .bo { --io-estado-ok: #86efac; --io-estado-aviso: #fc
 .bo-cabecera > div { flex: 1; min-width: 200px; }
 .bo-contexto { margin: 0 0 8px; font-size: 12px; font-weight: 500; line-height: 1.6; color: var(--io-texto-suave); letter-spacing: .035em; }
 .bo-contexto span { padding: 0 7px; color: var(--io-rojo); }
-.bo-cabecera h1 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500; font-size: clamp(32px, 3vw, 42px); line-height: 1.1; margin: 0; color: var(--io-marino) !important; }
+.bo-cabecera h1 { font-family: Roboto, system-ui, sans-serif; font-weight: 300; font-size: clamp(32px, 3vw, 42px); line-height: 1.1; margin: 0; color: var(--io-marino) !important; }
 .bo-buscar { margin: 0; max-width: 100%; }
 .bo-buscar input { width: 270px; max-width: 100%; min-height: 46px; padding: 10px 16px; border-radius: 12px; border: 1px solid var(--io-bo-borde-control); background: var(--io-superficie); color: var(--io-texto); font: inherit; }
 .bo-volver-sitio { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; font-size: 14px; font-weight: 500; color: var(--io-marino) !important; text-decoration: none; }
@@ -91,7 +91,7 @@ html[data-io-theme="dark"] .bo input:not([type="checkbox"]):not([type="radio"]):
 
 .bo-dialogo { border: 1px solid var(--io-borde); border-radius: 18px; padding: 26px; width: min(460px, 92vw); background: var(--io-superficie); color: var(--io-texto); }
 .bo-dialogo::backdrop { background: rgba(0, 0, 0, .55); backdrop-filter: blur(3px); }
-.bo-dialogo h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: 26px; margin: 0 0 16px; color: var(--io-texto) !important; }
+.bo-dialogo h3 { font-family: Roboto, system-ui, sans-serif; font-weight: 400; font-size: 22px; margin: 0 0 16px; color: var(--io-texto) !important; }
 .bo-nota { font-size: 14px; color: var(--io-texto-suave) !important; }
 .bo-vacio { padding: 40px; text-align: center; color: var(--io-texto-suave); }
 
@@ -99,11 +99,11 @@ html[data-io-theme="dark"] .bo input:not([type="checkbox"]):not([type="radio"]):
 .bo-acceso-identidad { padding: 36px 44px; background: var(--io-fondo-alt); border-right: 1px solid var(--io-borde); }
 .bo-acceso-logo { display: block; width: 200px; max-width: 100%; margin-bottom: 24px; }
 .bo-acceso-logo img { display: block; width: 100%; height: auto; border-radius: 16px; background: var(--io-bo-blanco); }
-.bo-acceso-identidad h2 { font-family: "Cormorant Garamond", Georgia, serif; font-size: 44px; font-weight: 500; line-height: 1.05; margin: 18px 0; color: var(--io-marino); }
+.bo-acceso-identidad h2 { font-family: Roboto, system-ui, sans-serif; font-size: 38px; font-weight: 300; line-height: 1.05; margin: 18px 0; color: var(--io-marino); }
 .bo-acceso-identidad > p { max-width: 30em; margin-bottom: 20px; color: var(--io-texto-suave); font-size: 15px; }
 .bo-login { align-self: center; min-width: 0; padding: 44px; background: var(--io-superficie); }
 .bo-login .bo-contexto { color: var(--io-rojo); }
-.bo-login h1 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500; font-size: 38px; line-height: 1.1; margin: 0 0 14px; color: var(--io-marino) !important; }
+.bo-login h1 { font-family: Roboto, system-ui, sans-serif; font-weight: 300; font-size: 34px; line-height: 1.1; margin: 0 0 14px; color: var(--io-marino) !important; }
 .bo-login-intro { color: var(--io-texto-suave); font-size: 15px; margin-bottom: 28px; }
 .bo-login .form-control { min-height: 48px; font-size: 16px; }
 .bo-login-pie { margin: 20px 0 0; font-size: 14px; color: var(--io-texto-suave); text-align: center; }

@@ -21,7 +21,7 @@
 .bo-editor-cabecera { display:flex; align-items:center; flex:none; gap:12px; padding:16px 24px 12px; }
 .bo-editor-cabecera > div { flex:1; min-width:0; }
 .bo-editor-cabecera .bo-contexto { margin:0 0 2px; }
-.bo-editor-cabecera h2 { font:500 26px/1.15 'Cormorant Garamond',Georgia,serif; margin:0; color:var(--io-marino); }
+.bo-editor-cabecera h2 { font:300 24px/1.2 Roboto,system-ui,sans-serif; margin:0; color:var(--io-marino); }
 .bo-editor-cabecera .bo-btn svg { width:18px; height:18px; }
 .st-deshacer:disabled { opacity:.45; cursor:default; }
 .bo-editor-cerrar { flex:none; display:grid; place-items:center; width:44px; height:44px; border:0; border-radius:50%; background:transparent; color:var(--io-texto); cursor:pointer; }
@@ -254,3 +254,6 @@ html[data-io-theme="dark"] .bo-editor.bo-editor.bo-editor .st-dos input[readonly
   .st-visibilidad { order:2; }
   .bo-editor-campos, .st-video, .st-visibilidad { flex-shrink:0; }
 }
+/* El recuadro (.st-campo y similares) ya marca el foco con :focus-within; se quita el contorno global del campo interno. */
+.bo :is(.st-campo, .st-enlace, .st-precio, .st-lista li) :is(input, textarea, select):focus,
+.bo :is(.st-campo, .st-enlace, .st-precio, .st-lista li) :is(input, textarea, select):focus-visible { outline:none !important; box-shadow:none !important; }

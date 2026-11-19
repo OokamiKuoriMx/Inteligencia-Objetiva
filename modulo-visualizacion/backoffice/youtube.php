@@ -23,7 +23,7 @@ $estado = $canal && $llave ? IOYouTube::estado() : null;
 
 pagina('Canal de YouTube', function () use ($canal, $llave, $estado) {
     $chip = !$llave ? ['Falta la llave de la API', 'neutro'] : (!$canal ? ['Sin canal', 'neutro'] : (!empty($estado['error']) ? ['Con errores', 'aviso'] : (!empty($estado['en_vivo']) ? ['En vivo ahora', 'peligro'] : ['Conectado', 'ok']))); ?>
-<link rel="stylesheet" href="/io/backoffice/contenido-editor.css?v=2.0.6"><link rel="stylesheet" href="transmisiones.css?v=2.0.2">
+<link rel="stylesheet" href="/io/backoffice/contenido-editor.css?v=2.1.1"><link rel="stylesheet" href="transmisiones.css?v=2.1.3">
 <p class="bo-nota"><a href="transmisiones.php">← Volver a Transmisiones</a></p>
 <section class="bo-card bo-vimeo">
   <div class="bo-vimeo-cabecera">
@@ -61,12 +61,34 @@ pagina('Canal de YouTube', function () use ($canal, $llave, $estado) {
     <?php endif; ?>
   <?php endif; ?>
 
-  <form method="post" class="yt-form"><?= csrf_input() ?><input type="hidden" name="accion" value="guardar">
-    <div class="st-campo"><label for="yt-canal"><?= $canal ? 'Cambiar de canal' : 'Enlace del canal' ?></label><input id="yt-canal" name="canal" required maxlength="300" placeholder="https://www.youtube.com/@MartinAparicio o el ID UC…" autocomplete="off" spellcheck="false" <?= $llave ? '' : 'disabled' ?>></div>
-    <button class="bo-btn" <?= $llave ? '' : 'disabled' ?>>Conectar canal</button>
-  </form>
-  <p class="bo-nota">Copia la dirección de la página principal del canal (empieza con youtube.com/@…) o pega su ID de canal.</p>
+  <div class="yt-form"><button type="button" class="bo-btn" id="ytAbrir" <?= $llave ? '' : 'disabled' ?>><?= $canal ? 'Cambiar de canal' : 'Conectar canal' ?></button></div>
 </section>
+
+<dialog id="ytDialogo" class="bo-editor yt-dialogo" aria-labelledby="ytTitulo">
+  <form method="post" id="ytForm"><?= csrf_input() ?><input type="hidden" name="accion" value="guardar">
+    <div class="bo-editor-cabecera">
+      <div><p class="bo-contexto">Inteligencia Objetiva · Transmisiones</p><h2 id="ytTitulo"><?= $canal ? 'Cambiar de canal' : 'Conectar canal de YouTube' ?></h2></div>
+      <button type="button" class="bo-editor-cerrar" data-cerrar-yt aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="yt-dialogo-cuerpo">
+      <div class="st-campo"><label for="yt-canal">Enlace del canal</label><input id="yt-canal" name="canal" required maxlength="300" placeholder="https://www.youtube.com/@MartinAparicio" autocomplete="off" spellcheck="false"></div>
+      <p class="bo-nota">Abre la página principal del canal en YouTube y copia la dirección (empieza con youtube.com/@…). También sirve el @usuario o el ID que empieza con UC.</p>
+    </div>
+    <div class="st-pie tx-pie"><span class="bo-nota">Queda registrado en la bitácora.</span><div><button type="button" class="bo-btn sec" data-cerrar-yt>Cancelar</button><button class="bo-btn">Conectar canal</button></div></div>
+  </form>
+</dialog>
+<script>
+(() => {
+  const d = document.getElementById('ytDialogo'), abrir = document.getElementById('ytAbrir');
+  if (!d || !abrir) return;
+  abrir.addEventListener('click', () => { document.body.classList.add('bo-editor-abierto'); d.showModal(); document.getElementById('yt-canal').focus(); });
+  const cerrar = () => { d.close(); document.body.classList.remove('bo-editor-abierto'); abrir.focus(); };
+  d.querySelectorAll('[data-cerrar-yt]').forEach(b => b.addEventListener('click', cerrar));
+  d.addEventListener('cancel', e => { e.preventDefault(); cerrar(); });
+  d.addEventListener('click', e => { if (e.target === d) cerrar(); });
+  document.getElementById('ytForm').addEventListener('submit', e => { const b = e.target.querySelector('button:not([type])'); b.disabled = true; b.textContent = 'Conectando…'; });
+})();
+</script>
 
 <section class="bo-card bo-vimeo">
   <h2>Cómo transmitir con la cámara de la computadora</h2>

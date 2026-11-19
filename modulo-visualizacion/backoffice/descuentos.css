@@ -1,0 +1,35 @@
+/* Backoffice · Cupones (usa los estilos del editor de contenido-editor.css) */
+.bo-card h2 .bo-btn { float:right; }
+.tx-col-acciones { width:1%; white-space:nowrap; text-align:right; }
+.cup-codigo { padding:3px 8px; border-radius:6px; font-size:13px; letter-spacing:.04em; color:var(--io-texto); background:var(--io-superficie-2); }
+.cup-mayus { letter-spacing:.04em; }
+.cup-ayuda { margin:-12px 0 22px; }
+.cup-tipos { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:10px 0 14px; }
+.cup-tipo { align-items:center; }
+.cup-tipo input { position:absolute; opacity:0; pointer-events:none; }
+.cup-tipo { position:relative; }
+.cup-tipo:has(input:focus-visible) { outline:2px solid var(--io-marino); outline-offset:2px; }
+.cup-icono { flex:none; display:grid; place-items:center; width:40px; height:40px; border-radius:10px; font-weight:600; font-size:16px; color:var(--io-texto); background:var(--io-superficie-2); }
+.cup-tipo:has(input:checked) .cup-icono { color:#fff; background:var(--io-bo-rojo); }
+.cup-valor input { width:140px; }
+.cup-atajos { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-top:-6px; }
+.st-chip-btn { min-height:32px; padding:0 12px; border:1px solid var(--io-bo-borde-control); border-radius:16px; background:none; color:var(--io-texto); font-size:13px; cursor:pointer; }
+.st-chip-btn:hover { background:var(--io-superficie-2); }
+.cup-productos { margin-top:14px; }
+.cup-elegidos { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; min-height:24px; }
+.cup-chip { display:inline-flex; align-items:center; gap:4px; padding:4px 4px 4px 12px; border-radius:16px; font-size:13px; color:var(--io-bo-acento-texto); background:color-mix(in srgb,var(--io-bo-rojo) 12%,transparent); border:1px solid var(--io-bo-rojo); }
+.cup-chip button { display:grid; place-items:center; width:24px; height:24px; border:0; border-radius:50%; background:none; color:inherit; font-size:16px; cursor:pointer; }
+.cup-chip button:hover { background:color-mix(in srgb,var(--io-bo-rojo) 18%,transparent); }
+.cup-resultados { list-style:none; margin:-8px 0 0; padding:0; border:1px solid var(--io-borde); border-radius:10px; overflow:hidden; }
+.cup-resultados:empty { display:none; }
+.cup-resultados li + li { border-top:1px solid var(--io-borde); }
+.cup-resultados button { display:flex; justify-content:space-between; align-items:center; gap:12px; width:100%; padding:10px 14px; border:0; background:none; color:var(--io-texto); text-align:left; font-size:14px; cursor:pointer; }
+.cup-resultados button:hover { background:var(--io-superficie-2); }
+.cup-resultados button[aria-selected=true] { color:var(--io-bo-acento-texto); font-weight:500; }
+.cup-resultados button[aria-selected=true] > span::before { content:"✓ "; }
+.cup-resultados small { color:var(--io-texto-suave); white-space:nowrap; }
+.cup-resumen { gap:12px; }
+.cup-ticket { justify-self:start; padding:8px 16px; border:2px dashed var(--io-bo-rojo); border-radius:10px; font-weight:600; font-size:18px; letter-spacing:.08em; color:var(--io-bo-acento-texto); overflow-wrap:anywhere; }
+.cup-frase { margin:0; font-size:16px; line-height:1.45; color:var(--io-texto); }
+.cup-detalles { margin:0; padding-left:18px; display:grid; gap:4px; font-size:13px; color:var(--io-texto-suave); }
+@media(max-width:860px) { .cup-tipos { grid-template-columns:minmax(0,1fr); } .bo-card h2 .bo-btn { float:none; display:flex; margin-top:10px; } }

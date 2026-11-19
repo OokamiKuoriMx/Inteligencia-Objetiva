@@ -13,6 +13,6 @@ Revisa:
 2. **Cobertura del modo oscuro**: selectores con color fijo (`#fff`, `#000`, `rgb(...)`, clases con color propio) que quedarían ilegibles en oscuro.
 3. **Móvil (375 px)**: desbordes horizontales, objetivos táctiles < 44 px, tipografía < 14 px en texto de lectura.
 4. **Movimiento**: respeto a `prefers-reduced-motion`.
-5. **Marca**: uso de tokens en lugar de colores sueltos; tipografías Roboto / Cormorant Garamond.
+5. **Marca**: uso de tokens en lugar de colores sueltos; tipografía Roboto en todo (sin serif).
 
 Entrega hallazgos con archivo:línea, el problema, la razón de contraste cuando aplique y el cambio exacto de CSS. Máximo ~500 palabras.

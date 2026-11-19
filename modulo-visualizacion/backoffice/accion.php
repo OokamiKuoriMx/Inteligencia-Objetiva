@@ -6,7 +6,7 @@ require __DIR__ . '/_inc.php';
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); exit; }
 csrf_ok();
 $accion = (string) ($_POST['accion'] ?? '');
-$admin = exigir($accion === 'politica' ? 'politicas' : ($accion === 'alerta_revisada' ? 'ver' : 'accesos'));
+$admin = exigir($accion === 'politica' ? 'politicas' : 'accesos');
 
 // Solo redirecciones internas (evita open redirect).
 $volver = (string) ($_POST['volver'] ?? 'index.php');
@@ -78,10 +78,6 @@ try {
             if ($d['tipo'] === 'unica' && $d['duracion_seg'] <= 0) { throw new IOError('duracion', 'La visualización única necesita la duración del video (sincroniza con Vimeo o escríbela).'); }
             IOAdmin::guardarPolitica($admin, $d, $motivo ?: 'Configuración');
             flash('Reglas guardadas.');
-            break;
-        case 'alerta_revisada':
-            IO::ejecutar('UPDATE io_alertas SET revisada = 1 WHERE id = ?', [(int) ($_POST['alerta_id'] ?? 0)]);
-            flash('Alerta marcada como revisada.');
             break;
         default:
             throw new IOError('accion', 'Acción no válida.');

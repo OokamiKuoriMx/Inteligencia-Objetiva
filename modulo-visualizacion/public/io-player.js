@@ -28,7 +28,7 @@
     '.iop{position:relative;aspect-ratio:16/9;background:#07080b;border-radius:18px;overflow:hidden;color:#fff;font-family:Roboto,system-ui,sans-serif}' +
     '.iop iframe{position:absolute;inset:0;width:100%;height:100%;border:0}' +
     '.iop-capa{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;gap:14px;background:radial-gradient(ellipse at center,rgba(20,22,30,.82),rgba(7,8,11,.97));z-index:3}' +
-    '.iop-capa h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;font-size:clamp(24px,3vw,36px);margin:0;color:#fff}' +
+    '.iop-capa h3{font-family:Roboto,system-ui,sans-serif;font-weight:300;font-size:clamp(24px,3vw,36px);margin:0;color:#fff}' +
     '.iop-capa p{margin:0;max-width:34em;color:rgba(255,255,255,.75);font-size:15px;line-height:1.6}' +
     '.iop-regla{display:inline-flex;gap:8px;align-items:center;padding:6px 14px;border-radius:999px;font-size:12.5px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.45);color:#fca5a5}' +
     '.iop-btn{margin-top:6px;border:0;border-radius:999px;padding:14px 30px;font-weight:500;font-size:15px;background:#cf1717;color:#fff;cursor:pointer;box-shadow:0 10px 30px -10px rgba(207,23,23,.8)}' +

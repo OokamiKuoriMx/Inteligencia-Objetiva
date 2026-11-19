@@ -12,7 +12,7 @@ $lista = IO::todos('SELECT p.*, c.imagen, c.precio_mxn, c.categoria, c.activo,
     FROM io_politicas p LEFT JOIN io_productos c ON c.producto_id=p.producto_id ORDER BY p.actualizado DESC,p.producto_id DESC');
 
 pagina('Contenido', function () use ($lista, $puede, $abrir) { ?>
-<link rel="stylesheet" href="/io/backoffice/contenido-editor.css?v=2.0.6"><section class="bo-card bo-contenidos">
+<link rel="stylesheet" href="/io/backoffice/contenido-editor.css?v=2.1.1"><section class="bo-card bo-contenidos">
   <div class="bo-contenidos-barra">
     <div><h2>Biblioteca de contenidos</h2><p class="bo-nota mb-0" id="conteoContenidos" aria-live="polite"><?= count($lista) ?> <?= count($lista) === 1 ? 'contenido' : 'contenidos' ?></p></div>
     <input class="form-control bo-contenidos-buscar" type="search" id="buscarContenido" aria-label="Buscar contenido por título o ID" placeholder="Buscar por título o ID">

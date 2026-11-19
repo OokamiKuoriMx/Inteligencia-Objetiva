@@ -37,3 +37,27 @@
 @media(max-width:700px) { .yt-form { flex-direction:column; align-items:stretch; } .yt-ahora { flex-direction:column; align-items:flex-start; } .yt-ahora img { width:100%; } }
 html[data-io-theme="dark"] .bo .yt-form.yt-form .st-campo input { background-color:transparent !important; border:0 !important; }
 .yt-form .bo-btn:disabled, .yt-form input:disabled { opacity:.5; cursor:not-allowed; }
+/* Acciones de la tabla: botón principal + editar + menú, siempre en una fila */
+.tx-col-acciones { width:1%; white-space:nowrap; text-align:right; }
+.tx-acciones { display:flex; align-items:center; justify-content:flex-end; gap:6px; }
+.tx-acciones form { margin:0; }
+.tx-acciones .bo-btn.mini { min-width:118px; justify-content:center; }
+.tx-acciones .bo-btn.peligro { background:transparent; color:var(--io-bo-acento-texto); border:1px solid var(--io-bo-rojo); }
+.tx-acciones .bo-btn.peligro:hover { background:color-mix(in srgb,var(--io-bo-rojo) 10%,transparent); }
+.tx-hueco { display:inline-block; min-width:118px; }
+.tx-icono { display:inline-grid; place-items:center; width:38px; height:38px; border-radius:50%; color:var(--io-texto-suave); background:transparent; border:0; cursor:pointer; list-style:none; }
+.tx-icono:hover, .tx-menu[open] > .tx-icono { background:var(--io-superficie-2); color:var(--io-texto); }
+.tx-icono:focus-visible { outline:2px solid var(--io-marino); outline-offset:2px; }
+.tx-icono svg { width:18px; height:18px; }
+.tx-menu { position:relative; }
+.tx-menu > summary::-webkit-details-marker { display:none; }
+.tx-menu-lista { position:fixed; z-index:50; min-width:220px; padding:6px; border:1px solid var(--io-borde); border-radius:10px; background:var(--io-superficie); box-shadow:0 12px 32px #0003; text-align:left; }
+.tx-menu-lista a, .tx-menu-lista button { display:block; width:100%; padding:9px 12px; border:0; border-radius:7px; background:none; color:var(--io-texto); font:400 14px/1.3 Roboto,system-ui,sans-serif; text-align:left; text-decoration:none; cursor:pointer; }
+.tx-menu-lista a:hover, .tx-menu-lista button:hover { background:var(--io-superficie-2); }
+.tx-menu-lista .peligro { color:var(--io-bo-acento-texto); }
+.tx-menu-lista form { margin:4px 0 0; padding-top:4px; border-top:1px solid var(--io-borde); }
+/* Modal corto (conectar canal) */
+.bo-editor.yt-dialogo { max-width:620px; height:fit-content; }
+.yt-dialogo-cuerpo { padding:24px; }
+.yt-dialogo-cuerpo .bo-nota { margin:-6px 0 0; }
+@media(max-width:860px) { .bo-editor.yt-dialogo { width:calc(100vw - 24px); height:fit-content; max-height:calc(100dvh - 24px); border:1px solid var(--io-borde); border-radius:14px; } }

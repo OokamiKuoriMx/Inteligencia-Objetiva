@@ -51,7 +51,7 @@ pagina('Transmisiones en vivo', function () use ($ytCanal, $ytLlave, $txError, $
     $boton = function (int $id, string $accion, string $texto, string $clase = 'sec') { ?>
       <form method="post" class="d-inline m-0"><?= csrf_input() ?><input type="hidden" name="id" value="<?= $id ?>"><input type="hidden" name="accion" value="<?= h($accion) ?>"><button class="bo-btn <?= h($clase) ?> mini"><?= h($texto) ?></button></form>
     <?php }; ?>
-  <link rel="stylesheet" href="contenido-editor.css?v=2.0.6"><link rel="stylesheet" href="transmisiones.css?v=2.0.2">
+  <link rel="stylesheet" href="contenido-editor.css?v=2.1.1"><link rel="stylesheet" href="transmisiones.css?v=2.1.3">
 
   <?php if ($alAire): ?>
   <div class="bo-card tx-alaire">
@@ -161,7 +161,7 @@ pagina('Transmisiones en vivo', function () use ($ytCanal, $ytLlave, $txError, $
       <div class="bo-vacio">Aún no hay transmisiones. Programa la primera con "Nueva transmisión": pega el enlace de YouTube o Facebook y elige la hora.</div>
     <?php else: ?>
     <div class="bo-scroll"><table class="bo-tabla">
-      <thead><tr><th>Transmisión</th><th>Inicio</th><th>Plataforma</th><th>Acceso</th><th>Estado</th><th></th></tr></thead><tbody>
+      <thead><tr><th>Transmisión</th><th>Inicio</th><th>Plataforma</th><th>Acceso</th><th>Estado</th><th class="tx-col-acciones"><span class="visually-hidden">Acciones</span></th></tr></thead><tbody>
       <?php foreach ($lista as $t): $al = IOTransmisiones::alAire($t); $id = (int) $t['id'];
           $estado = $al ? 'en_vivo' : ($t['estado'] === 'programada' && strtotime($t['inicio']) + 60 * (int) $t['duracion_min'] < time() ? 'finalizada' : $t['estado']); ?>
         <tr>
@@ -170,12 +170,19 @@ pagina('Transmisiones en vivo', function () use ($ytCanal, $ytLlave, $txError, $
           <td><?= h(IOTransmisiones::PLATAFORMAS[$t['plataforma']]) ?></td>
           <td><?= h(['publico' => 'Pública', 'registrados' => 'Con cuenta', 'compradores' => 'Compradores', 'miembros' => 'Miembros'][$t['acceso']]) ?><?php if ($t['producto_titulo']): ?><span class="sub"><?= h($t['producto_titulo']) ?></span><?php endif; ?></td>
           <td><span class="bo-chip <?= ['en_vivo' => 'peligro', 'programada' => 'info', 'finalizada' => 'apagado', 'cancelada' => 'neutro'][$estado] ?>"><?= h(IOTransmisiones::ESTADOS[$estado]) ?></span></td>
-          <td><?php if ($puedeEditar): ?><div class="bo-acciones">
-            <?php if ($estado === 'programada'): $boton($id, 'iniciar', 'Iniciar ahora', ''); endif; ?>
-            <?php if ($estado === 'en_vivo'): $boton($id, 'terminar', 'Terminar'); endif; ?>
-            <a class="bo-btn sec mini" href="transmisiones.php?editar=<?= $id ?>">Editar</a>
-            <?php if ($estado === 'programada'): $boton($id, 'cancelar', 'Cancelar'); endif; ?>
-            <?php if (in_array($t['estado'], ['finalizada', 'cancelada'], true)): $boton($id, 'reprogramar', 'Reactivar'); endif; ?>
+          <td class="tx-col-acciones"><?php if ($puedeEditar): ?><div class="tx-acciones">
+            <?php if ($estado === 'programada'): $boton($id, 'iniciar', 'Iniciar ahora', '');
+              elseif ($estado === 'en_vivo'): $boton($id, 'terminar', 'Terminar', 'peligro');
+              elseif (in_array($t['estado'], ['finalizada', 'cancelada'], true)): $boton($id, 'reprogramar', 'Reactivar');
+              else: ?><span class="tx-hueco" aria-hidden="true"></span><?php endif; ?>
+            <a class="tx-icono" href="transmisiones.php?editar=<?= $id ?>" aria-label="Editar «<?= h($t['titulo']) ?>»" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg></a>
+            <details class="tx-menu"><summary class="tx-icono" aria-label="Más acciones de «<?= h($t['titulo']) ?>»" title="Más acciones"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></summary>
+              <div class="tx-menu-lista">
+                <a href="/en-vivo?t=<?= h(rawurlencode($t['slug'])) ?>" target="_blank" rel="noopener">Ver en el sitio ↗</a>
+                <a href="/io/api/transmisiones.php?accion=ics&amp;t=<?= h(rawurlencode($t['slug'])) ?>">Descargar para calendario</a>
+                <?php if ($estado === 'programada'): ?><form method="post" onsubmit="return confirm('¿Cancelar «<?= h(addslashes($t['titulo'])) ?>»? Dejará de aparecer en el sitio.')"><?= csrf_input() ?><input type="hidden" name="id" value="<?= $id ?>"><input type="hidden" name="accion" value="cancelar"><button class="peligro">Cancelar transmisión</button></form><?php endif; ?>
+              </div>
+            </details>
           </div><?php endif; ?></td>
         </tr>
       <?php endforeach; ?></tbody></table></div>
@@ -193,4 +200,5 @@ pagina('Transmisiones en vivo', function () use ($ytCanal, $ytLlave, $txError, $
   </div>
 
   <?php if ($mostrarForm): ?><script src="transmisiones.js?v=2.0.0" defer></script><?php endif; ?>
+  <script>document.addEventListener('click', e => document.querySelectorAll('.tx-menu[open]').forEach(m => { if (!m.contains(e.target)) m.removeAttribute('open'); })); document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.tx-menu[open]').forEach(m => { m.removeAttribute('open'); m.querySelector('summary').focus(); }); }); document.querySelectorAll('.tx-menu').forEach(m => m.addEventListener('toggle', () => { if (!m.open) return; document.querySelectorAll('.tx-menu[open]').forEach(o => { if (o !== m) o.removeAttribute('open'); }); const r = m.querySelector('summary').getBoundingClientRect(), l = m.querySelector('.tx-menu-lista'), alto = l.offsetHeight; l.style.right = (innerWidth - r.right) + 'px'; l.style.top = (r.bottom + 6 + alto > innerHeight ? r.top - 6 - alto : r.bottom + 6) + 'px'; })); addEventListener('scroll', () => document.querySelectorAll('.tx-menu[open]').forEach(m => m.removeAttribute('open')), true);</script>
 <?php }, 'transmisiones.php');

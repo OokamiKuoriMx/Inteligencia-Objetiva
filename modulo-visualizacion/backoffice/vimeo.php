@@ -11,7 +11,7 @@ $planes = ['basic' => 'Basic (gratuito)', 'free' => 'Gratuito', 'plus' => 'Plus'
 pagina('Vincular Vimeo', function () use ($c, $planes) {
     $estado = $c['vinculada'] ? ($c['faltan'] ? ['Vinculada con permisos incompletos', 'aviso'] : ['Vinculada', 'ok'])
         : ($c['configurado'] ? ['El token no funciona', 'peligro'] : ['Sin vincular', 'neutro']); ?>
-<link rel="stylesheet" href="/io/backoffice/contenido-editor.css?v=1.1.0">
+<link rel="stylesheet" href="/io/backoffice/contenido-editor.css?v=2.1.1">
 <p class="bo-nota"><a href="reglas.php">← Volver a Contenido</a></p>
 <section class="bo-card bo-vimeo">
   <div class="bo-vimeo-cabecera">

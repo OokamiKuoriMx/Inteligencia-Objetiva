@@ -21,7 +21,7 @@ $__standalone = !defined('IO_EMBEBIDO');
 ?>
 <?php if ($__standalone) { require_once __DIR__ . '/../tienda/_layout.php'; encabezado('Mi biblioteca', 'biblioteca'); } ?>
 <style>
-.iob{padding:clamp(30px,5vw,60px) 0}.iob h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(36px,4vw,52px);color:var(--io-marino)!important;margin:0 0 6px}
+.iob{padding:clamp(30px,5vw,60px) 0}.iob h1{font-family:Roboto,system-ui,sans-serif;font-weight:300;font-size:clamp(36px,4vw,52px);color:var(--io-marino)!important;margin:0 0 6px}
 .iob-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0}.iob-tabs button{border:1px solid var(--io-borde);background:var(--io-superficie);color:var(--io-texto);padding:8px 18px;border-radius:999px;font-size:14px}
 .iob-tabs button.on{background:var(--io-rojo);border-color:var(--io-rojo);color:#fff}.iob-tabs b{font-weight:500;opacity:.7;margin-left:6px}
 .iob-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
