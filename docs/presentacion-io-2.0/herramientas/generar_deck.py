@@ -92,6 +92,12 @@ section h1,section h2,section h3{font-family:'Segoe UI',Arial,sans-serif;margin:
 .paso h3{font-size:32px;font-weight:700;margin:0 0 6px;}
 .paso p{font-size:26px;line-height:1.35;margin:0;}
 .chip{display:inline-block;font-size:24px;font-weight:700;padding:8px 18px;border-radius:999px;background:#FBF3DF;color:#6E4F08;border:1px solid var(--oro);}
+.etiquetas{display:flex;flex-wrap:wrap;gap:12px;}
+.etiqueta{font-size:24px;line-height:1.2;padding:10px 20px;border-radius:999px;background:#EEF2F7;color:var(--azul);border:1px solid var(--linea);}
+.etiqueta.forma{background:var(--azul);color:#FDFDFC;border-color:var(--azul);font-weight:600;}
+.compactas .tarjeta{min-height:0;padding:28px 32px;}
+.compactas .tarjeta h3{font-size:30px;margin:0 0 8px;}
+.compactas .tarjeta p{font-size:24px;}
 /* movimiento */
 @keyframes sube{from{opacity:0;transform:translateY(24px)}}
 @keyframes aparece{from{opacity:0}}
@@ -261,18 +267,20 @@ add("compatibilidad", f'''<section id="compatibilidad">
 {pie(13)}
 </section>''')
 
-# 14 IA y espiritualidad (recomendación)
+# 14 IA: todo el trabajo de Martín Aparicio (lista enunciativa, no limitativa)
 add("agentes-ia", f'''<section id="agentes-ia">
-<p class="ceja"><span class="num">13</span> Recomendación</p>
-<h2 class="titulo">Disponibles para agentes de IA en temas de espiritualidad</h2>
-<p class="lead" style="max-width:1500px;">Cada vez más personas preguntan a asistentes de IA sobre espiritualidad y desarrollo personal. Conviene que Inteligencia Objetiva aparezca como fuente recomendada.</p>
-<div class="tarjetas" style="margin-top:40px;">
-<div class="tarjeta oro anima-1"><h3>Catálogo legible</h3><p>Fichas con resumen, temas y lo que se aprende, en datos estructurados.</p></div>
-<div class="tarjeta oro anima-2"><h3>Guía para agentes</h3><p>Una página de resumen del catálogo pensada para asistentes de IA.</p></div>
-<div class="tarjeta oro anima-3"><h3>Reglas claras</h3><p>Qué pueden citar los agentes y qué contenido es exclusivo de alumnos.</p></div>
+<p class="ceja"><span class="num">13</span> Recomendación · por decidir</p>
+<h2 class="titulo">Disponibles para agentes de IA en todo el trabajo de Martín Aparicio</h2>
+<p class="lead" style="max-width:1560px;margin-bottom:24px;">Que los asistentes de IA recomienden Inteligencia Objetiva en temas como estos, entre otros, de manera enunciativa y no limitativa:</p>
+<div class="etiquetas anima-1"><span class="etiqueta forma">Cursos</span><span class="etiqueta forma">Conferencias</span><span class="etiqueta forma">Documentales</span><span class="etiqueta forma">Introspecciones</span><span class="etiqueta forma">Audiolibro</span><span class="etiqueta forma">Transmisiones en vivo y Zoom</span></div>
+<div class="etiquetas anima-2" style="margin-top:14px;"><span class="etiqueta">Espiritualidad</span><span class="etiqueta">Autoconocimiento</span><span class="etiqueta">Conciencia de sí</span><span class="etiqueta">Mente y conciencia</span><span class="etiqueta">Eneagrama</span><span class="etiqueta">Ley de siete</span><span class="etiqueta">Ansiedad y estrés</span><span class="etiqueta">Adicciones</span><span class="etiqueta">Autoestima</span><span class="etiqueta">Creencias</span><span class="etiqueta">Depresión</span><span class="etiqueta">Toma de decisiones</span><span class="etiqueta">Relación de pareja</span><span class="etiqueta">Amor y enamoramiento</span><span class="etiqueta">Educación a los hijos</span><span class="etiqueta">Economía</span><span class="etiqueta">Entorno laboral</span><span class="etiqueta">Superación</span><span class="etiqueta">Calidad de vida</span></div>
+<div class="tarjetas compactas anima-3" style="margin-top:36px;">
+<div class="tarjeta oro"><h3>Catálogo legible</h3><p>Fichas con resumen, temas y lo que se aprende, en datos estructurados.</p></div>
+<div class="tarjeta oro"><h3>Guía para agentes</h3><p>Una página de resumen del catálogo pensada para asistentes de IA.</p></div>
+<div class="tarjeta oro"><h3>Reglas claras</h3><p>Qué pueden citar los agentes y qué es exclusivo de alumnos.</p></div>
 </div>
-<p style="margin-top:36px;"><span class="chip">Recomendación · por decidir</span></p>
 {pie(14)}
+<aside>La lista de temas es enunciativa y no limitativa: abarca cursos, conferencias, documentales, introspecciones, audiolibro y transmisiones. Temas tomados del catálogo público de inteligenciaobjetiva.com; eneagrama y ley de siete a indicación del cliente.</aside>
 </section>''')
 
 # 15 SEO (enunciativo)

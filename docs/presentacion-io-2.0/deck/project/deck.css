@@ -62,6 +62,12 @@ section h1,section h2,section h3{font-family:'Segoe UI',Arial,sans-serif;margin:
 .paso h3{font-size:32px;font-weight:700;margin:0 0 6px;}
 .paso p{font-size:26px;line-height:1.35;margin:0;}
 .chip{display:inline-block;font-size:24px;font-weight:700;padding:8px 18px;border-radius:999px;background:#FBF3DF;color:#6E4F08;border:1px solid var(--oro);}
+.etiquetas{display:flex;flex-wrap:wrap;gap:12px;}
+.etiqueta{font-size:24px;line-height:1.2;padding:10px 20px;border-radius:999px;background:#EEF2F7;color:var(--azul);border:1px solid var(--linea);}
+.etiqueta.forma{background:var(--azul);color:#FDFDFC;border-color:var(--azul);font-weight:600;}
+.compactas .tarjeta{min-height:0;padding:28px 32px;}
+.compactas .tarjeta h3{font-size:30px;margin:0 0 8px;}
+.compactas .tarjeta p{font-size:24px;}
 /* movimiento */
 @keyframes sube{from{opacity:0;transform:translateY(24px)}}
 @keyframes aparece{from{opacity:0}}
