@@ -24,7 +24,6 @@
   "editor",
   "en-vivo",
   "backoffice",
-  "roles",
   "compatibilidad",
   "agentes-ia",
   "seo",
@@ -42,8 +41,8 @@
    "start": "tema"
   },
   "s3": {
-   "description": "Lo que sigue: roles, compatibilidad, IA, SEO y próximos pasos.",
-   "start": "roles"
+   "description": "Lo que sigue: compatibilidad, IA, SEO y próximos pasos.",
+   "start": "compatibilidad"
   }
  },
  "faces": {},

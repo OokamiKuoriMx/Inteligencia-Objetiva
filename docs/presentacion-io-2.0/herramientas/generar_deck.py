@@ -235,21 +235,9 @@ add("backoffice", feature("backoffice", 10, "Operación", "Backoffice simplifica
     f'''<img class="marco" src="{B['tablero']}" alt="Tablero del backoffice" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">
 <img class="marco" src="{B['accesos']}" alt="Tabla de accesos" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">'''))
 
-# 12 Roles y perfiles (próximo)
-add("roles", f'''<section id="roles" class="oscura">
-<p class="ceja"><span class="num">11</span> Próximo</p>
-<h2 class="titulo" style="font-size:72px;max-width:1300px;">Roles y perfiles del equipo</h2>
-<p class="lead" style="max-width:1200px;">Cada persona del equipo verá y podrá hacer solo lo que le corresponde.</p>
-<div class="tarjetas" style="margin-top:72px;">
-<div class="tarjeta anima-1" style="background:#0B2C4E;border-color:#23466F;border-top-color:var(--oro);"><h3 style="color:#FDFDFC;">Hoy</h3><p style="color:#D5DEE8;">Cuatro roles base: administración, edición, soporte y finanzas.</p></div>
-<div class="tarjeta anima-2" style="background:#0B2C4E;border-color:#23466F;border-top-color:var(--oro);"><h3 style="color:#FDFDFC;">En desarrollo</h3><p style="color:#D5DEE8;">Roles y perfiles administrables desde el backoffice. Se trabaja en paralelo y se integrará al terminar.</p></div>
-</div>
-{pie(12, True)}
-</section>''')
-
 # 13 Compatibilidad y migración
 add("compatibilidad", f'''<section id="compatibilidad">
-<p class="ceja"><span class="num">12</span> Compatibilidad</p>
+<p class="ceja"><span class="num">11</span> Compatibilidad</p>
 <h2 class="titulo">Se integra sobre el sitio actual, por fases</h2>
 <table class="tabla anima-1">
 <tr><th>Aspecto</th><th>Cómo se cuida</th></tr>
@@ -264,12 +252,12 @@ add("compatibilidad", f'''<section id="compatibilidad">
 <div class="fase"><p class="n">Fase 4</p><h3>Migración</h3><p>Compras vigentes</p></div>
 <div class="fase"><p class="n">Fase 5</p><h3>Tienda 2.0</h3><p>Pagos y en vivo</p></div>
 </div>
-{pie(13)}
+{pie(12)}
 </section>''')
 
 # 14 IA: todo el trabajo de Martín Aparicio (lista enunciativa, no limitativa)
 add("agentes-ia", f'''<section id="agentes-ia">
-<p class="ceja"><span class="num">13</span> Recomendación · por decidir</p>
+<p class="ceja"><span class="num">12</span> Recomendación · por decidir</p>
 <h2 class="titulo">Disponibles para agentes de IA en todo el trabajo de Martín Aparicio</h2>
 <p class="lead" style="max-width:1560px;margin-bottom:24px;">Que los asistentes de IA recomienden Inteligencia Objetiva en temas como estos, entre otros, de manera enunciativa y no limitativa:</p>
 <div class="etiquetas anima-1"><span class="etiqueta forma">Cursos</span><span class="etiqueta forma">Conferencias</span><span class="etiqueta forma">Documentales</span><span class="etiqueta forma">Introspecciones</span><span class="etiqueta forma">Audiolibro</span><span class="etiqueta forma">Transmisiones en vivo y Zoom</span></div>
@@ -279,13 +267,13 @@ add("agentes-ia", f'''<section id="agentes-ia">
 <div class="tarjeta oro"><h3>Guía para agentes</h3><p>Una página de resumen del catálogo pensada para asistentes de IA.</p></div>
 <div class="tarjeta oro"><h3>Reglas claras</h3><p>Qué pueden citar los agentes y qué es exclusivo de alumnos.</p></div>
 </div>
-{pie(14)}
+{pie(13)}
 <aside>La lista de temas es enunciativa y no limitativa: abarca cursos, conferencias, documentales, introspecciones, audiolibro y transmisiones. Temas tomados del catálogo público de inteligenciaobjetiva.com; eneagrama y ley de siete a indicación del cliente.</aside>
 </section>''')
 
 # 15 SEO (enunciativo)
 add("seo", f'''<section id="seo">
-<p class="ceja"><span class="num">14</span> SEO</p>
+<p class="ceja"><span class="num">13</span> SEO</p>
 <h2 class="titulo">Líneas de trabajo en buscadores</h2>
 <p class="lead">Se enuncian como siguiente etapa; no forman parte de esta entrega.</p>
 <div class="tarjetas" style="margin-top:56px;">
@@ -294,21 +282,20 @@ add("seo", f'''<section id="seo">
 <div class="tarjeta anima-3"><h3>Velocidad</h3><p>Imágenes ligeras y carga diferida de video.</p></div>
 <div class="tarjeta anima-3"><h3>Contenido</h3><p>Resúmenes y temas de cada ficha pensados para búsquedas.</p></div>
 </div>
-{pie(15)}
+{pie(14)}
 </section>''')
 
 # 16 Próximos pasos
 add("proximos-pasos", f'''<section id="proximos-pasos">
-<p class="ceja"><span class="num">15</span> Próximos pasos</p>
+<p class="ceja"><span class="num">14</span> Próximos pasos</p>
 <h2 class="titulo">Ruta para llevarlo a producción</h2>
 <div class="pasos anima-1">
 <div class="paso"><p class="n">1</p><div><h3>Validación con dirección</h3><p>Revisar esta presentación y priorizar fases.</p></div></div>
 <div class="paso"><p class="n">2</p><div><h3>Configuración del técnico del cliente</h3><p>Base de datos, Stripe y Facturapi en modo de prueba, dominio de Vimeo.</p></div></div>
 <div class="paso"><p class="n">3</p><div><h3>Despliegue por fases y prueba de punta a punta</h3><p>Con una cuenta interna antes de abrir al público.</p></div></div>
-<div class="paso"><p class="n">4</p><div><h3>Integrar roles y perfiles</h3><p>Al cerrar el desarrollo en paralelo.</p></div></div>
-<div class="paso" style="border-bottom:none;"><p class="n">5</p><div><h3>Decidir IA y SEO</h3><p>Aprobar las recomendaciones para la siguiente etapa.</p></div></div>
+<div class="paso" style="border-bottom:none;"><p class="n">4</p><div><h3>Decidir IA y SEO</h3><p>Aprobar las recomendaciones para la siguiente etapa.</p></div></div>
 </div>
-{pie(16)}
+{pie(15)}
 </section>''')
 
 # 17 Cierre
@@ -318,7 +305,7 @@ add("cierre", f'''<section id="cierre" class="oscura">
 <h2 class="anima-2" style="font-size:72px;font-weight:700;margin:56px 0 16px;">Gracias</h2>
 <p class="lead anima-3" style="margin:0;max-width:1200px;">Inteligencia Objetiva 2.0: experiencia más clara para el alumno y control para el equipo.</p>
 </div>
-{pie(17, True)}
+{pie(16, True)}
 </section>''')
 
 order = [s for s, _ in slides]
@@ -329,7 +316,7 @@ with open(os.path.join(ROOT, "project", "deck.css"), "w", encoding="utf-8") as f
     f.write(CSS.strip() + "\n")
 deck = {
     "v": 5,
-    "createdOnFiles": {"v": 1, "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")},
+    "createdOnFiles": {"v": 1, "at": "2026-11-19T19:16:14Z"},
     "lists": "css",
     "format": {"v": 1, "shared": ["project/deck.css"]},
     "title": "Inteligencia Objetiva 2.0 · Presentación de mejoras",
@@ -338,7 +325,7 @@ deck = {
     "sections": {
         "s1": {"description": "Contexto, objetivo y comparación antes y después.", "start": "portada"},
         "s2": {"description": "Un cambio relevante por diapositiva, con captura real del demo.", "start": "tema"},
-        "s3": {"description": "Lo que sigue: roles, compatibilidad, IA, SEO y próximos pasos.", "start": "roles"},
+        "s3": {"description": "Lo que sigue: compatibilidad, IA, SEO y próximos pasos.", "start": "compatibilidad"},
     },
     "faces": {},
     "designSystems": [],
