@@ -13,7 +13,7 @@ function contenido_responder(array $respuesta, int $codigo = 200): void
 try {
     $a = admin();
     if (!$a) { throw new IOError('sin_sesion', 'Inicia sesión de nuevo para editar contenidos.', 401); }
-    if (!in_array('politicas', IO_PERMISOS[$a['rol']] ?? [], true)) { throw new IOError('sin_permiso', 'Sin permiso para editar contenidos.', 403); }
+    if (!puede('politicas')) { throw new IOError('sin_permiso', 'Sin permiso para editar contenidos.', 403); }
     $metodo = $_SERVER['REQUEST_METHOD'] ?? '';
     if ($metodo === 'GET') {
         $id = filter_var($_GET['producto'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 4294967295]]);

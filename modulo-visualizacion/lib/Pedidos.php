@@ -7,9 +7,7 @@ final class IOPedidos
 {
     private static function administrador(array $actor): array
     {
-        $a = IO::uno('SELECT id,email,rol FROM io_admins WHERE id = ? AND activo = 1', [(int) ($actor['id'] ?? 0)]);
-        if (!$a || !in_array($a['rol'], ['admin', 'finanzas'], true)) { throw new IOError('sin_permiso', 'Sin permiso para gestionar reembolsos.', 403); }
-        return $a;
+        return IOEquipo::autorizar($actor, 'reembolsos', 'Sin permiso para gestionar reembolsos.');
     }
 
     private static function bitacora(array $actor, string $accion, int $pedidoId, string $motivo, array $detalle = []): void

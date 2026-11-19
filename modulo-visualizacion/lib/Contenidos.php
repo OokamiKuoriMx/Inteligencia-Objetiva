@@ -24,9 +24,7 @@ final class IOContenidos
 
     private static function autorizado(array $admin): array
     {
-        $u = IO::uno('SELECT id,email,rol FROM io_admins WHERE id = ? AND activo = 1', [(int) ($admin['id'] ?? 0)]);
-        if (!$u || !in_array($u['rol'], ['admin', 'editor'], true)) { throw new IOError('sin_permiso', 'Sin permiso para editar contenidos.', 403); }
-        return $u;
+        return IOEquipo::autorizar($admin, 'politicas', 'Sin permiso para editar contenidos.');
     }
 
     private static function filas(int $id, bool $bloquear = false): array

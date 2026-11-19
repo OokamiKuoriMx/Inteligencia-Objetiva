@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         IO::ejecutar('INSERT INTO io_login_intentos (ip, email, exito) VALUES (?,?,?)', [$ip, mb_substr($email, 0, 190), $u && $ok ? 1 : 0]);
         if ($u && $ok) {
             session_regenerate_id(true);
-            $_SESSION = ['io_admin' => ['id' => (int) $u['id']]];
+            $_SESSION = ['io_admin' => ['id' => (int) $u['id'], 'v' => IOEquipo::registrarAcceso((int) $u['id'])]];
             header('Location: index.php'); exit;
         }
         $error = 'Correo o contraseña incorrectos.';
