@@ -122,15 +122,15 @@ def add(sid, html):
 add("portada", f'''<section id="portada" class="oscura" data-transition="fade">
 <div style="display:flex;gap:72px;align-items:center;height:792px;">
 <div style="width:820px;flex:none;" class="anima-1">
-<p class="ceja">Presentación ejecutiva · noviembre 2026</p>
+<p class="ceja">Propuesta de mejora · noviembre 2026</p>
 <h1 class="portada-t">Inteligencia Objetiva 2.0</h1>
-<p class="lead" style="font-size:34px;">Mejoras al sitio, la tienda y la operación del equipo, integradas sobre el sitio actual.</p>
+<p class="lead" style="font-size:34px;">Propuesta de mejora para el sitio, la tienda y la operación del equipo, integrada sobre el sitio actual.</p>
 <div class="sello" style="width:620px;"><img src="{B['logo_h']}" alt="MC Proyectos Estratégicos" style="width:420px;height:84px;object-fit:contain;"><p>Presenta</p></div>
 </div>
 <div class="anima-3" style="flex:1;"><img class="marco" src="{B['portada']}" alt="Nueva portada de Inteligencia Objetiva 2.0" style="width:772px;height:483px;object-fit:cover;"></div>
 </div>
 {pie(1, True)}
-<aside>Presentamos los cambios más importantes de Inteligencia Objetiva 2.0. Todo lo que se muestra son capturas reales del demo local con datos ficticios.</aside>
+<aside>Presentamos la propuesta de mejora de Inteligencia Objetiva 2.0 con sus cambios más importantes. Todo lo que se muestra son capturas reales del demo local con datos ficticios.</aside>
 </section>''')
 
 # 2 Contexto y objetivo
@@ -319,7 +319,7 @@ deck = {
     "createdOnFiles": {"v": 1, "at": "2026-11-19T19:16:14Z"},
     "lists": "css",
     "format": {"v": 1, "shared": ["project/deck.css"]},
-    "title": "Inteligencia Objetiva 2.0 · Presentación de mejoras",
+    "title": "Inteligencia Objetiva 2.0 · Propuesta de mejora",
     "order": order,
     "cover": "portada",
     "sections": {
