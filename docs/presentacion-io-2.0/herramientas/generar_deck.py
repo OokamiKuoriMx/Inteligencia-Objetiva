@@ -27,6 +27,7 @@ B = {
     "tablero_osc": "/_blob/ee3afd43325325bc5640881c7552c938",
     "equipo": "/_blob/25dadc16e2209cf05e3bc169c06109de",
     "equipo_alta": "/_blob/cd977826594fdfa0db8f2c2ce7a20b13",
+    "llms": "/_blob/55f4c725c9bbd00938d0fb926ed80a87",
 }
 
 CSS = r"""
@@ -278,30 +279,22 @@ add("compatibilidad", f'''<section id="compatibilidad">
 {pie(13)}
 </section>''')
 
-# 14 IA: todo el trabajo de Martín Aparicio (lista enunciativa, no limitativa)
-add("agentes-ia", f'''<section id="agentes-ia">
-<p class="ceja"><span class="num">13</span> Recomendación · por decidir</p>
-<h2 class="titulo">Disponibles para agentes de IA en todo el trabajo de Martín Aparicio</h2>
-<p class="lead" style="max-width:1560px;margin-bottom:24px;">Que los asistentes de IA recomienden Inteligencia Objetiva en temas como estos, entre otros, de manera enunciativa y no limitativa:</p>
-<div class="etiquetas anima-1"><span class="etiqueta forma">Cursos</span><span class="etiqueta forma">Conferencias</span><span class="etiqueta forma">Documentales</span><span class="etiqueta forma">Introspecciones</span><span class="etiqueta forma">Audiolibro</span><span class="etiqueta forma">Transmisiones en vivo y Zoom</span></div>
-<div class="etiquetas anima-2" style="margin-top:14px;"><span class="etiqueta">Espiritualidad</span><span class="etiqueta">Autoconocimiento</span><span class="etiqueta">Conciencia de sí</span><span class="etiqueta">Mente y conciencia</span><span class="etiqueta">Eneagrama</span><span class="etiqueta">Ley de siete</span><span class="etiqueta">Ansiedad y estrés</span><span class="etiqueta">Adicciones</span><span class="etiqueta">Autoestima</span><span class="etiqueta">Creencias</span><span class="etiqueta">Depresión</span><span class="etiqueta">Toma de decisiones</span><span class="etiqueta">Relación de pareja</span><span class="etiqueta">Amor y enamoramiento</span><span class="etiqueta">Educación a los hijos</span><span class="etiqueta">Economía</span><span class="etiqueta">Entorno laboral</span><span class="etiqueta">Superación</span><span class="etiqueta">Calidad de vida</span></div>
-<div class="tarjetas compactas anima-3" style="margin-top:36px;">
-<div class="tarjeta oro"><h3>Catálogo legible</h3><p>Fichas con resumen, temas y lo que se aprende, en datos estructurados.</p></div>
-<div class="tarjeta oro"><h3>Guía para agentes</h3><p>Una página de resumen del catálogo pensada para asistentes de IA.</p></div>
-<div class="tarjeta oro"><h3>Reglas claras</h3><p>Qué pueden citar los agentes y qué es exclusivo de alumnos.</p></div>
-</div>
-{pie(14)}
-<aside>La lista de temas es enunciativa y no limitativa: abarca cursos, conferencias, documentales, introspecciones, audiolibro y transmisiones. Temas tomados del catálogo público de inteligenciaobjetiva.com; eneagrama y ley de siete a indicación del cliente.</aside>
-</section>''')
+# 14 IA: implementado (commit dfddc78)
+add("agentes-ia", feature("agentes-ia", 0, "Implementado · IA", "Abierta a agentes de IA",
+    "Los asistentes de IA ya pueden leer y citar el trabajo de Martín Aparicio.",
+    ["/llms.txt y /llms-full.txt con Martín Aparicio y todo el catálogo", "Temas, entre otros, de manera enunciativa y no limitativa", "/robots.txt invita a ChatGPT, Claude, Perplexity, Gemini y otros", "/sitemap.xml y datos estructurados: organización, fundador, cursos y eventos en vivo", "El contenido de pago y el área del alumno quedan fuera"],
+    f'''<img class="marco" src="{B['llms']}" alt="Contenido de /llms.txt en el demo" style="width:{W}px;height:620px;object-fit:cover;object-position:top;">
+<p class="pie-img">Contenido real de /llms.txt en el demo · falta activarlo en producción</p>''',
+    aside="Implementado en el paquete: /llms.txt, /llms-full.txt, /robots.txt, /sitemap.xml y datos estructurados (organización, fundador, cursos y eventos en vivo). La lista de temas es enunciativa y no limitativa. Pendiente: activarlo en producción y dar de alta el sitemap en Google y Bing."))
 
 # 15 SEO (enunciativo)
 add("seo", f'''<section id="seo">
 <p class="ceja"><span class="num">14</span> SEO</p>
 <h2 class="titulo">Líneas de trabajo en buscadores</h2>
-<p class="lead">Se enuncian como siguiente etapa; no forman parte de esta entrega.</p>
+<p class="lead">Mapa del sitio y datos estructurados ya están listos. Se enuncian las siguientes líneas de trabajo:</p>
 <div class="tarjetas" style="margin-top:56px;">
 <div class="tarjeta anima-1"><h3>Fichas</h3><p>Título y descripción propios por contenido.</p></div>
-<div class="tarjeta anima-2"><h3>Estructura</h3><p>Direcciones limpias, migas de pan y mapa del sitio.</p></div>
+<div class="tarjeta anima-2"><h3>Estructura</h3><p>Direcciones limpias y enlaces internos entre fichas.</p></div>
 <div class="tarjeta anima-3"><h3>Velocidad</h3><p>Imágenes ligeras y carga diferida de video.</p></div>
 <div class="tarjeta anima-3"><h3>Contenido</h3><p>Resúmenes y temas de cada ficha pensados para búsquedas.</p></div>
 </div>
@@ -317,7 +310,7 @@ add("proximos-pasos", f'''<section id="proximos-pasos">
 <div class="paso"><p class="n">2</p><div><h3>Levantamiento del backoffice actual</h3><p>Conocer con el equipo sus tareas, roles y flujos para ajustar la propuesta.</p></div></div>
 <div class="paso"><p class="n">3</p><div><h3>Configuración del técnico del cliente</h3><p>Base de datos, Stripe y Facturapi en modo de prueba, dominio de Vimeo.</p></div></div>
 <div class="paso"><p class="n">4</p><div><h3>Despliegue por fases y prueba de punta a punta</h3><p>Con una cuenta interna antes de abrir al público.</p></div></div>
-<div class="paso" style="border-bottom:none;"><p class="n">5</p><div><h3>Decidir IA y SEO</h3><p>Aprobar las recomendaciones para la siguiente etapa.</p></div></div>
+<div class="paso" style="border-bottom:none;"><p class="n">5</p><div><h3>Activar acceso para IA y buscadores</h3><p>Publicarlo en producción y dar de alta el sitemap en Google y Bing.</p></div></div>
 </div>
 {pie(16)}
 </section>''')
