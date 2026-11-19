@@ -6,7 +6,7 @@ Paquete de producción: `dist/io2-completo-configurable-20261118.zip`. Esta entr
 
 - Tema, portada, catálogo, fichas, carrito y confirmación de compra.
 - Biblioteca del alumno, reproductor y reglas de acceso por compra, primera reproducción, ventana, acceso permanente o visualización única.
-- Backoffice con identidad IO, editor modal de contenidos con vista previa, accesos y reglas, bitácora, alertas y reportes.
+- Backoffice con identidad IO, editor modal de contenidos con vista previa, accesos y reglas, bitácora y reportes.
 - Plantilla CSV compatible con Excel y carga masiva de nuevos contenidos: revisión de filas antes de confirmar, guardado atómico como borradores y protección contra IDs duplicados o existentes.
 - Integración configurable de tarjeta y OXXO con Stripe: confirmación por webhook firmado, comprobación de monto y moneda, reintentos sin duplicar accesos y recuperación de la ficha OXXO real.
 - Campañas con fechas absolutas y productos seleccionados; el banner se oculta si no hay campaña vigente o descuentos comprobables.
@@ -22,7 +22,7 @@ Instalar `modulo-visualizacion/` como `/io/`. Copiar `io/config.example.php` a `
 
 | Configuración | Información necesaria |
 | --- | --- |
-| `db` | DSN, usuario y contraseña de MySQL del sitio. Aplicar las migraciones 001–007 en orden. |
+| `db` | DSN, usuario y contraseña de MySQL del sitio. Aplicar las migraciones 001–009 en orden. |
 | `dominio` | URL HTTPS real donde se insertarán los videos. |
 | `cliente_actual` | Adaptador a la sesión existente que devuelva ID, correo y nombre del cliente autenticado, o `null`. Debe probarse con una cuenta real. |
 | `dev` | `false` fuera de desarrollo local. |
