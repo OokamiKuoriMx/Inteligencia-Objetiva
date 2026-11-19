@@ -15,6 +15,13 @@ RewriteRule ^gracias/?$                     /io/tienda/gracias.php [L,QSA]
 RewriteRule ^(en-vivo|calendario)/?$          /io/tienda/en-vivo.php [L,QSA]
 RewriteRule ^membresias/?$                  /io/tienda/membresias.php [L,QSA]
 
+# Buscadores y agentes de IA (sección 5.9 de la guía). Si el sitio ya tiene robots.txt o sitemap.xml, compáralos antes:
+# estas reglas los reemplazan. Las líneas propias del sitio pueden conservarse en config.php → agentes.robots_extra.
+RewriteRule ^robots\.txt$                  /io/tienda/agentes.php?archivo=robots [L]
+RewriteRule ^sitemap\.xml$                 /io/tienda/agentes.php?archivo=sitemap [L]
+RewriteRule ^llms\.txt$                    /io/tienda/agentes.php?archivo=llms [L]
+RewriteRule ^llms-full\.txt$               /io/tienda/agentes.php?archivo=llms-full [L]
+
 # Fichas antiguas (/conferencias-en-linea/titulo-410) → ficha nueva, con redirección permanente para SEO
 RewriteRule ^(conferencias-en-linea|cursos-en-linea|documentales|introspecciones|audiolibro)/([a-z0-9-]+-[0-9]+)/?$ /producto/$2 [R=301,L]
 
@@ -32,5 +39,9 @@ RewriteRule ^(conferencias-en-linea|cursos-en-linea|documentales|introspecciones
 #   location ~ ^/(en-vivo|calendario)/?$ { rewrite ^ /io/tienda/en-vivo.php last; }
 #   location = /membresias { rewrite ^ /io/tienda/membresias.php last; }
 #   location ~ ^/producto/([a-z0-9-]+)/?$ { rewrite ^ /io/tienda/producto.php?p=$1 last; }
+#   location = /robots.txt    { rewrite ^ /io/tienda/agentes.php?archivo=robots last; }
+#   location = /sitemap.xml   { rewrite ^ /io/tienda/agentes.php?archivo=sitemap last; }
+#   location = /llms.txt      { rewrite ^ /io/tienda/agentes.php?archivo=llms last; }
+#   location = /llms-full.txt { rewrite ^ /io/tienda/agentes.php?archivo=llms-full last; }
 # Para aceptar barra final añade las variantes location = /ruta/ o una redirección
 # de barra final acorde con la configuración existente del servidor.

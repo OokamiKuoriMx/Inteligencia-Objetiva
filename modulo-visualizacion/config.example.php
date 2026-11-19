@@ -21,6 +21,10 @@ return [
     // Cómo obtenerla: backoffice > Transmisiones > Canal de YouTube. Restríngela a la YouTube Data API v3 y a la IP del servidor.
     'youtube_api_key' => '',
 
+    // Buscadores y agentes de IA (/robots.txt, /llms.txt, /sitemap.xml). Líneas extra para robots.txt,
+    // por ejemplo las reglas que ya tenía el sitio: ['Disallow: /pruebas/'].
+    'agentes' => ['robots_extra' => []],
+
     // Miniaturas subidas desde el editor de contenido (arrastrar y soltar). La carpeta debe poder escribirla PHP.
     // Por defecto: /io/subidas/miniaturas (incluye un .htaccess que solo sirve imágenes).
     // 'miniaturas_dir' => __DIR__ . '/subidas/miniaturas',

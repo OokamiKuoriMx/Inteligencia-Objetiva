@@ -264,6 +264,19 @@ Backoffice → Contenido abre el editor de cada contenido en tres pestañas (Det
 - Las imágenes que se suben y no se usan se borran con `php bin/limpiar-miniaturas.php --borrar` (solo las de más de 24 h sin contenido ni transmisión que las use; sin `--borrar` solo las lista). Sugerido en cron una vez al día. Cada sesión puede subir hasta 60 imágenes por hora.
 - Respalda esa carpeta junto con la base de datos.
 
+### 5.9 Buscadores y agentes de IA
+
+Hace que buscadores y asistentes de IA (ChatGPT, Claude, Perplexity, Gemini, Copilot, entre otros) puedan leer y citar el contenido público de Martín Aparicio: fichas del catálogo, temas, la página Nosotros y las transmisiones públicas. Los videos completos, la biblioteca del alumno, el backoffice y la API quedan fuera.
+
+1. **Antes de activar:** descarga el `robots.txt` y el `sitemap.xml` actuales del sitio, si existen. Las reglas nuevas los reemplazan; las líneas propias que quieras conservar van en `config.php` → `'agentes' => ['robots_extra' => [...]]`.
+2. **Activar:** las cuatro reglas de "Buscadores y agentes de IA" de `tienda/rewrite-produccion.txt` (Apache o nginx). Sirven:
+   - `/robots.txt`: da la bienvenida explícita a los rastreadores de buscadores e IA y excluye carrito, confirmación, biblioteca, backoffice y API.
+   - `/sitemap.xml`: portada, Nosotros, catálogo, cada categoría, cada tema, cada ficha y cada transmisión pública.
+   - `/llms.txt` y `/llms-full.txt`: resumen en Markdown para asistentes de IA; la versión completa trae descripción, lo que vas a comprender y precio de cada contenido.
+3. **Datos estructurados (schema.org):** la tienda ya los emite sola: organización, fundador y sitio con búsqueda en todas las páginas; `Course` en cada ficha; `Event` en las transmisiones públicas. La portada (`portada/index.html`) los lleva fijos.
+4. El backoffice y la biblioteca del alumno envían `X-Robots-Tag: noindex`.
+5. **Comprobación:** `curl https://SITIO/robots.txt`, `curl https://SITIO/llms.txt` y la prueba de resultados enriquecidos de Google con una ficha. Después, da de alta el sitemap en Google Search Console y Bing Webmaster Tools.
+
 ## Demo local para revisión sin accesos del cliente
 Desde el repositorio, en Windows, ejecuta `./modulo-visualizacion/bin/iniciar-demo.ps1`. Requiere PHP con PDO MySQL, cURL y mbstring, y una instancia **de pruebas** MySQL en `127.0.0.1:3307` con usuario `root` sin contraseña. Si no existe, el instalador local debe preparar esa instancia separada: el script no instala ni modifica el MySQL del sistema.
 
@@ -285,6 +298,8 @@ Las suites `prueba-descuentos.php`, `prueba-membresias.php`, `prueba-facturacion
 `php tests/prueba-youtube.php` simula la API de YouTube y comprueba la detección del canal, la caché, los no listados y los errores de cuota. `php tests/prueba-miniaturas.php` comprueba que solo se acepten imágenes reales (rechaza texto, PHP disfrazado, SVG, archivos vacíos o mayores de 4 MB). `php tests/prueba-transmisiones.php` cubre el reconocimiento de enlaces, reproductores, permisos por tipo de acceso, horarios, calendario y bitácora. Para la demo, `php tests/sembrar-transmisiones.php` agrega cinco transmisiones de ejemplo a `io_demo`.
 
 `php tests/prueba-roles.php` aplica 001–009, crea usuarios con los roles anteriores, aplica 010 dos veces y comprueba que conserven sus permisos; cubre altas, roles, permisos extra, que nadie se quite *Equipo y roles*, que siempre quede un administrador total, el cierre de sesiones al desactivar o cambiar contraseña, el perfil propio y la reversión si falla la bitácora.
+
+`php tests/prueba-agentes.php` no usa base de datos: revisa `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt` y los datos estructurados (que no expongan rutas privadas ni transmisiones de pago, y que el JSON-LD no pueda romper la página).
 
 `php tests/prueba-confirmacion.php` verifica las pantallas terminales de pedidos cancelados/reembolsados, la privacidad y la conservación del carrito. `node tests/prueba-retorno.js` comprueba los destinos del acceso, las restricciones de redirección y el comportamiento con almacenamiento bloqueado, sin dependencias adicionales.
 

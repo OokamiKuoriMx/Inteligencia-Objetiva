@@ -7,9 +7,11 @@ import shutil
 import subprocess
 import tempfile
 import zipfile
+from datetime import date
 
 ROOT = Path(__file__).resolve().parents[2]
-NAME = "io2-completo-configurable-20261118"
+HOY = date.today()
+NAME = "io2-completo-configurable-" + HOY.strftime("%Y%m%d")
 
 
 def local_temp():
@@ -42,8 +44,8 @@ def main():
             run(["php", "-l", str(php)])
     for js in ["modulo-visualizacion/backoffice/contenido-editor.js", "modulo-visualizacion/backoffice/equipo.js", "tema/io-theme.js", "portada/portada.js", "modulo-visualizacion/public/io-player.js"]:
         run(["node", "--check", js])
-    report = ["Verificación local de la entrega — 2026-11-18", run(["php", "-r", "echo 'PHP ' . PHP_VERSION;"]) ]
-    for test in ["prueba-flujo", "prueba-tienda", "prueba-condiciones", "prueba-promociones", "prueba-importacion", "prueba-importacion-bd", "prueba-descuentos", "prueba-membresias", "prueba-facturacion", "prueba-pedidos", "prueba-confirmacion", "prueba-contenidos", "prueba-carga-contenidos", "prueba-transmisiones", "prueba-miniaturas", "prueba-youtube", "prueba-roles"]:
+    report = ["Verificación local de la entrega — " + HOY.isoformat(), run(["php", "-r", "echo 'PHP ' . PHP_VERSION;"]) ]
+    for test in ["prueba-flujo", "prueba-tienda", "prueba-condiciones", "prueba-promociones", "prueba-importacion", "prueba-importacion-bd", "prueba-descuentos", "prueba-membresias", "prueba-facturacion", "prueba-pedidos", "prueba-confirmacion", "prueba-contenidos", "prueba-carga-contenidos", "prueba-transmisiones", "prueba-miniaturas", "prueba-youtube", "prueba-roles", "prueba-agentes"]:
         output = run(["php", f"modulo-visualizacion/tests/{test}.php"])
         summary = next((line for line in reversed(output.splitlines()) if line.startswith("Resultado:")), "Finalizó correctamente")
         report.append(test + ": " + summary)

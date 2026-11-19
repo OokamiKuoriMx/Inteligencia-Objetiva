@@ -20,9 +20,11 @@ $terminada = $t && ($t['estado'] === 'finalizada' || (!$alAire && strtotime($t['
 $producto = $t && $t['acceso'] === 'compradores' ? IO::uno('SELECT slug, titulo FROM io_productos WHERE producto_id = ?', [(int) $t['producto_id']]) : null;
 $grabacion = $t && $t['grabacion_producto_id'] ? IO::uno('SELECT slug, titulo FROM io_productos WHERE producto_id = ?', [(int) $t['grabacion_producto_id']]) : null;
 
-encabezado($t ? $t['titulo'] . ' · En vivo' : 'En vivo', 'en_vivo', 'Transmisiones en vivo de Inteligencia Objetiva con Martín Aparicio.');
+encabezado($t ? $t['titulo'] . ' · En vivo' : 'En vivo', 'en_vivo', 'Transmisiones en vivo de Inteligencia Objetiva con Martín Aparicio.', $t && $t['acceso'] === 'publico' && !empty($t['slug']) && $t['slug'] !== 'canal' ? '/en-vivo?t=' . rawurlencode($t['slug']) : ruta('en_vivo'));
 ?>
 <link rel="stylesheet" href="/io/tienda/en-vivo.css?v=1.0.0">
+<?php foreach (array_filter(array_merge($t ? [$t] : [], $proximas)) as $ev) { $ld = IOAgentes::evento(IOAgentes::dominio(), $ev); if ($ld) { echo IOAgentes::jsonLd($ld), "
+"; } } ?>
 <section class="container iov">
   <?php if (function_exists('migas')): ?><?= migas([['texto' => 'Inicio', 'url' => ruta('inicio')], ['texto' => 'En vivo']]) ?><?php endif; ?>
 

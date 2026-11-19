@@ -15,14 +15,9 @@ $enCarrito = in_array((int) $p['producto_id'], IOTienda::carritoIds(), true);
 $relacionados = IOTienda::catalogo(['categoria' => $p['categoria'], 'orden' => 'populares'], 1, 4)['productos'];
 $relacionados = array_slice(array_filter($relacionados, fn($x) => (int) $x['producto_id'] !== (int) $p['producto_id']), 0, 3);
 
-encabezado($p['titulo'], 'catalogo', (string) $p['resumen']);
+encabezado($p['titulo'], 'catalogo', (string) $p['resumen'], rproducto($p), (string) ($p['imagen'] ?: '/portada/img/conferencias.webp'));
 ?>
-<script type="application/ld+json"><?= json_encode([
-    '@context' => 'https://schema.org', '@type' => 'Course', 'name' => $p['titulo'], 'description' => $p['resumen'],
-    'provider' => ['@type' => 'Organization', 'name' => 'Inteligencia Objetiva'],
-    'offers' => ['@type' => 'Offer', 'price' => number_format((float) $p['precio_mxn'], 2, '.', ''), 'priceCurrency' => 'MXN', 'availability' => 'https://schema.org/InStock'],
-] + ((int) $p['resenas'] > 0 ? ['aggregateRating' => ['@type' => 'AggregateRating', 'ratingValue' => (float) $p['rating'], 'reviewCount' => (int) $p['resenas']]] : []),
-JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) ?></script>
+<?= IOAgentes::jsonLd(IOAgentes::curso(IOAgentes::dominio(), $p)) ?>
 <section class="container iot-ficha">
   <?= migas([
       ['texto' => 'Inicio', 'url' => ruta('inicio')],

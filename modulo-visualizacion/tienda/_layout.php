@@ -8,6 +8,7 @@ declare(strict_types=1);
 ini_set('display_errors', '0');
 require_once __DIR__ . '/../lib/Tienda.php';
 require_once __DIR__ . '/../lib/Promociones.php';
+require_once __DIR__ . '/../lib/Agentes.php';
 
 const IO_RUTAS = [
     'inicio' => '/', 'nosotros' => '/nosotros', 'catalogo' => '/conferencias-en-linea', 'membresias' => '/io/tienda/membresias.php',
@@ -17,8 +18,9 @@ function ruta(string $k): string { return IO_RUTAS[$k] ?? '/'; }
 function rproducto(array $p): string { return '/producto/' . rawurlencode($p['slug']); }
 function e($s): string { return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8'); }
 
-function encabezado(string $titulo, string $activo = '', string $descripcion = ''): void
+function encabezado(string $titulo, string $activo = '', string $descripcion = '', string $canonica = '', string $imagen = ''): void
 {
+    $dominio = IOAgentes::dominio();
     $cliente = IO::clienteActual();
     $n = count(IOTienda::carritoIds());
     $promocion = IOPromociones::actual();
@@ -29,6 +31,12 @@ function encabezado(string $titulo, string $activo = '', string $descripcion = '
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($titulo) ?> · Inteligencia Objetiva</title>
 <?php if ($descripcion): ?><meta name="description" content="<?= e($descripcion) ?>"><?php endif; ?>
+<?php if ($canonica): ?><link rel="canonical" href="<?= e($dominio . $canonica) ?>"><meta property="og:url" content="<?= e($dominio . $canonica) ?>"><?php endif; ?>
+<meta property="og:site_name" content="Inteligencia Objetiva"><meta property="og:locale" content="es_MX"><meta property="og:type" content="website">
+<meta property="og:title" content="<?= e($titulo) ?>"><?php if ($descripcion): ?><meta property="og:description" content="<?= e($descripcion) ?>"><?php endif; ?>
+<?php if ($imagen): ?><meta property="og:image" content="<?= e(preg_match('#^https?://#i', $imagen) ? $imagen : $dominio . '/' . ltrim($imagen, '/')) ?>"><?php endif; ?>
+<link rel="alternate" type="text/markdown" title="Resumen para asistentes de IA" href="/llms.txt">
+<?= IOAgentes::jsonLd(IOAgentes::grafoSitio($dominio)) ?>
 <script>(function(){var t=null;try{t=localStorage.getItem('io-theme')}catch(e){}if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-io-theme',t)})();</script>
 <meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">

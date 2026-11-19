@@ -2,6 +2,7 @@
 /** Página del reproductor: /io/public/ver.php?acceso=ID */
 declare(strict_types=1);
 require_once __DIR__ . '/../lib/IO.php';
+if (!headers_sent()) { header('X-Robots-Tag: noindex, nofollow'); }
 
 $cliente = IO::clienteActual();
 if (!$cliente) { header('Location: /?io_acceso=login&io_destino=biblioteca'); exit; }

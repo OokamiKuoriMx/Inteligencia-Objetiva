@@ -6,6 +6,7 @@
  */
 declare(strict_types=1);
 require_once __DIR__ . '/../lib/IO.php';
+if (!headers_sent()) { header('X-Robots-Tag: noindex, nofollow'); }
 
 $__cliente = IO::clienteActual();
 $__accesos = $__cliente ? IOAccesos::delCliente((int) $__cliente['id']) : [];

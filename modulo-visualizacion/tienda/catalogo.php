@@ -14,7 +14,12 @@ $r = IOTienda::catalogo($f, (int) ($_GET['p'] ?? 1), 12);
 $qs = fn(array $cambios) => '?' . http_build_query(array_filter(array_merge($f, ['p' => null], $cambios), fn($v) => $v !== '' && $v !== null));
 $titulo = $f['categoria'] && isset(IOTienda::CATEGORIAS[$f['categoria']]) ? IOTienda::CATEGORIAS[$f['categoria']] : 'Catálogo';
 
-encabezado($titulo, 'catalogo', 'Conferencias, cursos, documentales e introspecciones de Inteligencia Objetiva para tu desarrollo personal.');
+$canonica = isset(IOAgentes::RUTAS_CATEGORIA[$f['categoria']]) ? IOAgentes::RUTAS_CATEGORIA[$f['categoria']] : '/catalogo';
+if (isset(IOTienda::TEMAS[$f['tema']])) { $canonica .= '?tema=' . rawurlencode($f['tema']); }
+$descripcion = isset(IOTienda::TEMAS[$f['tema']])
+    ? IOTienda::TEMAS[$f['tema']] . ': conferencias, cursos e introspecciones de Martín Aparicio en Inteligencia Objetiva.'
+    : 'Conferencias, cursos, documentales e introspecciones de Inteligencia Objetiva para tu desarrollo personal.';
+encabezado($titulo, 'catalogo', $descripcion, $canonica);
 ?>
 <section class="container">
   <?= migas(array_merge(

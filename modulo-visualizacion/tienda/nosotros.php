@@ -2,7 +2,7 @@
 declare(strict_types=1);
 require __DIR__ . '/_layout.php';
 require_once __DIR__ . '/_migas.php';
-encabezado('Nosotros', 'nosotros', 'Inteligencia Objetiva: más de 20 años de investigación sobre la mente y el autoconocimiento, fundada por Martín Aparicio.');
+encabezado('Nosotros', 'nosotros', 'Inteligencia Objetiva: más de 20 años de investigación sobre la mente y el autoconocimiento, fundada por Martín Aparicio.', ruta('nosotros'));
 ?>
 <section class="iot-nos-hero">
   <div class="container">
@@ -20,7 +20,7 @@ encabezado('Nosotros', 'nosotros', 'Inteligencia Objetiva: más de 20 años de i
   </div>
 </section>
 
-<section class="iot-fundador">
+<section class="iot-fundador" id="martin-aparicio">
   <div class="container">
     <div class="row g-5 align-items-center">
       <div class="col-lg-5"><img src="/img/resource/7.png" alt="Martín Aparicio" onerror="this.onerror=null;this.src='/portada/img/introspecciones.webp'"></div>
