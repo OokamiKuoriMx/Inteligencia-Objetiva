@@ -115,7 +115,7 @@ La 2.0 se monta sobre el sitio actual: no reemplaza sus páginas, no modifica su
 
 ## Acceso de agentes de IA y disponibilidad del contenido
 
-Cada vez más personas preguntan a ChatGPT, Claude, Perplexity o Gemini sobre los temas que trabaja Martín Aparicio. Para que esos asistentes encuentren, lean y citen a Inteligencia Objetiva, cada tema y cada contenido público necesita una página propia que se lea sin iniciar sesión ni ejecutar código. Esto aplica, entre otros, de manera enunciativa y no limitativa, a todos sus cursos, conferencias, documentales, introspecciones, audiolibros, transmisiones, libros y conceptos.
+Cada vez más personas preguntan a ChatGPT, Claude, Perplexity o Gemini sobre los temas que trabaja Martín Aparicio. Para que esos asistentes encuentren, lean y citen a Inteligencia Objetiva, cada tema y cada contenido público necesita una página propia que se lea sin iniciar sesión ni ejecutar código. Esto aplica, entre otros, de manera enunciativa y no limitativa, a todos sus cursos, conferencias, documentales, introspecciones, audiolibros, transmisiones, libros y conceptos. La versión 2.0 ya incluye este acceso para buscadores y agentes de IA; falta activarlo en producción.
 
 **Temas y contenidos que deben quedar al alcance de los agentes** (lista enunciativa y no limitativa, tomada del catálogo del repositorio y de las páginas públicas del sitio revisadas el 19 de noviembre de 2026):
 
@@ -135,22 +135,29 @@ La portada habla de más de 250 temas en línea. De cada listado solo se revisó
 
 | Medida | Estado | Qué implica |
 | --- | --- | --- |
-| Ficha pública de cada contenido del catálogo, legible sin JavaScript | Hecho (fase 5) | Título, resumen, descripción, «aprenderás» y precio llegan escritos desde el servidor para todo lo que se importe al catálogo |
-| Ficha pública de diplomados, programas, libros y audiolibros | Recomendado | Hoy quedan fuera del catálogo 2.0; cada uno necesita su ficha con texto propio |
-| Una página pública por tema y concepto | Recomendado | Una por cada tema de la lista anterior y los que se sumen: explicación en texto, preguntas frecuentes y enlaces a los cursos, conferencias, documentales y transmisiones relacionados |
-| Glosario público del método | Recomendado | Definiciones breves y citables de cada concepto (conciencia de sí, eneagrama y ley de siete, entre otros) |
-| Página del autor | Recomendado | Martín Aparicio: biografía, obra y enlaces oficiales a redes y canales, para que los agentes atribuyan bien las citas |
-| Página por transmisión y por grabación pública | Parcial | La 2.0 ya tiene /en-vivo y /calendario. Falta una página permanente para cada directo público y su grabación |
-| `robots.txt` | Parcial | Ya existe en producción y permite todo salvo áreas privadas. Conviene nombrar de forma explícita GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, Claude-User, PerplexityBot y Google-Extended, y bloquear `/io/backoffice/`, `/io/api/` y `/io/public/`; la regla actual de `/api/` no cubre `/io/api/` |
-| Mapa del sitio (`sitemap.xml`) | Parcial | Existe en producción con las fichas actuales. Debe actualizarse con las fichas nuevas (`/producto/...`), las páginas de tema y el calendario |
-| `llms.txt` en la raíz | Recomendado | No existe. Un índice en texto: quién es Martín Aparicio, qué es Inteligencia Objetiva, la lista de temas y el enlace a cada página de tema y categoría |
-| Datos estructurados `Course` y migas de pan | Hecho | Curso con proveedor y oferta en MXN, calificación solo con reseñas reales, y ruta Inicio › Catálogo › Categoría › Curso |
-| `Organization` y `Person` | Recomendado | En la portada, «Nosotros» y la página del autor, con sus perfiles oficiales |
-| `VideoObject`, `Event`, `Book` y `FAQPage` | Recomendado | Videos públicos y tráilers, transmisiones abiertas, libros y audiolibros, y preguntas frecuentes de cada tema; nunca para el contenido de pago |
+| `/llms.txt` y `/llms-full.txt` | Hecho | Resumen en Markdown para asistentes de IA: quién es Martín Aparicio, los temas «entre otros, de manera enunciativa y no limitativa» y todos los contenidos por categoría. La versión completa agrega la descripción, lo que vas a comprender y el precio de cada uno |
+| `/robots.txt` | Hecho | Da la bienvenida explícita a los rastreadores de ChatGPT, Claude, Perplexity, Gemini, Apple, Meta, Bing, DuckDuckGo, Amazon y Mistral, entre otros, y excluye carrito, confirmación de compra, biblioteca, backoffice y API |
+| `/sitemap.xml` | Hecho | Portada, Nosotros, catálogo, cada categoría, cada tema, cada ficha y cada transmisión pública |
+| Datos estructurados (schema.org) | Hecho | Organización, fundador y búsqueda del sitio en todas las páginas; curso (`Course`) en cada ficha; evento (`Event`) en las transmisiones públicas |
+| Dirección canónica y Open Graph | Hecho | Cada página de la tienda indica su dirección oficial y cómo verse al compartirse en redes |
+| Exclusión de áreas privadas | Hecho | Backoffice y biblioteca piden a los buscadores no indexarlos; las transmisiones para miembros o compradores no se publican |
+| Ficha pública de cada contenido del catálogo, legible sin JavaScript | Hecho | Título, resumen, descripción, «aprenderás» y precio llegan escritos desde el servidor |
+| Páginas de los temas del catálogo | Hecho | Los seis temas del catálogo tienen dirección propia y aparecen en el mapa del sitio y en `llms.txt` |
 | Descripción de la portada y redirecciones de fichas antiguas | Hecho | Resumen del sitio para buscadores y asistentes, y enlaces antiguos que siguen funcionando |
+| Página del autor | Parcial | Martín Aparicio ya figura como fundador en los datos estructurados y en `llms.txt`, enlazado a Nosotros; falta una página propia con su obra y enlaces oficiales |
+| Página propia por concepto y glosario del método | Recomendado | Para lo que no es categoría del catálogo (eneagrama, ley de siete y conciencia de sí, entre otros): explicación, preguntas frecuentes y contenidos relacionados |
+| Fichas de diplomados, programas y libros | Recomendado | Hoy quedan fuera del catálogo 2.0; cada uno necesita su ficha con texto propio |
+| Página permanente por grabación pública | Recomendado | Que cada directo abierto conserve su página después de transmitirse |
+| `VideoObject`, `Book` y `FAQPage` | Recomendado | Videos públicos y tráilers, libros y audiolibros, y preguntas frecuentes por tema; nunca para el contenido de pago |
 | Rendimiento y disponibilidad | Parcial | Ya hay imágenes ligeras y video que carga al pulsarlo. Falta un monitor de disponibilidad, caché de las páginas públicas y revisar que el cortafuegos del hosting no bloquee a estos rastreadores |
 
-Los agentes solo deben ver lo público: portada, fichas, temas, glosario, autor y calendario. Las páginas de tema publican explicaciones y resúmenes; el contenido de pago sigue detrás del inicio de sesión y del control de acceso.
+Los agentes solo ven lo público: portada, Nosotros, catálogo, temas, fichas y transmisiones públicas. El contenido de pago sigue detrás del inicio de sesión y del control de acceso.
+
+**Pendiente para activarlo**
+
+- Activar en producción las reglas de reescritura que publican `robots.txt`, `sitemap.xml`, `llms.txt` y `llms-full.txt`.
+- Revisar antes el `robots.txt` y el `sitemap.xml` que ya tiene el sitio, porque los nuevos los reemplazan; las líneas propias que deban conservarse se agregan en la configuración.
+- Dar de alta el mapa del sitio en Google Search Console y en Bing Webmaster Tools.
 
 ## SEO
 
@@ -158,10 +165,10 @@ De forma enunciativa, la 2.0 aporta o deja listo:
 
 - Redirecciones permanentes de las fichas antiguas para conservar el posicionamiento.
 - Descripción propia en cada ficha y en la portada.
-- Datos estructurados de curso y migas de pan.
+- Datos estructurados de organización, fundador, búsqueda, cursos, transmisiones públicas y migas de pan.
 - Imágenes WebP ligeras y video bajo demanda, que mejoran la velocidad de carga.
 - Sin desplazamiento horizontal en celular.
-- Pendiente: actualizar el mapa del sitio existente con las direcciones nuevas, y agregar etiquetas para compartir en redes (Open Graph) y dirección canónica en cada página.
+- Mapa del sitio nuevo, dirección canónica y etiquetas para compartir en redes (Open Graph); pendiente darlo de alta en Google Search Console y Bing.
 
 ## Riesgos, próximos pasos y cronograma
 
@@ -185,7 +192,7 @@ El mayor riesgo no es técnico sino de configuración: cuentas, consultas de imp
 - [ ] Preparar el entorno de pruebas con HTTPS.
 - [ ] Inventariar todos los temas, conceptos y contenidos del catálogo completo.
 - [ ] Revisar en la página Equipo el rol y los permisos de cada persona tras la migración.
-- [ ] Ampliar `robots.txt` y publicar `llms.txt`, la página del autor y las páginas de tema.
+- [ ] Activar `robots.txt`, `sitemap.xml` y `llms.txt` en producción (tras revisar los actuales), darlos de alta en Google y Bing, y publicar la página del autor y las páginas por concepto.
 
 **Cronograma sugerido**
 
