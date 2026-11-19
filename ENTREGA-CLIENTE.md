@@ -22,7 +22,7 @@ Instalar `modulo-visualizacion/` como `/io/`. Copiar `io/config.example.php` a `
 
 | Configuración | Información necesaria |
 | --- | --- |
-| `db` | DSN, usuario y contraseña de MySQL del sitio. Aplicar las migraciones 001–009 en orden. |
+| `db` | DSN, usuario y contraseña de MySQL del sitio. Aplicar las migraciones 001–010 en orden. |
 | `dominio` | URL HTTPS real donde se insertarán los videos. |
 | `cliente_actual` | Adaptador a la sesión existente que devuelva ID, correo y nombre del cliente autenticado, o `null`. Debe probarse con una cuenta real. |
 | `dev` | `false` fuera de desarrollo local. |
