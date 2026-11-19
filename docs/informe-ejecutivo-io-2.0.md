@@ -1,0 +1,186 @@
+# Informe ejecutivo · Inteligencia Objetiva 2.0
+
+19 de noviembre de 2026 · Versión en línea: https://claude.ai/artifact/LY2Qhb8sQSgpdkUsit5nGW
+
+## Resumen ejecutivo
+
+La versión 2.0 convierte inteligenciaobjetiva.com de un sitio con catálogo en una plataforma de aprendizaje con tienda propia, biblioteca del alumno, transmisiones en vivo y un panel de control para el equipo. Todo se instala encima del sitio actual, por fases reversibles, sin reescribirlo y sin tocar su información.
+
+**Qué cambia**
+
+- **Para el alumno:** una biblioteca personal con todo lo que compró, un reproductor que recuerda dónde se quedó, modo oscuro, una portada nueva y una página de transmisiones en vivo con calendario y recordatorios.
+- **Para ventas:** carrito y pago en línea con tarjeta y OXXO (Stripe), cupones y 2×1, membresías recurrentes, factura electrónica (CFDI 4.0) que el cliente solicita solo, y devoluciones controladas.
+- **Para el equipo:** un backoffice donde se da de alta un curso pegando el enlace de Vimeo, se arrastra la miniatura, se otorgan cortesías y se programan transmisiones, con registro de quién hizo qué y por qué.
+- **Para la marca:** la identidad roja, marino y grafito con tipografía Roboto, aplicada de forma uniforme en todo el sitio.
+
+**Por qué importa al negocio**
+
+1. **Más ventas con menos fricción.** El pago se confirma de forma automática y el acceso aparece al instante en la biblioteca; ya no depende de una validación manual.
+2. **Control del contenido de pago.** Cada curso puede venderse como acceso permanente, por ventana de tiempo o de visualización única, y el sistema lo hace cumplir.
+3. **Operación más ligera.** Altas, cortesías, cupones y directos se resuelven desde un solo panel, con bitácora para auditoría.
+4. **Riesgo bajo de adopción.** Cada fase se puede revertir en minutos y solo se agregan tablas nuevas a la base de datos.
+
+**Qué falta para salir a producción:** configurar las cuentas reales (Stripe, Facturapi, Vimeo, YouTube), adaptar dos consultas de importación a las tablas reales del sitio y aceptar los recorridos de compra en un entorno de pruebas. El módulo de roles y perfiles del equipo sigue en desarrollo.
+
+## Mejoras de la versión 2.0 frente a la anterior
+
+La versión anterior mostraba el catálogo y dependía de procesos manuales para cobrar y dar acceso; la 2.0 automatiza ese ciclo y agrega herramientas para el alumno y el equipo. La tabla resume cada mejora por quién la aprovecha; la columna «Antes» describe el sitio actual en producción.
+
+| Mejora | Antes | Ahora | Beneficio principal |
+| --- | --- | --- | --- |
+| Tema y modo oscuro | Un solo tema claro; menú con poco contraste, desplazamiento horizontal en celular | Botón sol/luna que respeta la preferencia del equipo del usuario, sin parpadeo; banner de ofertas compacto con contador | Alumno y marca |
+| Nueva portada | Portada anterior | Portada 2.0 con imágenes propias ligeras, video de presentación que carga solo al pulsarlo y animaciones que respetan a quien prefiere menos movimiento | Marca y ventas |
+| Tienda y pago con Stripe | Cobro y validación con intervención manual | Catálogo, ficha, carrito y pago con tarjeta u OXXO; el acceso se activa solo cuando Stripe confirma el pago | Ventas |
+| Cupones y 2×1 | Sin herramienta propia | Cupones de porcentaje, monto fijo o 2×1 con fechas, productos y cupo; se crean en una ventana con resumen en lenguaje claro | Ventas |
+| Membresías, facturas y devoluciones | Fuera del sitio | Membresías mensuales o anuales, CFDI 4.0 de autoservicio y devoluciones que retiran el acceso al confirmarse | Ventas y equipo |
+| Biblioteca del alumno | «Mi contenido» básico | Biblioteca con todo lo comprado, vigencias claras y reproductor que retoma donde se quedó | Alumno |
+| Visualización única | No existía | Cursos que se ven una sola vez, con periodo de gracia si se cierra la pestaña y reanudaciones configurables | Ventas y alumno |
+| Editor de contenido estilo estudio | Sin editor en el sitio | Tres pestañas (Detalles, Precio y venta, Acceso); pegar el enlace de Vimeo llena título, duración y miniatura; vista previa de la tarjeta del catálogo; carga masiva desde hoja de cálculo | Equipo |
+| Miniaturas con arrastre | Sin editor en el sitio | Se arrastra la imagen, el navegador la recorta a 16:9 y el servidor solo acepta imágenes reales | Equipo |
+| Altas en ventana (modal) | Sin panel propio en el sitio | Cupones, cortesías, transmisiones y conexión del canal de YouTube se dan de alta en ventanas cortas, sin salir de la pantalla | Equipo |
+| Transmisiones en vivo | Enlaces sueltos en redes | Página /en-vivo y calendario para YouTube, Facebook, Vimeo y Zoom; sala de espera 15 minutos antes; recordatorio para el calendario; aviso «En vivo» en todo el sitio; acceso público, con cuenta, para compradores o para miembros | Alumno y ventas |
+| Detección automática del canal de YouTube | No existía | Al conectar el canal una vez, cada directo público aparece solo en el sitio en menos de un minuto, con chat | Equipo y alumno |
+| Bitácora y reportes | Sin panel propio en el sitio | Cada cambio de acceso exige un motivo y queda registrado con quién y cuándo | Equipo y dirección |
+| Roles y perfiles del equipo | Sin panel propio en el sitio | Hoy hay cuatro roles (administración, edición, soporte y finanzas); la gestión de roles y perfiles está **en desarrollo** en paralelo | Equipo y dirección |
+| Identidad de marca | Estilos dispersos | Rojo, marino y grafito definidos una sola vez y aplicados en todo el sitio, con Roboto en todos los textos | Marca |
+
+**Lectura por beneficio**
+
+- **Alumno:** compra y empieza a ver en minutos, encuentra todo en un solo lugar, recibe aviso de los directos y puede leer cómodamente de noche.
+- **Equipo interno:** publica un curso en minutos, sin conocimientos técnicos, y resuelve cortesías y aclaraciones desde el panel con respaldo en la bitácora.
+- **Ventas:** más medios de pago, promociones con fecha de inicio y fin, membresías y una ficha por producto que se puede compartir.
+- **Marca:** una sola identidad visual en portada, tienda, biblioteca y panel.
+
+## Compatibilidad con lo existente y migración
+
+La 2.0 se monta sobre el sitio actual: no reemplaza sus páginas, no modifica sus tablas y cada fase se apaga quitando unas líneas. Lo comprobamos en el código, no solo en la guía.
+
+**Qué verificamos**
+
+- **Base de datos.** Las nueve migraciones (001 a 009) solo crean 20 tablas nuevas, todas con prefijo `io_`, y ninguna altera, borra o vincula por llave foránea las tablas del sitio. Todas usan «crear si no existe», así que repetir una migración no daña nada.
+- **Datos del sitio.** El módulo solo **lee** las tablas actuales (catálogo, compras y clientes) mediante consultas configurables; nunca escribe en ellas.
+- **Cuentas de alumnos.** No se duplican: el módulo reconoce al alumno con la misma sesión de inicio del sitio actual y reutiliza sus ventanas de inicio de sesión y registro.
+- **Servidor.** Funciona con PHP 7.4 en adelante (se recomienda 8.x) y con MySQL 5.7 y 8.0; el código evita a propósito instrucciones que solo existen en una de las dos versiones. Requiere HTTPS y acceso por terminal.
+- **Direcciones web.** La tienda nueva responde en las mismas direcciones (`/nosotros`, `/producto/...`, `/carrito`) y las fichas antiguas redirigen de forma permanente a las nuevas.
+- **Cambios al sitio actual.** Son mínimos y puntuales: tres líneas en la plantilla para el tema, el contenido central de la portada, una llamada en el punto donde hoy se confirma un pago, el enlace «Mi contenido» y, al final, un bloque de reglas en `.htaccess`.
+
+**Plan de migración de la información**
+
+1. **Respaldo completo.** Base de datos y archivos del sitio, más la carpeta de miniaturas en adelante. Sin respaldo verificado no se avanza.
+2. **Entorno de pruebas.** Instalar todo primero en un staging con HTTPS y llaves de prueba de Stripe; si no existe, publicar en horario de bajo tráfico.
+3. **Preparar Vimeo.** Cada video de pago en «Ocultar de Vimeo», inserción solo en inteligenciaobjetiva.com y descargas desactivadas.
+4. **Crear las tablas nuevas.** Ejecutar `sql/001` a `sql/009` en orden. Solo agregan tablas `io_*`.
+5. **Conectar la sesión.** Ajustar en la configuración cómo se lee al cliente con sesión (identificador, correo y nombre) y probarlo con una cuenta real.
+6. **Crear el primer usuario del panel** con `bin/crear-admin.php`.
+7. **Importar cursos y sus videos.** `bin/importar.php productos --simular` muestra lo que haría sin escribir; después se ejecuta en firme. Toma de la tabla actual el título, el video de Vimeo, la categoría, el precio con IVA, la descripción y la imagen, y asigna la regla de acceso por categoría. No duplica si se repite.
+8. **Importar compras vigentes.** `bin/importar.php compras --simular` y luego en firme. Crea el acceso de cada compra pagada y vigente, respeta la fecha original de compra y no duplica si se repite. Los alumnos no se copian: se vinculan por su identificador actual.
+9. **Conectar los pagos nuevos.** En el punto donde hoy se confirma un pago, agregar la llamada que otorga el acceso; si falla, el pago no se interrumpe y el error queda registrado.
+10. **Verificar.** `bin/diagnostico.php` revisa versión de PHP, extensiones, configuración, tablas 001–009 y llaves sin mostrarlas ni crear cargos; los puntos marcados «MANUAL» se revisan a mano. Después, una prueba de punta a punta con una cuenta interna y tres compras de prueba (tarjeta aprobada, rechazada y OXXO).
+11. **Ventana de cambio.** Activar las direcciones públicas de la tienda en horario de bajo tráfico, con el equipo disponible y las llaves de Stripe en vivo ya probadas.
+12. **Plan de regreso.** Cada fase se revierte por separado:
+
+| Fase | Qué se publica | Cómo se regresa |
+| --- | --- | --- |
+| 1 | Tema y modo oscuro | Quitar tres líneas de la plantilla |
+| 2 | Portada 2.0 | Volver a la portada anterior |
+| 3 | Biblioteca, reproductor y panel en `/io/` | Ocultar el enlace «Mi biblioteca» y retirar `/io/` |
+| 4 | Compras conectadas y accesos migrados | Borrar solo los accesos con origen «migración» |
+| 5 | Tienda nueva y pago con Stripe | Comentar el bloque de reglas en `.htaccess` |
+
+**Huecos y datos que no migran solos**
+
+- **Consultas de importación por adaptar.** Las de ejemplo suponen tablas llamadas cursos, compras y clientes; el técnico debe ajustarlas a los nombres reales antes de importar.
+- **Historial de reproducción.** El importador trae compras, no reproducciones, así que en accesos que cuentan «desde la primera reproducción» o de visualización única el alumno migrado empieza de cero. Decisión pendiente: aceptarlo o asignar a esos alumnos acceso permanente.
+- **Compras vencidas** no se importan; solo las pagadas y vigentes.
+- **Pedidos anteriores** no aparecen en «Mis pedidos», por lo que la factura de autoservicio solo aplica a compras hechas en la tienda nueva.
+- **Membresías, cupones y facturas previas**, si existen fuera del sitio, no se importan; las membresías nuevas se crean en Stripe.
+- **Redirecciones antiguas.** La ficha nueva se identifica con el título más el número del producto; una dirección antigua solo llega a su ficha si el sitio actual la forma igual. Hay que probar la lista completa de direcciones antes de activar la fase 5.
+- **Categorías.** «Introspecciones» y «Documentales» comparten la misma página de catálogo.
+- **Videos nuevos.** La carga masiva conecta videos que ya están en Vimeo; no sube archivos de video.
+- **Documentos desfasados.** La entrega al cliente todavía pide aplicar las migraciones 001–007 (deben ser 001–009) y la guía de despliegue aún menciona alertas en el panel, sección que ya se retiró.
+
+## Acceso de agentes de IA y disponibilidad del contenido
+
+Cada vez más personas preguntan a ChatGPT, Claude, Perplexity o Gemini sobre espiritualidad, autoconocimiento y eneagrama; para que esos asistentes citen a Inteligencia Objetiva necesitan poder leer el sitio sin iniciar sesión ni ejecutar código. La 2.0 ya da una base: las fichas de la tienda se generan en el servidor con texto legible y datos estructurados. El resto son recomendaciones.
+
+| Medida | Estado | Qué implica |
+| --- | --- | --- |
+| Fichas públicas de cada curso con texto legible sin JavaScript | Hecho (fase 5) | Título, resumen, descripción, «aprenderás» y precio se envían ya escritos desde el servidor |
+| Datos estructurados `Course` con proveedor `Organization` y oferta en MXN | Hecho | Incluye calificación solo cuando hay reseñas reales |
+| Migas de pan estructuradas (`BreadcrumbList`) | Hecho | Indican la ruta Inicio › Catálogo › Categoría › Curso |
+| Descripción de la portada para buscadores y asistentes | Hecho | Una frase que resume la propuesta del sitio |
+| Redirecciones permanentes de fichas antiguas | Hecho | Conservan los enlaces ya citados en otros sitios |
+| `robots.txt` que permita los rastreadores de IA | Recomendado | No existe en el repositorio. Permitir de forma explícita GPTBot, OAI-SearchBot y ChatGPT-User; ClaudeBot y Claude-SearchBot; PerplexityBot; Google-Extended; y bloquear solo `/io/backoffice/`, `/io/api/`, carrito y biblioteca |
+| `llms.txt` en la raíz | Recomendado | Un índice breve en texto: quiénes somos, temas que enseñamos y enlaces a las páginas públicas clave |
+| Páginas públicas por tema (eneagrama, autoconocimiento, espiritualidad, introspección) | Recomendado | Una página por tema con texto propio, preguntas frecuentes y los cursos relacionados; es lo que los asistentes citan |
+| `Organization` en la portada | Recomendado | Nombre, logotipo, redes oficiales y contacto, para que se identifique la marca como fuente |
+| `VideoObject` en trailers y videos públicos | Recomendado | Título, descripción, miniatura y duración; nunca para el contenido de pago |
+| `Event` en transmisiones públicas | Recomendado | Fecha, hora y enlace de cada directo abierto del calendario |
+| `FAQPage` en páginas de tema y en «Nosotros» | Recomendado | Respuestas cortas a las preguntas que la gente ya hace |
+| Mapa del sitio (`sitemap.xml`) | Recomendado | Lista de fichas, temas y páginas públicas, con fecha de actualización |
+| Rendimiento y disponibilidad | Parcial | Ya hay imágenes ligeras y video que carga solo al pulsarlo. Falta un monitor de disponibilidad, caché de las páginas públicas y revisar que el cortafuegos del hosting no bloquee a estos rastreadores |
+
+Los rastreadores de IA solo deben ver lo público: fichas, temas, portada y calendario. El contenido de pago sigue detrás del inicio de sesión y del control de acceso.
+
+## SEO
+
+De forma enunciativa, la 2.0 aporta o deja listo:
+
+- Redirecciones permanentes de las fichas antiguas para conservar el posicionamiento.
+- Descripción propia en cada ficha y en la portada.
+- Datos estructurados de curso y migas de pan.
+- Imágenes WebP ligeras y video bajo demanda, que mejoran la velocidad de carga.
+- Sin desplazamiento horizontal en celular.
+- Pendiente: mapa del sitio, etiquetas para compartir en redes (Open Graph) y dirección canónica en cada página.
+
+## Riesgos, próximos pasos y cronograma
+
+El mayor riesgo no es técnico sino de configuración: cuentas, consultas de importación y direcciones antiguas deben probarse con datos reales antes de abrir la tienda.
+
+| Riesgo | Impacto | Mitigación |
+| --- | --- | --- |
+| Consultas de importación mal adaptadas | Alumnos sin acceso a lo que compraron | Simular primero, revisar el conteo contra el sistema actual y probar con cuentas reales |
+| Direcciones antiguas que no coinciden | Enlaces rotos y pérdida de posicionamiento | Probar la lista completa antes de la fase 5 |
+| Pagos sin confirmación por configuración de Stripe | Pedidos pagados sin acceso | Tres compras de aceptación en modo prueba y luego en vivo |
+| Alumnos migrados con ventana nueva | Acceso más amplio que el original | Definir la regla para migrados antes de importar |
+| Enlace del reproductor reutilizado durante una visualización única | Una reproducción extra dentro del dominio permitido | Es un límite conocido: dominio restringido en Vimeo, marca de agua con el correo, latidos y sesión única. Por decisión del negocio no se agregan más capas |
+| Hosting sin las reglas de protección de carpetas | Archivos internos expuestos | Comprobar que las rutas internas respondan «prohibido» al desplegar |
+| Roles y perfiles aún en desarrollo | Permisos amplios mientras tanto | Dar acceso al panel solo a personas de confianza hasta terminarlo |
+
+**Próximos pasos**
+
+- [ ] Aprobar las reglas de acceso por categoría y la regla para alumnos migrados.
+- [ ] Abrir o confirmar las cuentas de Stripe, Facturapi, Vimeo (token) y la llave de YouTube.
+- [ ] Designar al técnico que adapte la sesión y las consultas de importación.
+- [ ] Preparar el entorno de pruebas con HTTPS.
+- [ ] Actualizar la entrega al cliente (migraciones 001–009) y la guía (sin alertas).
+- [ ] Concluir el módulo de roles y perfiles.
+- [ ] Publicar `robots.txt`, `llms.txt` y las primeras páginas de tema.
+
+**Cronograma sugerido**
+
+Siete semanas a partir de la aprobación, con una revisión entre fases; las semanas son estimaciones a validar con el técnico del sitio.
+
+| Semana | Actividad |
+| --- | --- |
+| 1 | Preparación: respaldo, entorno de pruebas y cuentas |
+| 1–3 | Roles y perfiles del equipo (en curso, en paralelo) |
+| 2 | Fases 1 y 2: tema y portada |
+| 3 | Fase 3: biblioteca, reproductor y panel en `/io/` |
+| 4 | Fase 4: importar cursos y compras |
+| 5–6 | Fase 5: tienda y Stripe en modo prueba |
+| Cierre de la 6 | Cambio a pago en vivo |
+| 7 | Membresías, facturas, devoluciones y acceso de agentes de IA |
+
+El pago en vivo se activa solo después de que el diagnóstico pase y las tres compras de aceptación funcionen en modo prueba; roles y perfiles avanza en paralelo.
+
+## Anexo técnico
+
+- **Componentes:** `tema/` (estilos de marca y modo oscuro), `portada/` (portada 2.0) y `modulo-visualizacion/`, que se publica como `/io/` (biblioteca, reproductor, tienda, API y panel).
+- **Requisitos:** PHP 7.4+ (8.x recomendado) con PDO MySQL, cURL y mbstring; MySQL 5.7 u 8.0; HTTPS; Apache con `mod_rewrite` y `AllowOverride All`, o reglas equivalentes en nginx.
+- **Migraciones:** `sql/001` a `sql/009`; crean 20 tablas `io_*` (accesos, sesiones, políticas, panel, bitácora, productos, pedidos, membresías, cupones, facturas, reembolsos, transmisiones y ajustes).
+- **Scripts:** `bin/crear-admin.php` (primer usuario), `bin/importar.php productos|compras [--simular]` (importación idempotente), `bin/diagnostico.php [--stripe-prueba]` (solo lectura), `bin/limpiar-miniaturas.php` (diario).
+- **Pagos:** Stripe con webhook firmado (versión de API 2024-06-20); el navegador nunca marca un pedido como pagado y cada evento se procesa una sola vez.
+- **Control de acceso al video:** dominio restringido en Vimeo, marca de agua, latidos validados en el servidor y sesión única.
+- **Pruebas:** `tests/prueba-flujo.php` y suites por módulo contra una base temporal; deben terminar en «0 fallidas». Las pruebas locales no sustituyen la aceptación con las cuentas reales.
+- **Referencias:** `GUIA-DESPLIEGUE.md`, `ENTREGA-CLIENTE.md`, `MEMBRESIAS.md`, `DESCUENTOS.md`, `FACTURACION.md`, `PEDIDOS.md`.
