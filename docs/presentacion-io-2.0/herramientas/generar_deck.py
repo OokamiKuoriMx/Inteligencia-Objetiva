@@ -203,7 +203,7 @@ add("tienda", feature("tienda", 5, "Venta", "Tienda y pago",
 <img class="marco" src="{B['carrito']}" alt="Carrito con resumen e IVA" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">'''))
 
 # 7 Cupones
-add("cupones", feature("cupones", 6, "Promociones", "Cupones y 2×1 en un solo modal",
+add("cupones", feature("cupones", 6, "Propuesta · Promociones", "Cupones y 2×1 en un solo modal",
     "Crear una promoción toma un minuto y se entiende antes de guardarla.",
     ["Porcentaje, importe fijo o 2×1, en tarjetas", "Atajos de vigencia: 1 día, 3 días, 1 semana, 1 mes", "Todo el catálogo o contenidos elegidos", "Resumen en lenguaje claro y motivo en bitácora"],
     f'''<img class="marco" src="{B['cupon']}" alt="Modal para crear un cupón" style="width:{W}px;height:620px;">'''))
@@ -216,14 +216,28 @@ add("biblioteca", feature("biblioteca", 7, "Alumno", "Biblioteca del alumno y re
 <img class="marco" src="{B['biblioteca_movil']}" alt="Mi biblioteca en teléfono" style="width:224px;height:485px;object-fit:cover;object-position:top;"></div>
 <img class="marco" src="{B['reproductor_osc']}" alt="Reproductor en modo oscuro" style="width:{W}px;height:230px;object-fit:cover;object-position:center;">'''))
 
+# Supuestos de la propuesta del backoffice
+add("supuestos", f'''<section id="supuestos">
+<p class="ceja"><span class="num">00</span> Supuestos</p>
+<h2 class="titulo">Propuesta de mejora del backoffice</h2>
+<p class="lead" style="max-width:1500px;">Las pantallas que siguen son una propuesta, funcionando en un demo con datos ficticios.</p>
+<div class="tarjetas" style="margin-top:40px;">
+<div class="tarjeta oro anima-1"><h3>Por conocer</h3><p>Aún no conocemos el backoffice que hoy usa el equipo; por eso no lo comparamos.</p></div>
+<div class="tarjeta oro anima-2"><h3>Propuesta de referencia</h3><p>Muestra cómo podría trabajar el equipo: contenidos, promociones, transmisiones y roles.</p></div>
+<div class="tarjeta oro anima-3"><h3>Se ajusta</h3><p>Tras un levantamiento con el equipo sobre sus tareas, roles y flujos.</p></div>
+</div>
+<p class="aviso anima-3" style="margin-top:48px;">La comparación antes y después aplica solo a lo público: sitio, portada y tienda.</p>
+{pie(0)}
+</section>''')
+
 # 9 Editor
-add("editor", feature("editor", 8, "Contenido", "Editor de contenido estilo estudio",
-    "El equipo publica y ajusta contenidos sin tocar código.",
+add("editor", feature("editor", 8, "Propuesta · Contenido", "Editor de contenido estilo estudio",
+    "El equipo publica y ajusta contenidos desde un solo editor.",
     ["Pestañas: Detalles, Precio y venta, Acceso", "El enlace de Vimeo llena duración y miniatura", "Miniaturas con arrastrar y soltar, recorte 16:9", "Carga masiva desde Excel (CSV)"],
     f'''<img class="marco" src="{B['editor']}" alt="Editor de contenido" style="width:{W}px;height:620px;">'''))
 
 # 10 Transmisiones
-add("en-vivo", feature("en-vivo", 9, "En vivo", "Transmisiones en vivo y canal de YouTube",
+add("en-vivo", feature("en-vivo", 9, "Propuesta · En vivo", "Transmisiones en vivo y canal de YouTube",
     "Sesiones en directo programadas desde el backoffice y anunciadas en el sitio.",
     ["YouTube, Facebook, Vimeo y Zoom", "Página En vivo con sala de espera y recordatorio", "Acceso público, con cuenta, para compradores o miembros", "Los directos públicos del canal aparecen solos"],
     f'''<div class="duo"><img class="marco" src="{B['transmision']}" alt="Modal para programar una transmisión" style="width:740px;height:463px;">
@@ -231,14 +245,14 @@ add("en-vivo", feature("en-vivo", 9, "En vivo", "Transmisiones en vivo y canal d
 <p class="pie-img">Programar una sesión · vista del alumno en teléfono</p>'''))
 
 # 11 Backoffice
-add("backoffice", feature("backoffice", 10, "Operación", "Backoffice simplificado",
+add("backoffice", feature("backoffice", 10, "Propuesta · Operación", "Tablero y accesos",
     "Lo que importa hoy en una pantalla, y cada acción con su motivo.",
     ["Accesos en tres estados: Activo, Finalizado o Revocado", "Otorgar acceso buscando alumno y contenido", "Altas en modal; modo claro y oscuro", "Cada cambio queda en la bitácora"],
     f'''<img class="marco" src="{B['tablero']}" alt="Tablero del backoffice" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">
 <img class="marco" src="{B['accesos']}" alt="Tabla de accesos" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">'''))
 
 # 12 Equipo, roles y perfiles (terminado)
-add("roles", feature("roles", 11, "Equipo", "Equipo, roles y perfiles",
+add("roles", feature("roles", 11, "Propuesta · Equipo", "Equipo, roles y perfiles",
     "Cada persona del equipo ve y hace solo lo que le corresponde.",
     ["Roles con permisos configurables y permisos extra por persona", "Altas y ediciones en modal", "Perfil propio para cambiar nombre y contraseña", "Nunca queda el sistema sin administrador total", "Cada cambio con motivo en la bitácora"],
     f'''<img class="marco" src="{B['equipo']}" alt="Pantalla Equipo y roles" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">
@@ -300,9 +314,10 @@ add("proximos-pasos", f'''<section id="proximos-pasos">
 <h2 class="titulo">Ruta para llevarlo a producción</h2>
 <div class="pasos anima-1">
 <div class="paso"><p class="n">1</p><div><h3>Validación con dirección</h3><p>Revisar esta presentación y priorizar fases.</p></div></div>
-<div class="paso"><p class="n">2</p><div><h3>Configuración del técnico del cliente</h3><p>Base de datos, Stripe y Facturapi en modo de prueba, dominio de Vimeo.</p></div></div>
-<div class="paso"><p class="n">3</p><div><h3>Despliegue por fases y prueba de punta a punta</h3><p>Con una cuenta interna antes de abrir al público.</p></div></div>
-<div class="paso" style="border-bottom:none;"><p class="n">4</p><div><h3>Decidir IA y SEO</h3><p>Aprobar las recomendaciones para la siguiente etapa.</p></div></div>
+<div class="paso"><p class="n">2</p><div><h3>Levantamiento del backoffice actual</h3><p>Conocer con el equipo sus tareas, roles y flujos para ajustar la propuesta.</p></div></div>
+<div class="paso"><p class="n">3</p><div><h3>Configuración del técnico del cliente</h3><p>Base de datos, Stripe y Facturapi en modo de prueba, dominio de Vimeo.</p></div></div>
+<div class="paso"><p class="n">4</p><div><h3>Despliegue por fases y prueba de punta a punta</h3><p>Con una cuenta interna antes de abrir al público.</p></div></div>
+<div class="paso" style="border-bottom:none;"><p class="n">5</p><div><h3>Decidir IA y SEO</h3><p>Aprobar las recomendaciones para la siguiente etapa.</p></div></div>
 </div>
 {pie(16)}
 </section>''')
@@ -316,6 +331,18 @@ add("cierre", f'''<section id="cierre" class="oscura">
 </div>
 {pie(17, True)}
 </section>''')
+
+ORDEN = ["portada", "contexto", "antes-despues", "tema", "nueva-portada", "tienda", "biblioteca",
+         "supuestos", "backoffice", "editor", "cupones", "en-vivo", "roles",
+         "compatibilidad", "agentes-ia", "seo", "proximos-pasos", "cierre"]
+import re
+por_id = dict(slides)
+assert sorted(ORDEN) == sorted(por_id), "ORDEN no coincide con las diapositivas"
+slides = []
+for i, sid in enumerate(ORDEN, 1):
+    html = re.sub(r'<span class="num">\d+</span>', f'<span class="num">{i - 1:02d}</span>', por_id[sid], count=1)
+    html = re.sub(r'(<p class="pie">.*?</span><span>)\d+(</span></p>)', lambda m: f'{m.group(1)}{i:02d}{m.group(2)}', html, count=1)
+    slides.append((sid, html))
 
 order = [s for s, _ in slides]
 for sid, html in slides:
@@ -332,9 +359,10 @@ deck = {
     "order": order,
     "cover": "portada",
     "sections": {
-        "s1": {"description": "Contexto, objetivo y comparación antes y después.", "start": "portada"},
-        "s2": {"description": "Un cambio relevante por diapositiva, con captura real del demo.", "start": "tema"},
-        "s3": {"description": "Lo que sigue: compatibilidad, IA, SEO y próximos pasos.", "start": "compatibilidad"},
+        "s1": {"description": "Contexto, objetivo y comparación antes y después del sitio público.", "start": "portada"},
+        "s2": {"description": "Lo público y lo del alumno: un cambio por diapositiva, con captura real del demo.", "start": "tema"},
+        "s3": {"description": "Propuesta de mejora del backoffice, sujeta a un levantamiento con el equipo.", "start": "supuestos"},
+        "s4": {"description": "Lo que sigue: compatibilidad, IA, SEO y próximos pasos.", "start": "compatibilidad"},
     },
     "faces": {},
     "designSystems": [],
