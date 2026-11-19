@@ -9,7 +9,7 @@ section h1,section h2,section h3{font-family:'Segoe UI',Arial,sans-serif;margin:
 .puntos li{margin:0 0 14px;}
 .puntos li::marker{color:var(--oro);}
 .nota{font-size:24px;line-height:1.35;color:var(--gris);margin:0;}
-.aviso{font-size:30px;line-height:1.4;color:var(--azul);margin:0;padding:28px 36px;border-left:8px solid var(--oro);background:#FBF6EA;border-radius:0 12px 12px 0;}
+.aviso{font-size:30px;line-height:1.4;color:var(--azul);margin:0;padding:28px 36px;border:2px solid var(--oro);background:#FBF6EA;border-radius:12px;}
 /* barra bicolor y pie */
 .barra{position:absolute;left:0;bottom:0;width:1920px;height:14px;display:flex;}
 .barra .o{width:960px;height:14px;background:var(--oro);}
@@ -25,7 +25,7 @@ section h1,section h2,section h3{font-family:'Segoe UI',Arial,sans-serif;margin:
 .duo{display:flex;gap:28px;align-items:flex-end;}
 /* tarjetas */
 .tarjetas{display:flex;gap:32px;}
-.tarjeta{flex:1;background:var(--blanco);border:1px solid var(--linea);border-top:8px solid var(--azul);border-radius:12px;padding:52px 48px;min-height:300px;box-sizing:border-box;}
+.tarjeta{flex:1;background:var(--blanco);border:1px solid var(--linea);border-top:8px solid var(--azul);border-radius:0;padding:52px 48px;min-height:300px;box-sizing:border-box;}
 .tarjeta.oro{border-top-color:var(--oro);}
 .tarjeta h3{font-size:40px;font-weight:700;margin:0 0 16px;color:var(--azul);}
 .tarjeta p{font-size:30px;line-height:1.4;margin:0;color:var(--texto);}
