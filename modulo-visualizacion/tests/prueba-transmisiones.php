@@ -56,6 +56,8 @@ esperarError('compradores sin contenido', 'producto', fn() => IOTransmisiones::g
 esperarError('sin título', 'titulo', fn() => IOTransmisiones::guardar($adm, ['titulo' => ' '] + $base));
 esperarError('duración absurda', 'duracion', fn() => IOTransmisiones::guardar($adm, ['duracion_min' => 5] + $base));
 esperarError('imagen con javascript:', 'imagen', fn() => IOTransmisiones::guardar($adm, ['imagen' => 'javascript:alert(1)'] + $base));
+esperarError('imagen que inyecta CSS', 'imagen', fn() => IOTransmisiones::guardar($adm, ['imagen' => 'https://a.test/x);background:url(https://rastreo.test/)'] + $base));
+esperarError('ruta local que no es imagen', 'imagen', fn() => IOTransmisiones::guardar($adm, ['imagen' => '/io/backoffice/salir.php'] + $base));
 verificar('cada cambio queda en la bitácora', (int) IO::uno("SELECT COUNT(*) n FROM io_bitacora WHERE accion LIKE 'transmision_%'")['n'] === 2);
 
 echo "\n4. Al aire y horarios\n";

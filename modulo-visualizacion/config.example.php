@@ -17,6 +17,11 @@ return [
     // Sin token, el editor solo puede leer videos públicos. Nunca lo compartas ni lo subas al repositorio.
     'vimeo_token' => '',
 
+    // Miniaturas subidas desde el editor de contenido (arrastrar y soltar). La carpeta debe poder escribirla PHP.
+    // Por defecto: /io/subidas/miniaturas (incluye un .htaccess que solo sirve imágenes).
+    // 'miniaturas_dir' => __DIR__ . '/subidas/miniaturas',
+    // 'miniaturas_url' => '/io/subidas/miniaturas',
+
     // Dominio donde se insertan los videos. El backoffice lo agrega a los dominios permitidos del video en Vimeo.
     'dominio' => 'https://inteligenciaobjetiva.com',
 

@@ -1,0 +1,14 @@
+# Imágenes subidas desde el backoffice: solo se sirven JPG, PNG y WebP; nunca se ejecuta código aquí.
+Options -Indexes -ExecCGI
+RemoveHandler .php .phtml .php5 .php7 .phar .cgi .pl .py
+RemoveType .php .phtml .php5 .php7 .phar
+<FilesMatch ".*">
+  Require all denied
+</FilesMatch>
+<FilesMatch "^[a-f0-9]{24}\.(webp|jpg|png)$">
+  Require all granted
+</FilesMatch>
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Content-Security-Policy "default-src 'none'"
+</IfModule>

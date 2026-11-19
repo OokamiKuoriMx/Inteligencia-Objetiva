@@ -43,7 +43,7 @@ def main():
     for js in ["modulo-visualizacion/backoffice/contenido-editor.js", "tema/io-theme.js", "portada/portada.js", "modulo-visualizacion/public/io-player.js"]:
         run(["node", "--check", js])
     report = ["Verificación local de la entrega — 2026-11-18", run(["php", "-r", "echo 'PHP ' . PHP_VERSION;"]) ]
-    for test in ["prueba-flujo", "prueba-tienda", "prueba-condiciones", "prueba-promociones", "prueba-importacion", "prueba-importacion-bd", "prueba-descuentos", "prueba-membresias", "prueba-facturacion", "prueba-pedidos", "prueba-confirmacion", "prueba-contenidos", "prueba-carga-contenidos", "prueba-transmisiones"]:
+    for test in ["prueba-flujo", "prueba-tienda", "prueba-condiciones", "prueba-promociones", "prueba-importacion", "prueba-importacion-bd", "prueba-descuentos", "prueba-membresias", "prueba-facturacion", "prueba-pedidos", "prueba-confirmacion", "prueba-contenidos", "prueba-carga-contenidos", "prueba-transmisiones", "prueba-miniaturas"]:
         output = run(["php", f"modulo-visualizacion/tests/{test}.php"])
         summary = next((line for line in reversed(output.splitlines()) if line.startswith("Resultado:")), "Finalizó correctamente")
         report.append(test + ": " + summary)
@@ -75,6 +75,8 @@ def main():
                 relative = file.relative_to(ROOT / source)
                 if file.name in {"config.php", "demo-banner.html", "iniciar-demo.ps1", "empaquetar.py"} or "tests" in relative.parts:
                     continue
+                if relative.parts[:2] == ("subidas", "miniaturas"):
+                    continue  # imágenes subidas en local: el servidor crea la carpeta al subir la primera
                 if file.suffix.lower() not in {".php", ".sql", ".txt", ".html", ".css", ".js", ".webp"} and file.name != ".htaccess":
                     continue
                 dest = stage / target / relative
@@ -101,7 +103,7 @@ def main():
                 if f.is_file():
                     z.write(f, f.relative_to(stage).as_posix())
         with zipfile.ZipFile(archive) as z:
-            if z.testzip() is not None or "io/.htaccess" not in z.namelist():
+            if z.testzip() is not None or "io/.htaccess" not in z.namelist() or "io/subidas/.htaccess" not in z.namelist():
                 raise RuntimeError("Falló la verificación del ZIP")
             if any(n.endswith("/config.php") or "/tests/" in n for n in z.namelist()):
                 raise RuntimeError("El ZIP contiene archivos internos de desarrollo")

@@ -2,6 +2,7 @@
 /** Edición de contenidos y publicación comercial, con control de concurrencia y bitácora atómica. */
 declare(strict_types=1);
 require_once __DIR__ . '/Tienda.php';
+require_once __DIR__ . '/Miniaturas.php';
 
 final class IOContenidos
 {
@@ -118,7 +119,10 @@ final class IOContenidos
             preg_match('/[\x00-\x20\x7F\\\\]/', $decodificada) || preg_match('#(?:^|/)\.\.?(?:/|$)#', $decodificada)) {
             throw new IOError('imagen', 'Usa una ruta local absoluta o una URL HTTPS válida para la imagen.');
         }
-        if ($v[0] === '/' && substr($decodificada, 0, 2) !== '//') { return $v; }
+        if ($v[0] === '/' && substr($decodificada, 0, 2) !== '//') {
+            if (!IOMiniaturas::rutaLocalValida($v)) { throw new IOError('imagen', 'La ruta local debe apuntar a una imagen (.webp, .jpg, .png, .gif o .avif).'); }
+            return $v;
+        }
         $p = parse_url($v);
         if (!filter_var($v, FILTER_VALIDATE_URL) || strtolower((string) ($p['scheme'] ?? '')) !== 'https' || empty($p['host']) || isset($p['user']) || isset($p['pass'])) {
             throw new IOError('imagen', 'La imagen debe usar una ruta local absoluta o HTTPS, sin credenciales.');

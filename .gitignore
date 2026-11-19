@@ -5,3 +5,5 @@ modulo-visualizacion/config.php
 portada/img/*.png
 /.playwright-cli/
 graphify-out/
+modulo-visualizacion/subidas/miniaturas/*
+!modulo-visualizacion/subidas/miniaturas/.gitkeep

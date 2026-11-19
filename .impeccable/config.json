@@ -17,6 +17,15 @@
         ],
         "createdAt": "2026-11-18T22:12:56.647Z",
         "reason": "Claude, verificado en capturas 1440 y 390 px: las secciones de ancho completo tienen padding vertical clamp() y el texto va dentro de .container de Bootstrap (CDN, que el detector no lee); el texto queda a 12-72 px del borde"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "modulo-visualizacion/backoffice/contenido-editor.css"
+        ],
+        "createdAt": "2026-11-19T00:58:00.000Z",
+        "reason": "Claude: la línea es la barra de carga horizontal de 3 px (bottom:0, left:0, right:0) sobre la vista previa del video mientras se consulta Vimeo; no es un borde lateral de tarjeta"
       }
     ]
   }

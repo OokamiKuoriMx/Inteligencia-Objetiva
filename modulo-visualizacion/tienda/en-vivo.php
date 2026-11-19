@@ -54,7 +54,7 @@ encabezado($t ? $t['titulo'] . ' · En vivo' : 'En vivo', 'en_vivo', 'Transmisio
           <?php if ($grabacion): ?><a class="iot-btn" href="<?= e('/producto/' . rawurlencode($grabacion['slug'])) ?>">Ver la grabación</a><?php endif; ?>
         </div>
       <?php elseif (!$abierta): ?>
-        <div class="iov-espera" style="<?= $t['imagen'] ? '--fondo:url(' . e($t['imagen']) . ')' : '' ?>">
+        <div class="iov-espera" style="<?= $t['imagen'] ? '--fondo:url(&quot;' . e(addcslashes((string) $t['imagen'], '"\\')) . '&quot;)' : '' ?>">
           <span>La sala abre <?= IOTransmisiones::SALA_ESPERA_MIN ?> minutos antes</span>
           <b><?= IO::htmlRestante($t['inicio']) ?></b>
           <a class="iot-btn sec" href="/io/api/transmisiones.php?accion=ics&amp;t=<?= e(rawurlencode($t['slug'])) ?>">Agregar a mi calendario</a>

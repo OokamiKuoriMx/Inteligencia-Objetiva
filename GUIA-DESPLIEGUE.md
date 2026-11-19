@@ -229,6 +229,29 @@ Requiere la migración `008_io_transmisiones.sql` y la regla `/en-vivo` y `/cale
 
 El chat de YouTube se inserta junto al video cuando el directo lo tiene activo. Si la transmisión es de un canal con restricciones de inserción, actívala en YouTube Studio → Configuración del directo → Permitir inserción.
 
+### 5.8 Editor de contenido y miniaturas
+Backoffice → Contenido abre el editor de cada contenido en tres pestañas (Detalles, Precio y venta, Acceso), con el video de Vimeo y la visibilidad siempre a la derecha. Pegar o arrastrar el enlace de Vimeo sobre el video llena título, duración y miniatura. Las categorías y temas se eligen con un clic; el precio muestra el desglose de IVA, la oferta calcula el descuento y se ve la tarjeta tal como saldrá en el catálogo. Al guardar se propone un motivo con los campos que cambiaron (editable) y queda en la bitácora.
+
+**Miniaturas con arrastrar y soltar:** el navegador recorta la imagen a 16:9 y la reduce a 1280 × 720 antes de subirla. El servidor acepta solo JPG, PNG o WebP reales de hasta 4 MB, los guarda con nombre aleatorio en `/io/subidas/miniaturas/` y, si PHP tiene GD, los vuelve a codificar. Requisitos al desplegar:
+- La carpeta `io/subidas/miniaturas` debe poder escribirla PHP (`chmod 755` y propietario del usuario de PHP). Si cambias `miniaturas_dir` y `miniaturas_url` en `config.php`, la carpeta debe quedar **dentro de** `io/subidas/` para conservar su protección.
+- PHP: `upload_max_filesize` y `post_max_size` de al menos `4M`. Si el servidor tiene GD, la imagen se vuelve a codificar y se reduce a 1280 px; las de más de 4096 px por lado se rechazan.
+- Apache usa el `io/subidas/.htaccess` incluido: solo sirve imágenes con nombre aleatorio y nunca ejecuta código. Requiere `AllowOverride All` (o al menos `AuthConfig FileInfo Options`) en esa ruta; si el hosting lo ignora, la protección no aplica.
+- En nginx, dentro del `server` y **antes** de la regla de PHP:
+  ```nginx
+  location ^~ /io/subidas/ {
+    location ~ "^/io/subidas/miniaturas/[a-f0-9]{24}\.(webp|jpg|png)$" {
+      add_header X-Content-Type-Options nosniff always;
+      add_header Content-Security-Policy "default-src 'none'" always;
+      # Repite aquí los add_header globales del server (por ejemplo HSTS): nginx no los hereda si la location define los suyos.
+    }
+    return 403;
+  }
+  ```
+  Comprueba que `mime.types` incluya `image/webp`.
+- **Comprobación tras desplegar:** `curl -I https://SITIO/io/subidas/prueba.php` debe responder 403, y una miniatura subida debe llegar con `Content-Type: image/webp` y la cabecera `Content-Security-Policy`.
+- Las imágenes que se suben y no se usan se borran con `php bin/limpiar-miniaturas.php --borrar` (solo las de más de 24 h sin contenido ni transmisión que las use; sin `--borrar` solo las lista). Sugerido en cron una vez al día. Cada sesión puede subir hasta 60 imágenes por hora.
+- Respalda esa carpeta junto con la base de datos.
+
 ## Demo local para revisión sin accesos del cliente
 Desde el repositorio, en Windows, ejecuta `./modulo-visualizacion/bin/iniciar-demo.ps1`. Requiere PHP con PDO MySQL, cURL y mbstring, y una instancia **de pruebas** MySQL en `127.0.0.1:3307` con usuario `root` sin contraseña. Si no existe, el instalador local debe preparar esa instancia separada: el script no instala ni modifica el MySQL del sistema.
 
@@ -247,7 +270,7 @@ En el repositorio también están `prueba-condiciones.php`, `prueba-promociones.
 
 Las suites `prueba-descuentos.php`, `prueba-membresias.php`, `prueba-facturacion.php` y `prueba-pedidos.php` utilizan bases exclusivas y proveedores simulados; cubren concurrencia, descuentos en centavos, renovaciones, eventos fuera de orden, facturas, conciliación, permisos e idempotencia. La validación local no sustituye la aceptación de las cuentas Stripe/Facturapi del cliente.
 
-`php tests/prueba-transmisiones.php` cubre el reconocimiento de enlaces, reproductores, permisos por tipo de acceso, horarios, calendario y bitácora. Para la demo, `php tests/sembrar-transmisiones.php` agrega cinco transmisiones de ejemplo a `io_demo`.
+`php tests/prueba-miniaturas.php` comprueba que solo se acepten imágenes reales (rechaza texto, PHP disfrazado, SVG, archivos vacíos o mayores de 4 MB). `php tests/prueba-transmisiones.php` cubre el reconocimiento de enlaces, reproductores, permisos por tipo de acceso, horarios, calendario y bitácora. Para la demo, `php tests/sembrar-transmisiones.php` agrega cinco transmisiones de ejemplo a `io_demo`.
 
 `php tests/prueba-confirmacion.php` verifica las pantallas terminales de pedidos cancelados/reembolsados, la privacidad y la conservación del carrito. `node tests/prueba-retorno.js` comprueba los destinos del acceso, las restricciones de redirección y el comportamiento con almacenamiento bloqueado, sin dependencias adicionales.
 

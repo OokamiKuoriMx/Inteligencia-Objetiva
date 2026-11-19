@@ -6,6 +6,7 @@
  */
 declare(strict_types=1);
 require_once __DIR__ . '/IO.php';
+require_once __DIR__ . '/Miniaturas.php';
 
 final class IOTransmisiones
 {
@@ -205,7 +206,7 @@ final class IOTransmisiones
         $grab = (int) ($d['grabacion_producto_id'] ?? 0) ?: null;
         if ($grab && !IO::uno('SELECT 1 FROM io_productos WHERE producto_id = ?', [$grab])) { throw new IOError('grabacion', 'La grabación debe ser un contenido del catálogo.'); }
         $imagen = trim((string) ($d['imagen'] ?? '')) ?: null;
-        if ($imagen && !preg_match('#^(/[A-Za-z0-9/_.\-]+|https://[^\s"<>]+)$#', $imagen)) { throw new IOError('imagen', 'La imagen debe ser una ruta del sitio o una URL https.'); }
+        if ($imagen && !(IOMiniaturas::rutaLocalValida($imagen) || (preg_match('#^https://[A-Za-z0-9.\-]+(?::\d+)?/[^\s"\'<>()\\\\;]*$#D', $imagen) && strlen($imagen) <= 500))) { throw new IOError('imagen', 'La imagen debe ser un archivo de imagen del sitio o una URL https.'); }
         $vals = [
             'titulo' => $titulo, 'descripcion' => trim((string) ($d['descripcion'] ?? '')) ?: null, 'imagen' => $imagen,
             'plataforma' => $enlace['plataforma'], 'url' => mb_substr(trim((string) $d['url']), 0, 500), 'video_id' => $enlace['video_id'],

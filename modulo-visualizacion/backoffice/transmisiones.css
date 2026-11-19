@@ -8,3 +8,16 @@
 .tx-check { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; }
 .tx-ayuda ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 14px; color: var(--io-texto); }
 @media (prefers-reduced-motion: reduce) { .tx-punto { animation: none; } }
+/* Modal de transmisión */
+.tx-vista-insignia { position:absolute; top:10px; left:10px; padding:3px 10px; border-radius:12px; font-size:12px; font-weight:500; color:#fff; background:#000b; }
+.tx-vista-titulo { display:block; font-weight:500; overflow-wrap:anywhere; }
+.tx-enlace-fila { display:flex; align-items:center; gap:10px; }
+.tx-logo { flex:none; display:grid; place-items:center; width:24px; height:24px; }
+.tx-logo svg { width:24px; height:24px; }
+.st-estado.tx-detectado { margin:-12px 0 22px; }
+.st-estado.tx-detectado.error, .tx-aviso.error { color:var(--io-bo-acento-texto); }
+.tx-aviso { margin:0; padding:10px 12px; border-radius:8px; font-size:12px; line-height:1.5; background:var(--io-superficie-2); color:var(--io-texto-suave); }
+.tx-producto { margin:0; }
+.tx-pie { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.tx-pie > div { display:flex; gap:10px; }
+@media(max-width:860px) { .tx-pie > .bo-nota { display:none; } .tx-pie > div { width:100%; } .tx-pie .bo-btn { flex:1; justify-content:center; } }
