@@ -20,18 +20,12 @@ set_exception_handler(function (Throwable $e) {
     echo 'Ocurrió un error. Intenta de nuevo.';
 });
 
-const IO_PERMISOS = [
-    'admin'    => ['ver', 'accesos', 'politicas', 'reportes', 'bitacora', 'pedidos', 'reembolsos'],
-    'editor'   => ['ver', 'politicas', 'reportes'],
-    'soporte'  => ['ver', 'accesos', 'pedidos'],
-    'finanzas' => ['ver', 'reportes', 'bitacora', 'pedidos', 'reembolsos'],
-];
-
 function h($s): string { return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8'); }
 
 /**
- * Admin de la sesión, revalidado contra la base en cada petición:
- * si lo desactivan o le cambian el rol, aplica de inmediato.
+ * Miembro del equipo de la sesión, revalidado contra la base en cada petición (lib/Equipo.php):
+ * si lo desactivan, le cambian el rol o los permisos, aplica de inmediato. Si su versión de sesión
+ * cambió (desactivación o cambio de contraseña), la sesión se cierra.
  */
 function admin(): ?array
 {
@@ -39,9 +33,8 @@ function admin(): ?array
     if ($cache !== false) { return $cache; }
     $id = (int) ($_SESSION['io_admin']['id'] ?? 0);
     if ($id <= 0) { return $cache = null; }
-    $u = IO::uno('SELECT id, email, nombre, rol FROM io_admins WHERE id = ? AND activo = 1', [$id]);
-    if (!$u) { $_SESSION = []; session_regenerate_id(true); return $cache = null; }
-    $u['id'] = (int) $u['id'];
+    $u = IOEquipo::miembro($id);
+    if (!$u || (int) ($_SESSION['io_admin']['v'] ?? 0) !== $u['sesion_version']) { $_SESSION = []; session_regenerate_id(true); return $cache = null; }
     return $cache = $u;
 }
 
@@ -49,13 +42,13 @@ function exigir(string $permiso = 'ver'): array
 {
     $a = admin();
     if (!$a) { header('Location: login.php'); exit; }
-    if (!in_array($permiso, IO_PERMISOS[$a['rol']] ?? [], true)) {
+    if (!IOEquipo::tiene($a, $permiso)) {
         http_response_code(403); pagina('Sin permiso', fn() => print '<div class="bo-vacio">Tu rol no tiene acceso a esta sección.</div>'); exit;
     }
     return $a;
 }
 
-function puede(string $permiso): bool { $a = admin(); return $a && in_array($permiso, IO_PERMISOS[$a['rol']] ?? [], true); }
+function puede(string $permiso): bool { return IOEquipo::tiene(admin(), $permiso); }
 
 function csrf(): string
 {
@@ -109,6 +102,7 @@ function pagina(string $titulo, callable $cuerpo, string $activo = ''): void
         ['descuentos.php', 'Cupones y 2×1', 'politicas', '<path d="M3 7h18v10H3zM9 7v10"/>'],
         ['reportes.php', 'Reportes', 'reportes', '<path d="M3 3v18h18M7 15l4-4 3 3 5-6"/>'],
         ['bitacora.php', 'Bitácora', 'bitacora', '<path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/>'],
+        ['equipo.php', 'Equipo y roles', 'equipo', '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8"/>'],
     ];
     ?>
 <!DOCTYPE html>
@@ -121,7 +115,7 @@ function pagina(string $titulo, callable $cuerpo, string $activo = ''): void
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
 <link rel="stylesheet" href="/tema/io-theme.css?v=2.0.0">
-<link rel="stylesheet" href="/io/backoffice/backoffice.css?v=2.3.0">
+<link rel="stylesheet" href="/io/backoffice/backoffice.css?v=2.4.1">
 </head>
 <body class="bo">
 <?php if ($a): ?>
@@ -129,7 +123,7 @@ function pagina(string $titulo, callable $cuerpo, string $activo = ''): void
   <a class="bo-marca" href="index.php" aria-label="Inteligencia Objetiva · inicio de administración"><img src="/tema/img/io-logo.webp" alt="Inteligencia Objetiva · Martín Aparicio" width="400" height="400"><span>Administración</span></a>
   <nav aria-label="Administración de Inteligencia Objetiva">
   <?php $grupoAnterior = ''; foreach ($menu as [$href, $txt, $perm, $ico]): if (!puede($perm)) continue;
-      $grupo = in_array($href, ['pedidos.php','descuentos.php'], true) ? 'Comercial' : (in_array($href, ['reportes.php','bitacora.php'], true) ? 'Seguimiento' : 'Operación'); ?>
+      $grupo = in_array($href, ['pedidos.php','descuentos.php'], true) ? 'Comercial' : (in_array($href, ['reportes.php','bitacora.php'], true) ? 'Seguimiento' : ($href === 'equipo.php' ? 'Administración' : 'Operación')); ?>
     <?php if ($grupo !== $grupoAnterior): $grupoAnterior = $grupo; ?><span class="bo-nav-grupo"><?= h($grupo) ?></span><?php endif; ?>
     <a href="<?= $href ?>" class="<?= $activo === $href ? 'activo' : '' ?>"<?= $activo === $href ? ' aria-current="page"' : '' ?>>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><?= $ico ?></svg>
@@ -139,7 +133,7 @@ function pagina(string $titulo, callable $cuerpo, string $activo = ''): void
   </nav>
   <div class="bo-yo">
     <span class="bo-avatar" aria-hidden="true"><?= h(mb_strtoupper(mb_substr($a['nombre'], 0, 1))) ?></span>
-    <div><b><?= h($a['nombre']) ?></b><span><?= h(ucfirst($a['rol'])) ?></span></div>
+    <a class="bo-yo-perfil<?= $activo === 'perfil.php' ? ' activo' : '' ?>" href="perfil.php" <?= $activo === 'perfil.php' ? ' aria-current="page"' : '' ?>><span class="visually-hidden">Mi perfil: </span><b><?= h($a['nombre']) ?></b><span><?= h($a['rol_nombre'] ?? '') ?></span></a>
     <button type="button" class="io-theme-toggle" id="boTema" aria-label="Cambiar tema">
       <svg class="io-ico-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       <svg class="io-ico-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>

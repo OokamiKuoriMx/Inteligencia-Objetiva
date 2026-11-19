@@ -40,10 +40,10 @@ def main():
     for php in (ROOT / "modulo-visualizacion").rglob("*.php"):
         if php.name != "config.php":
             run(["php", "-l", str(php)])
-    for js in ["modulo-visualizacion/backoffice/contenido-editor.js", "tema/io-theme.js", "portada/portada.js", "modulo-visualizacion/public/io-player.js"]:
+    for js in ["modulo-visualizacion/backoffice/contenido-editor.js", "modulo-visualizacion/backoffice/equipo.js", "tema/io-theme.js", "portada/portada.js", "modulo-visualizacion/public/io-player.js"]:
         run(["node", "--check", js])
     report = ["Verificación local de la entrega — 2026-11-18", run(["php", "-r", "echo 'PHP ' . PHP_VERSION;"]) ]
-    for test in ["prueba-flujo", "prueba-tienda", "prueba-condiciones", "prueba-promociones", "prueba-importacion", "prueba-importacion-bd", "prueba-descuentos", "prueba-membresias", "prueba-facturacion", "prueba-pedidos", "prueba-confirmacion", "prueba-contenidos", "prueba-carga-contenidos", "prueba-transmisiones", "prueba-miniaturas", "prueba-youtube"]:
+    for test in ["prueba-flujo", "prueba-tienda", "prueba-condiciones", "prueba-promociones", "prueba-importacion", "prueba-importacion-bd", "prueba-descuentos", "prueba-membresias", "prueba-facturacion", "prueba-pedidos", "prueba-confirmacion", "prueba-contenidos", "prueba-carga-contenidos", "prueba-transmisiones", "prueba-miniaturas", "prueba-youtube", "prueba-roles"]:
         output = run(["php", f"modulo-visualizacion/tests/{test}.php"])
         summary = next((line for line in reversed(output.splitlines()) if line.startswith("Resultado:")), "Finalizó correctamente")
         report.append(test + ": " + summary)

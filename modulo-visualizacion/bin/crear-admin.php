@@ -22,6 +22,19 @@ fwrite(STDOUT, "\n");
 if (strlen($clave) < 12) { fwrite(STDERR, "La contraseña debe tener al menos 12 caracteres.\n"); exit(1); }
 
 $hash = password_hash($clave, PASSWORD_DEFAULT);
-IO::ejecutar('INSERT INTO io_admins (email, nombre, hash, rol) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE nombre = ?, hash = ?, rol = ?, activo = 1',
-    [$email, $nombre, $hash, $rol, $nombre, $hash, $rol]);
+IO::transaccion(function () use ($email, $nombre, $hash, $rol) {
+    IO::ejecutar('INSERT INTO io_admins (email, nombre, hash, rol) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE nombre = ?, hash = ?, rol = ?, activo = 1',
+        [$email, $nombre, $hash, $rol, $nombre, $hash, $rol]);
+    $id = (int) IO::uno('SELECT id FROM io_admins WHERE email = ?', [$email])['id'];
+    // Con la migración 010: asigna el rol equivalente y cierra las sesiones abiertas (la contraseña cambió).
+    try {
+        IO::ejecutar('INSERT INTO io_equipo (admin_id, rol_id) SELECT ?, id FROM io_roles WHERE clave = ?
+            ON DUPLICATE KEY UPDATE rol_id = (SELECT r.id FROM io_roles r WHERE r.clave = ?), sesion_version = sesion_version + 1', [$id, $rol, $rol]);
+        IO::ejecutar('DELETE FROM io_equipo_permisos WHERE admin_id = ?', [$id]);
+    } catch (PDOException $e) {
+        // Migración 010 pendiente: basta io_admins.rol.
+    }
+    IO::ejecutar('INSERT INTO io_bitacora (admin_id, admin_email, accion, motivo, detalle) VALUES (NULL, NULL, ?, ?, ?)',
+        ['equipo_alta_cli', 'Alta o restablecimiento desde la terminal del servidor', json_encode(['miembro' => $id, 'email' => $email, 'rol' => $rol])]);
+});
 fwrite(STDOUT, "Usuario $email listo con rol $rol.\n");

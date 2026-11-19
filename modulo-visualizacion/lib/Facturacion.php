@@ -198,8 +198,7 @@ final class IOFacturacion
     public static function cancelar(int $pedidoId, string $motivoSAT, ?string $sustitucion = null, array $admin = [], string $motivoHumano = ''): array
     {
         self::exigirConfiguracion();
-        $a = IO::uno('SELECT id,email,rol FROM io_admins WHERE id = ? AND activo = 1', [(int) ($admin['id'] ?? 0)]);
-        if (!$a || $a['rol'] !== 'admin') { throw new IOError('sin_permiso', 'Solo un administrador puede solicitar la cancelación fiscal.', 403); }
+        $a = IOEquipo::autorizar($admin, 'facturas', 'Necesitas el permiso “Cancelar facturas” para solicitar la cancelación fiscal.');
         if (trim($motivoHumano) === '' || mb_strlen($motivoHumano) > 120) { throw new IOError('motivo', 'Indica un motivo de hasta 120 caracteres.'); }
         if (!in_array($motivoSAT, ['01','02','03','04'], true) || (in_array($motivoSAT, ['01','04'], true) && !preg_match('/^[a-fA-F0-9-]{36}$/D', (string) $sustitucion))) {
             throw new IOError('motivo_sat', 'Revisa el motivo SAT y el UUID de sustitución cuando corresponda.');

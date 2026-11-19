@@ -19,7 +19,9 @@ html[data-io-theme="dark"] .bo { --io-estado-ok: #86efac; --io-estado-aviso: #fc
 .bo-yo { display: flex; flex: none; align-items: center; gap: 6px; padding: 18px 0 0; margin-top: 16px; border-top: 1px solid var(--io-borde); }
 .bo-yo .bo-avatar { display: grid; place-items: center; flex: 0 0 34px; height: 34px; border-radius: 50%; color: var(--io-bo-blanco); background: var(--io-bo-marino); font-size: 14px; font-weight: 500; }
 .bo-yo .io-theme-toggle { flex: 0 0 44px; width: 44px; height: 44px; margin: 0; }
-.bo-yo > div { flex: 1; min-width: 0; }
+.bo-yo > div, .bo-yo-perfil { flex: 1; min-width: 0; }
+.bo-yo-perfil { display: block; padding: 4px 6px; margin: -4px 0; border-radius: 8px; color: var(--io-texto); text-decoration: none; }
+.bo-yo-perfil:hover, .bo-yo-perfil.activo { background: var(--io-superficie-2); color: var(--io-texto); }
 .bo-yo b { display: block; font-weight: 500; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bo-yo span { font-size: 12px; color: var(--io-texto-suave); }
 .bo-salir { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; font-size: 13px; color: var(--io-texto-suave) !important; text-decoration: none; }
@@ -130,7 +132,7 @@ html[data-io-theme="dark"] .bo input:not([type="checkbox"]):not([type="radio"]):
 }
 @media (max-width: 767px) {
   .bo-marca > span, .bo-yo .bo-avatar { display: none; }
-  .bo-yo > div { max-width: 100px; }
+  .bo-yo > div, .bo-yo-perfil { max-width: 100px; }
   .bo-lateral { padding: 8px 16px 0; }
   .bo-main { padding-left: 18px; padding-right: 18px; }
   .bo-main.solo { padding: 20px 16px; }
