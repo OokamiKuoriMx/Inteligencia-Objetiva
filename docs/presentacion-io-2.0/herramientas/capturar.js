@@ -37,6 +37,10 @@ const tomas = [
   ['bo-transmisiones', '/io/backoffice/transmisiones.php', 'light', 'desk', { admin: true }],
   ['bo-transmision-modal', '/io/backoffice/transmisiones.php?nueva=1', 'light', 'desk', { admin: true }],
   ['bo-youtube', '/io/backoffice/youtube.php', 'light', 'desk', { admin: true }],
+  ['bo-equipo', '/io/backoffice/equipo.php', 'light', 'desk', { admin: true }],
+  ['bo-equipo-alta', '/io/backoffice/equipo.php', 'light', 'desk', { admin: true, clic: '[data-nuevo-miembro]', espera: 1800 }],
+  ['bo-equipo-rol', '/io/backoffice/equipo.php', 'light', 'desk', { admin: true, clic: '[data-nuevo-rol]', espera: 1800 }],
+  ['bo-perfil', '/io/backoffice/perfil.php', 'light', 'desk', { admin: true }],
   ['bo-vimeo', '/io/backoffice/vimeo.php', 'light', 'desk', { admin: true }],
 ];
 

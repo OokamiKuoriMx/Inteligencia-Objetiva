@@ -25,6 +25,8 @@ B = {
     "tablero": "/_blob/2f548bd7b5836a459ae1778fdc23f5a7",
     "accesos": "/_blob/ac0032fae9de6f8267a08cbc5f2e22ac",
     "tablero_osc": "/_blob/ee3afd43325325bc5640881c7552c938",
+    "equipo": "/_blob/25dadc16e2209cf05e3bc169c06109de",
+    "equipo_alta": "/_blob/cd977826594fdfa0db8f2c2ce7a20b13",
 }
 
 CSS = r"""
@@ -235,14 +237,21 @@ add("backoffice", feature("backoffice", 10, "Operación", "Backoffice simplifica
     f'''<img class="marco" src="{B['tablero']}" alt="Tablero del backoffice" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">
 <img class="marco" src="{B['accesos']}" alt="Tabla de accesos" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">'''))
 
+# 12 Equipo, roles y perfiles (terminado)
+add("roles", feature("roles", 11, "Equipo", "Equipo, roles y perfiles",
+    "Cada persona del equipo ve y hace solo lo que le corresponde.",
+    ["Roles con permisos configurables y permisos extra por persona", "Altas y ediciones en modal", "Perfil propio para cambiar nombre y contraseña", "Nunca queda el sistema sin administrador total", "Cada cambio con motivo en la bitácora"],
+    f'''<img class="marco" src="{B['equipo']}" alt="Pantalla Equipo y roles" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">
+<img class="marco" src="{B['equipo_alta']}" alt="Modal para agregar un miembro del equipo" style="width:{W}px;height:384px;object-fit:cover;object-position:top;">'''))
+
 # 13 Compatibilidad y migración
 add("compatibilidad", f'''<section id="compatibilidad">
-<p class="ceja"><span class="num">11</span> Compatibilidad</p>
+<p class="ceja"><span class="num">12</span> Compatibilidad</p>
 <h2 class="titulo">Se integra sobre el sitio actual, por fases</h2>
 <table class="tabla anima-1">
 <tr><th>Aspecto</th><th>Cómo se cuida</th></tr>
 <tr><td>Tecnología</td><td>PHP 7.4+ y 8.x, MySQL 5.7 y 8.0, Bootstrap 5.1.3 y jQuery del sitio</td></tr>
-<tr><td>Datos</td><td>Solo tablas nuevas <b>io_*</b>; las existentes no se tocan</td></tr>
+<tr><td>Datos</td><td>Solo tablas nuevas <b>io_*</b> (migraciones 001–010); las existentes no se tocan</td></tr>
 <tr><td>Instalación</td><td>Tema que se suma a los estilos actuales y módulo publicado en /io/</td></tr>
 </table>
 <div class="fases anima-3">
@@ -252,12 +261,12 @@ add("compatibilidad", f'''<section id="compatibilidad">
 <div class="fase"><p class="n">Fase 4</p><h3>Migración</h3><p>Compras vigentes</p></div>
 <div class="fase"><p class="n">Fase 5</p><h3>Tienda 2.0</h3><p>Pagos y en vivo</p></div>
 </div>
-{pie(12)}
+{pie(13)}
 </section>''')
 
 # 14 IA: todo el trabajo de Martín Aparicio (lista enunciativa, no limitativa)
 add("agentes-ia", f'''<section id="agentes-ia">
-<p class="ceja"><span class="num">12</span> Recomendación · por decidir</p>
+<p class="ceja"><span class="num">13</span> Recomendación · por decidir</p>
 <h2 class="titulo">Disponibles para agentes de IA en todo el trabajo de Martín Aparicio</h2>
 <p class="lead" style="max-width:1560px;margin-bottom:24px;">Que los asistentes de IA recomienden Inteligencia Objetiva en temas como estos, entre otros, de manera enunciativa y no limitativa:</p>
 <div class="etiquetas anima-1"><span class="etiqueta forma">Cursos</span><span class="etiqueta forma">Conferencias</span><span class="etiqueta forma">Documentales</span><span class="etiqueta forma">Introspecciones</span><span class="etiqueta forma">Audiolibro</span><span class="etiqueta forma">Transmisiones en vivo y Zoom</span></div>
@@ -267,13 +276,13 @@ add("agentes-ia", f'''<section id="agentes-ia">
 <div class="tarjeta oro"><h3>Guía para agentes</h3><p>Una página de resumen del catálogo pensada para asistentes de IA.</p></div>
 <div class="tarjeta oro"><h3>Reglas claras</h3><p>Qué pueden citar los agentes y qué es exclusivo de alumnos.</p></div>
 </div>
-{pie(13)}
+{pie(14)}
 <aside>La lista de temas es enunciativa y no limitativa: abarca cursos, conferencias, documentales, introspecciones, audiolibro y transmisiones. Temas tomados del catálogo público de inteligenciaobjetiva.com; eneagrama y ley de siete a indicación del cliente.</aside>
 </section>''')
 
 # 15 SEO (enunciativo)
 add("seo", f'''<section id="seo">
-<p class="ceja"><span class="num">13</span> SEO</p>
+<p class="ceja"><span class="num">14</span> SEO</p>
 <h2 class="titulo">Líneas de trabajo en buscadores</h2>
 <p class="lead">Se enuncian como siguiente etapa; no forman parte de esta entrega.</p>
 <div class="tarjetas" style="margin-top:56px;">
@@ -282,12 +291,12 @@ add("seo", f'''<section id="seo">
 <div class="tarjeta anima-3"><h3>Velocidad</h3><p>Imágenes ligeras y carga diferida de video.</p></div>
 <div class="tarjeta anima-3"><h3>Contenido</h3><p>Resúmenes y temas de cada ficha pensados para búsquedas.</p></div>
 </div>
-{pie(14)}
+{pie(15)}
 </section>''')
 
 # 16 Próximos pasos
 add("proximos-pasos", f'''<section id="proximos-pasos">
-<p class="ceja"><span class="num">14</span> Próximos pasos</p>
+<p class="ceja"><span class="num">15</span> Próximos pasos</p>
 <h2 class="titulo">Ruta para llevarlo a producción</h2>
 <div class="pasos anima-1">
 <div class="paso"><p class="n">1</p><div><h3>Validación con dirección</h3><p>Revisar esta presentación y priorizar fases.</p></div></div>
@@ -295,7 +304,7 @@ add("proximos-pasos", f'''<section id="proximos-pasos">
 <div class="paso"><p class="n">3</p><div><h3>Despliegue por fases y prueba de punta a punta</h3><p>Con una cuenta interna antes de abrir al público.</p></div></div>
 <div class="paso" style="border-bottom:none;"><p class="n">4</p><div><h3>Decidir IA y SEO</h3><p>Aprobar las recomendaciones para la siguiente etapa.</p></div></div>
 </div>
-{pie(15)}
+{pie(16)}
 </section>''')
 
 # 17 Cierre
@@ -305,7 +314,7 @@ add("cierre", f'''<section id="cierre" class="oscura">
 <h2 class="anima-2" style="font-size:72px;font-weight:700;margin:56px 0 16px;">Gracias</h2>
 <p class="lead anima-3" style="margin:0;max-width:1200px;">Inteligencia Objetiva 2.0: experiencia más clara para el alumno y control para el equipo.</p>
 </div>
-{pie(16, True)}
+{pie(17, True)}
 </section>''')
 
 order = [s for s, _ in slides]
