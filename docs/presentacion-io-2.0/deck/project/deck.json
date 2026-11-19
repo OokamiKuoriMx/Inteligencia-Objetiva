@@ -1,0 +1,51 @@
+{
+ "v": 5,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-19T19:16:14Z"
+ },
+ "lists": "css",
+ "format": {
+  "v": 1,
+  "shared": [
+   "project/deck.css"
+  ]
+ },
+ "title": "Inteligencia Objetiva 2.0 · Presentación de mejoras",
+ "order": [
+  "portada",
+  "contexto",
+  "antes-despues",
+  "tema",
+  "nueva-portada",
+  "tienda",
+  "cupones",
+  "biblioteca",
+  "editor",
+  "en-vivo",
+  "backoffice",
+  "roles",
+  "compatibilidad",
+  "agentes-ia",
+  "seo",
+  "proximos-pasos",
+  "cierre"
+ ],
+ "cover": "portada",
+ "sections": {
+  "s1": {
+   "description": "Contexto, objetivo y comparación antes y después.",
+   "start": "portada"
+  },
+  "s2": {
+   "description": "Un cambio relevante por diapositiva, con captura real del demo.",
+   "start": "tema"
+  },
+  "s3": {
+   "description": "Lo que sigue: roles, compatibilidad, IA, SEO y próximos pasos.",
+   "start": "roles"
+  }
+ },
+ "faces": {},
+ "designSystems": []
+}
