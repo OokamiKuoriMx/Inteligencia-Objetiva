@@ -7,6 +7,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/IO.php';
 require_once __DIR__ . '/Miniaturas.php';
+require_once __DIR__ . '/YouTube.php';
 
 final class IOTransmisiones
 {
@@ -126,16 +127,29 @@ final class IOTransmisiones
     // ---------- Consultas ----------
     public static function porSlug(string $slug): ?array
     {
+        if ($slug === 'canal') { return self::delCanal(); }
         return IO::uno('SELECT * FROM io_transmisiones WHERE slug = ?', [$slug]);
     }
 
-    /** La transmisión que está al aire (la más reciente), si hay. */
+    /** La transmisión que está al aire (la más reciente), si hay. Si no hay ninguna registrada, revisa el canal de YouTube. */
     public static function ahora(): ?array
     {
         foreach (IO::todos("SELECT * FROM io_transmisiones WHERE estado = 'en_vivo' OR (estado = 'programada' AND inicio <= DATE_ADD(NOW(), INTERVAL ? MINUTE)) ORDER BY estado = 'en_vivo' DESC, inicio DESC LIMIT 10", [self::SALA_ESPERA_MIN]) as $t) {
             if (self::alAire($t)) { return $t; }
         }
-        return null;
+        return self::delCanal();
+    }
+
+    /**
+     * Directo detectado en el canal de YouTube. Si ese mismo video ya está registrado en el backoffice,
+     * se usa el registro (con sus reglas de acceso) marcado como al aire.
+     */
+    public static function delCanal(): ?array
+    {
+        $v = IOYouTube::transmisionAlAire();
+        if (!$v) { return null; }
+        $registrada = IO::uno("SELECT * FROM io_transmisiones WHERE plataforma = 'youtube' AND video_id = ? AND estado IN ('programada','en_vivo') ORDER BY id DESC LIMIT 1", [$v['video_id']]);
+        return $registrada ? array_replace($registrada, ['estado' => 'en_vivo']) : $v;
     }
 
     public static function proximas(int $limite = 12): array

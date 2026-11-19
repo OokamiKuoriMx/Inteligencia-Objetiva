@@ -91,6 +91,7 @@ mysql -u USUARIO -p NOMBRE_BD < sql/005_io_descuentos.sql
 mysql -u USUARIO -p NOMBRE_BD < sql/006_io_facturacion.sql
 mysql -u USUARIO -p NOMBRE_BD < sql/007_io_reembolsos.sql
 mysql -u USUARIO -p NOMBRE_BD < sql/008_io_transmisiones.sql
+mysql -u USUARIO -p NOMBRE_BD < sql/009_io_ajustes.sql
 ```
 Solo crean tablas nuevas con prefijo `io_`.
 
@@ -213,7 +214,7 @@ Cuando la tienda esté aprobada, agrega el bloque de `tienda/rewrite-produccion.
 `config.example.php → tienda.promocion` viene desactivado. El responsable comercial debe completar `inicio` y `fin` con fechas absolutas ISO y zona horaria (formato `AAAA-MM-DDTHH:MM:SS-06:00`), además de los IDs aprobados en `productos`. El precio efectivo y el precio anterior se cargan en `io_productos` desde la fuente real, en MXN con IVA. La campaña no modifica los importes del carrito: anuncia únicamente rebajas ya presentes en el catálogo, calcula el porcentaje desde ambos precios y dirige a `/io/tienda/ofertas.php`. Sin fechas vigentes o productos realmente rebajados, el banner permanece oculto. Las fechas no se renuevan al recargar.
 
 ### 5.6 Diagnóstico antes de publicar
-Desde `/io/` ejecuta `php bin/diagnostico.php`. Solo lee configuración, esquema y catálogo; comprueba las tablas de las migraciones 001–008, no imprime llaves, no escribe datos ni crea cargos. Devuelve `1` si encuentra pendientes automáticos y `0` si pasan esas comprobaciones. Los módulos externos vienen desactivados y se informan por separado. Los puntos marcados `MANUAL` siempre deben revisarse en el sitio instalado.
+Desde `/io/` ejecuta `php bin/diagnostico.php`. Solo lee configuración, esquema y catálogo; comprueba las tablas de las migraciones 001–009, no imprime llaves, no escribe datos ni crea cargos. Devuelve `1` si encuentra pendientes automáticos y `0` si pasan esas comprobaciones. Los módulos externos vienen desactivados y se informan por separado. Los puntos marcados `MANUAL` siempre deben revisarse en el sitio instalado.
 
 Con llaves de prueba configuradas puedes ejecutar `php bin/diagnostico.php --stripe-prueba`: consulta la conectividad de Stripe sin crear pagos. Rechaza esta consulta con llaves en vivo. Esta comprobación no reemplaza las tres compras de aceptación del apartado 5.2.
 
@@ -226,6 +227,8 @@ Requiere la migración `008_io_transmisiones.sql` y la regla `/en-vivo` y `/cale
 4. **Aviso en todo el sitio:** mientras hay una transmisión al aire, `tema/io-theme.js` muestra una barra "En vivo · Ver ahora" (consulta `/io/api/transmisiones.php?accion=ahora`, con caché de 30 s; no expone el enlace del video). Para desactivarla en una página, define `window.IO_EN_VIVO_API = false` antes del script.
 5. **Calendario:** cada transmisión próxima ofrece "Recordarme" (archivo `.ics` con alarma 15 min antes) para Google Calendar, Outlook o Apple.
 6. **Grabación:** al terminar, elige en "Grabación en el catálogo" el producto donde quedó la grabación; la página muestra "Ver grabación".
+
+**Detección automática del canal de YouTube.** En *Transmisiones → Canal de YouTube* se conecta el canal una sola vez (requiere la migración 009 y `youtube_api_key` en `config.php`; la pantalla trae los pasos para obtener la llave gratuita en Google Cloud). Desde entonces, cuando el canal transmite un directo **público** (por ejemplo, desde YouTube Studio → Emitir en directo → Cámara web), el sitio lo detecta en menos de un minuto, lo muestra en `/en-vivo` con el chat y enciende el aviso "En vivo". Los directos **no listados** no se detectan a propósito: para transmisiones exclusivas, se registran aquí con su enlace y su acceso. Si un directo público también está registrado, se usa el registro y sus reglas. Cada revisión consume 2 unidades de la cuota diaria gratuita (10 000) y se guarda en caché 60 s.
 
 El chat de YouTube se inserta junto al video cuando el directo lo tiene activo. Si la transmisión es de un canal con restricciones de inserción, actívala en YouTube Studio → Configuración del directo → Permitir inserción.
 
@@ -270,7 +273,7 @@ En el repositorio también están `prueba-condiciones.php`, `prueba-promociones.
 
 Las suites `prueba-descuentos.php`, `prueba-membresias.php`, `prueba-facturacion.php` y `prueba-pedidos.php` utilizan bases exclusivas y proveedores simulados; cubren concurrencia, descuentos en centavos, renovaciones, eventos fuera de orden, facturas, conciliación, permisos e idempotencia. La validación local no sustituye la aceptación de las cuentas Stripe/Facturapi del cliente.
 
-`php tests/prueba-miniaturas.php` comprueba que solo se acepten imágenes reales (rechaza texto, PHP disfrazado, SVG, archivos vacíos o mayores de 4 MB). `php tests/prueba-transmisiones.php` cubre el reconocimiento de enlaces, reproductores, permisos por tipo de acceso, horarios, calendario y bitácora. Para la demo, `php tests/sembrar-transmisiones.php` agrega cinco transmisiones de ejemplo a `io_demo`.
+`php tests/prueba-youtube.php` simula la API de YouTube y comprueba la detección del canal, la caché, los no listados y los errores de cuota. `php tests/prueba-miniaturas.php` comprueba que solo se acepten imágenes reales (rechaza texto, PHP disfrazado, SVG, archivos vacíos o mayores de 4 MB). `php tests/prueba-transmisiones.php` cubre el reconocimiento de enlaces, reproductores, permisos por tipo de acceso, horarios, calendario y bitácora. Para la demo, `php tests/sembrar-transmisiones.php` agrega cinco transmisiones de ejemplo a `io_demo`.
 
 `php tests/prueba-confirmacion.php` verifica las pantallas terminales de pedidos cancelados/reembolsados, la privacidad y la conservación del carrito. `node tests/prueba-retorno.js` comprueba los destinos del acceso, las restricciones de redirección y el comportamiento con almacenamiento bloqueado, sin dependencias adicionales.
 

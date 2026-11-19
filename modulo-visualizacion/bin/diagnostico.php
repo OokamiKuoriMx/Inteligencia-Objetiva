@@ -46,10 +46,10 @@ try {
     comprobar('Conexión MySQL', true);
     $tablas = ['io_politicas', 'io_accesos', 'io_sesiones', 'io_admins', 'io_bitacora', 'io_alertas', 'io_login_intentos',
         'io_productos', 'io_pedidos', 'io_pedido_items', 'io_webhooks', 'io_membresias', 'io_membresia_accesos', 'io_membresia_facturas',
-        'io_cupones', 'io_descuentos_pedidos', 'io_facturas', 'io_reembolsos', 'io_transmisiones'];
+        'io_cupones', 'io_descuentos_pedidos', 'io_facturas', 'io_reembolsos', 'io_transmisiones', 'io_ajustes'];
     $encontradas = $db->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
     $faltantes = array_values(array_diff($tablas, $encontradas));
-    comprobar('Migraciones 001–008 aplicadas', !$faltantes, implode(', ', $faltantes));
+    comprobar('Migraciones 001–009 aplicadas', !$faltantes, implode(', ', $faltantes));
     if (!$faltantes) {
         $activos = (int) IO::uno('SELECT COUNT(*) n FROM io_productos WHERE activo = 1')['n'];
         comprobar('Catálogo importado', $activos > 0, 'ajustar las consultas de importación y ejecutar importar.php productos --simular');

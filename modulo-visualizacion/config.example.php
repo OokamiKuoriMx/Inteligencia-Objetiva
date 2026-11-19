@@ -17,6 +17,10 @@ return [
     // Sin token, el editor solo puede leer videos públicos. Nunca lo compartas ni lo subas al repositorio.
     'vimeo_token' => '',
 
+    // Llave de la YouTube Data API v3 (gratuita): detecta cuándo el canal transmite en vivo y lo muestra solo en /en-vivo.
+    // Cómo obtenerla: backoffice > Transmisiones > Canal de YouTube. Restríngela a la YouTube Data API v3 y a la IP del servidor.
+    'youtube_api_key' => '',
+
     // Miniaturas subidas desde el editor de contenido (arrastrar y soltar). La carpeta debe poder escribirla PHP.
     // Por defecto: /io/subidas/miniaturas (incluye un .htaccess que solo sirve imágenes).
     // 'miniaturas_dir' => __DIR__ . '/subidas/miniaturas',

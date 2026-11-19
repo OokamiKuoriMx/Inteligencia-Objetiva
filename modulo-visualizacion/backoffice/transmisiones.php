@@ -3,6 +3,7 @@
 declare(strict_types=1);
 require __DIR__ . '/_inc.php';
 require_once __DIR__ . '/../lib/Transmisiones.php';
+require_once __DIR__ . '/../lib/YouTube.php';
 $admin = exigir('ver');
 $puedeEditar = puede('politicas');
 
@@ -42,14 +43,15 @@ $mostrarForm = $puedeEditar && ($editar || isset($_GET['nueva']));
 $productos = IO::todos('SELECT p.producto_id, p.titulo FROM io_politicas p ORDER BY p.titulo');
 $catalogo = IO::todos('SELECT producto_id, titulo FROM io_productos ORDER BY titulo');
 $dominio = rtrim((string) (IO::config()['dominio'] ?? ''), '/');
+$ytCanal = IOYouTube::canal(); $ytLlave = IOYouTube::configurado();
 
-pagina('Transmisiones en vivo', function () use ($txError, $alAire, $lista, $form, $editar, $mostrarForm, $puedeEditar, $productos, $catalogo, $dominio) {
+pagina('Transmisiones en vivo', function () use ($ytCanal, $ytLlave, $txError, $alAire, $lista, $form, $editar, $mostrarForm, $puedeEditar, $productos, $catalogo, $dominio) {
     $v = fn(string $k, $def = '') => h($form[$k] ?? $def);
     $fechaLocal = $form && !empty($form['inicio']) ? date('Y-m-d\TH:i', strtotime((string) $form['inicio'])) : date('Y-m-d\TH:00', strtotime('+1 day'));
     $boton = function (int $id, string $accion, string $texto, string $clase = 'sec') { ?>
       <form method="post" class="d-inline m-0"><?= csrf_input() ?><input type="hidden" name="id" value="<?= $id ?>"><input type="hidden" name="accion" value="<?= h($accion) ?>"><button class="bo-btn <?= h($clase) ?> mini"><?= h($texto) ?></button></form>
     <?php }; ?>
-  <link rel="stylesheet" href="contenido-editor.css?v=2.0.6"><link rel="stylesheet" href="transmisiones.css?v=2.0.0">
+  <link rel="stylesheet" href="contenido-editor.css?v=2.0.6"><link rel="stylesheet" href="transmisiones.css?v=2.0.2">
 
   <?php if ($alAire): ?>
   <div class="bo-card tx-alaire">
@@ -146,6 +148,12 @@ pagina('Transmisiones en vivo', function () use ($txError, $alAire, $lista, $for
   </form>
   </dialog>
   <?php endif; ?>
+
+  <div class="bo-card tx-canal">
+    <p><b>Detección automática de YouTube:</b>
+      <?= $ytCanal && $ytLlave ? 'los directos públicos de «' . h($ytCanal['titulo']) . '» aparecen solos en el sitio.' : 'conecta el canal para que sus directos públicos aparezcan solos, sin registrarlos aquí.' ?></p>
+    <a class="bo-btn sec mini" href="youtube.php"><?= $ytCanal && $ytLlave ? 'Ver canal' : 'Conectar canal de YouTube' ?></a>
+  </div>
 
   <div class="bo-card">
     <h2>Transmisiones <?php if ($puedeEditar): ?><a class="bo-btn mini" href="transmisiones.php?nueva=1">+ Nueva transmisión</a><?php endif; ?></h2>
