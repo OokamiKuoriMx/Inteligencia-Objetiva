@@ -1,9 +1,9 @@
-# Presentación · Inteligencia Objetiva 2.0
+# Propuesta de mejora · Inteligencia Objetiva 2.0
 
-Presentación ejecutiva de las mejoras de IO 2.0, con la identidad gráfica de **MC Proyectos Estratégicos**.
+Propuesta de mejora de IO 2.0, con la identidad gráfica de **MC Proyectos Estratégicos**.
 
 - **Presentación en línea (privada, Slides):** https://claude.ai/artifact/TpEaXyBvPNf7XJgJup7DiZ
-- **Respaldo en PDF:** `presentacion-io-2.0.pdf` (17 diapositivas, 16:9).
+- **Respaldo en PDF:** `presentacion-io-2.0.pdf` (18 diapositivas, 16:9).
 
 ## Contenido
 

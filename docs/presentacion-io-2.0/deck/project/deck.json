@@ -11,7 +11,7 @@
    "project/deck.css"
   ]
  },
- "title": "Inteligencia Objetiva 2.0 · Presentación de mejoras",
+ "title": "Inteligencia Objetiva 2.0 · Propuesta de mejora",
  "order": [
   "portada",
   "contexto",
@@ -19,11 +19,12 @@
   "tema",
   "nueva-portada",
   "tienda",
-  "cupones",
   "biblioteca",
-  "editor",
-  "en-vivo",
+  "supuestos",
   "backoffice",
+  "editor",
+  "cupones",
+  "en-vivo",
   "roles",
   "compatibilidad",
   "agentes-ia",
@@ -34,16 +35,20 @@
  "cover": "portada",
  "sections": {
   "s1": {
-   "description": "Contexto, objetivo y comparación antes y después.",
+   "description": "Contexto, objetivo y comparación antes y después del sitio público.",
    "start": "portada"
   },
   "s2": {
-   "description": "Un cambio relevante por diapositiva, con captura real del demo.",
+   "description": "Lo público y lo del alumno: un cambio por diapositiva, con captura real del demo.",
    "start": "tema"
   },
   "s3": {
-   "description": "Lo que sigue: roles, compatibilidad, IA, SEO y próximos pasos.",
-   "start": "roles"
+   "description": "Propuesta de mejora del backoffice, sujeta a un levantamiento con el equipo.",
+   "start": "supuestos"
+  },
+  "s4": {
+   "description": "Lo que sigue: compatibilidad, IA, SEO y próximos pasos.",
+   "start": "compatibilidad"
   }
  },
  "faces": {},
