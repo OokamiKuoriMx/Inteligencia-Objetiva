@@ -97,30 +97,46 @@ La 2.0 se monta sobre el sitio actual: no reemplaza sus páginas, no modifica su
 - **Redirecciones antiguas.** La ficha nueva se identifica con el título más el número del producto; una dirección antigua solo llega a su ficha si el sitio actual la forma igual. Hay que probar la lista completa de direcciones antes de activar la fase 5.
 - **Categorías.** «Introspecciones» y «Documentales» comparten la misma página de catálogo.
 - **Videos nuevos.** La carga masiva conecta videos que ya están en Vimeo; no sube archivos de video.
-- **Documentos desfasados.** La entrega al cliente todavía pide aplicar las migraciones 001–007 (deben ser 001–009) y la guía de despliegue aún menciona alertas en el panel, sección que ya se retiró.
+- **Documentos desfasados.** La entrega al cliente pedía las migraciones 001–007 y la guía mencionaba alertas en el panel; ambos documentos ya se corrigieron (001–009, sin alertas).
 
 ## Acceso de agentes de IA y disponibilidad del contenido
 
-Cada vez más personas preguntan a ChatGPT, Claude, Perplexity o Gemini sobre espiritualidad, autoconocimiento y eneagrama; para que esos asistentes citen a Inteligencia Objetiva necesitan poder leer el sitio sin iniciar sesión ni ejecutar código. La 2.0 ya da una base: las fichas de la tienda se generan en el servidor con texto legible y datos estructurados. El resto son recomendaciones.
+Cada vez más personas preguntan a ChatGPT, Claude, Perplexity o Gemini sobre los temas que trabaja Martín Aparicio. Para que esos asistentes encuentren, lean y citen a Inteligencia Objetiva, cada tema y cada contenido público necesita una página propia que se lea sin iniciar sesión ni ejecutar código. Esto aplica, entre otros, de manera enunciativa y no limitativa, a todos sus cursos, conferencias, documentales, introspecciones, audiolibros, transmisiones, libros y conceptos.
+
+**Temas y contenidos que deben quedar al alcance de los agentes** (lista enunciativa y no limitativa, tomada del catálogo del repositorio y de las páginas públicas del sitio revisadas el 19 de noviembre de 2026):
+
+- **Categorías del catálogo:** conferencias en línea (20 páginas de listado), cursos en línea (8 páginas), documentales, introspecciones, audiolibro y conferencias especiales en vivo vía Zoom.
+- **Temas del catálogo:** relación de pareja, economía, educación a los hijos, entorno laboral, desarrollo personal y superación.
+- **Programas:** diplomados en Comunicación humana; Conciencia, cuerpo y nutrición; Sistema diagnóstico aplicado; y Neodisciplina. Programa de Entrenamiento y Desarrollo Mental (niveles 1 y 2) y su Propedéutico, Curso de Autoconocimiento y Desarrollo Mental, y MECA.
+- **Documentales e introspecciones:** adicciones, arrepentimiento, autoestima, calidad de vida, conciencia, creencias, depresión, felicidad, presupuesto de vida y superación de sí.
+- **Audiolibro:** «Conciencia de sí».
+- **Conceptos y disciplinas:** autoconocimiento, conciencia de sí, filosofía (por ejemplo, «Filosofía viva»), psicología (por ejemplo, «Psicología de la autodestrucción», neuropsicología del miedo y psicología financiera), frecuencia y fortaleza mental, ansiedad, miedo, emociones, toma de decisiones, espiritualidad y tradiciones de sabiduría (Buda, Sócrates y Cristo; budismo y Dzogchen en «Nosotros»).
+- **Eneagrama y ley de siete:** conceptos del método señalados por la dirección. No aparecen en las páginas públicas revisadas, así que hoy un agente no puede encontrarlos ni citarlos.
+- **Transmisiones y medios:** conferencias en vivo del calendario, Televisión Objetiva y los canales de YouTube @martinaparicio-io e inteligenciaobjetiva.
+- **Libros:** el sitio no tiene una sección de libros. Si existen, cada uno necesita su ficha pública.
+
+La portada habla de más de 250 temas en línea. De cada listado solo se revisó la primera página, así que el inventario completo debe salir del catálogo al importarlo.
+
+**Qué está hecho y qué se recomienda**
 
 | Medida | Estado | Qué implica |
 | --- | --- | --- |
-| Fichas públicas de cada curso con texto legible sin JavaScript | Hecho (fase 5) | Título, resumen, descripción, «aprenderás» y precio se envían ya escritos desde el servidor |
-| Datos estructurados `Course` con proveedor `Organization` y oferta en MXN | Hecho | Incluye calificación solo cuando hay reseñas reales |
-| Migas de pan estructuradas (`BreadcrumbList`) | Hecho | Indican la ruta Inicio › Catálogo › Categoría › Curso |
-| Descripción de la portada para buscadores y asistentes | Hecho | Una frase que resume la propuesta del sitio |
-| Redirecciones permanentes de fichas antiguas | Hecho | Conservan los enlaces ya citados en otros sitios |
-| `robots.txt` que permita los rastreadores de IA | Recomendado | No existe en el repositorio. Permitir de forma explícita GPTBot, OAI-SearchBot y ChatGPT-User; ClaudeBot y Claude-SearchBot; PerplexityBot; Google-Extended; y bloquear solo `/io/backoffice/`, `/io/api/`, carrito y biblioteca |
-| `llms.txt` en la raíz | Recomendado | Un índice breve en texto: quiénes somos, temas que enseñamos y enlaces a las páginas públicas clave |
-| Páginas públicas por tema (eneagrama, autoconocimiento, espiritualidad, introspección) | Recomendado | Una página por tema con texto propio, preguntas frecuentes y los cursos relacionados; es lo que los asistentes citan |
-| `Organization` en la portada | Recomendado | Nombre, logotipo, redes oficiales y contacto, para que se identifique la marca como fuente |
-| `VideoObject` en trailers y videos públicos | Recomendado | Título, descripción, miniatura y duración; nunca para el contenido de pago |
-| `Event` en transmisiones públicas | Recomendado | Fecha, hora y enlace de cada directo abierto del calendario |
-| `FAQPage` en páginas de tema y en «Nosotros» | Recomendado | Respuestas cortas a las preguntas que la gente ya hace |
-| Mapa del sitio (`sitemap.xml`) | Recomendado | Lista de fichas, temas y páginas públicas, con fecha de actualización |
-| Rendimiento y disponibilidad | Parcial | Ya hay imágenes ligeras y video que carga solo al pulsarlo. Falta un monitor de disponibilidad, caché de las páginas públicas y revisar que el cortafuegos del hosting no bloquee a estos rastreadores |
+| Ficha pública de cada contenido del catálogo, legible sin JavaScript | Hecho (fase 5) | Título, resumen, descripción, «aprenderás» y precio llegan escritos desde el servidor para todo lo que se importe al catálogo |
+| Ficha pública de diplomados, programas, libros y audiolibros | Recomendado | Hoy quedan fuera del catálogo 2.0; cada uno necesita su ficha con texto propio |
+| Una página pública por tema y concepto | Recomendado | Una por cada tema de la lista anterior y los que se sumen: explicación en texto, preguntas frecuentes y enlaces a los cursos, conferencias, documentales y transmisiones relacionados |
+| Glosario público del método | Recomendado | Definiciones breves y citables de cada concepto (conciencia de sí, eneagrama y ley de siete, entre otros) |
+| Página del autor | Recomendado | Martín Aparicio: biografía, obra y enlaces oficiales a redes y canales, para que los agentes atribuyan bien las citas |
+| Página por transmisión y por grabación pública | Parcial | La 2.0 ya tiene /en-vivo y /calendario. Falta una página permanente para cada directo público y su grabación |
+| `robots.txt` | Parcial | Ya existe en producción y permite todo salvo áreas privadas. Conviene nombrar de forma explícita GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, Claude-User, PerplexityBot y Google-Extended, y bloquear `/io/backoffice/`, `/io/api/` y `/io/public/`; la regla actual de `/api/` no cubre `/io/api/` |
+| Mapa del sitio (`sitemap.xml`) | Parcial | Existe en producción con las fichas actuales. Debe actualizarse con las fichas nuevas (`/producto/...`), las páginas de tema y el calendario |
+| `llms.txt` en la raíz | Recomendado | No existe. Un índice en texto: quién es Martín Aparicio, qué es Inteligencia Objetiva, la lista de temas y el enlace a cada página de tema y categoría |
+| Datos estructurados `Course` y migas de pan | Hecho | Curso con proveedor y oferta en MXN, calificación solo con reseñas reales, y ruta Inicio › Catálogo › Categoría › Curso |
+| `Organization` y `Person` | Recomendado | En la portada, «Nosotros» y la página del autor, con sus perfiles oficiales |
+| `VideoObject`, `Event`, `Book` y `FAQPage` | Recomendado | Videos públicos y tráilers, transmisiones abiertas, libros y audiolibros, y preguntas frecuentes de cada tema; nunca para el contenido de pago |
+| Descripción de la portada y redirecciones de fichas antiguas | Hecho | Resumen del sitio para buscadores y asistentes, y enlaces antiguos que siguen funcionando |
+| Rendimiento y disponibilidad | Parcial | Ya hay imágenes ligeras y video que carga al pulsarlo. Falta un monitor de disponibilidad, caché de las páginas públicas y revisar que el cortafuegos del hosting no bloquee a estos rastreadores |
 
-Los rastreadores de IA solo deben ver lo público: fichas, temas, portada y calendario. El contenido de pago sigue detrás del inicio de sesión y del control de acceso.
+Los agentes solo deben ver lo público: portada, fichas, temas, glosario, autor y calendario. Las páginas de tema publican explicaciones y resúmenes; el contenido de pago sigue detrás del inicio de sesión y del control de acceso.
 
 ## SEO
 
@@ -131,7 +147,7 @@ De forma enunciativa, la 2.0 aporta o deja listo:
 - Datos estructurados de curso y migas de pan.
 - Imágenes WebP ligeras y video bajo demanda, que mejoran la velocidad de carga.
 - Sin desplazamiento horizontal en celular.
-- Pendiente: mapa del sitio, etiquetas para compartir en redes (Open Graph) y dirección canónica en cada página.
+- Pendiente: actualizar el mapa del sitio existente con las direcciones nuevas, y agregar etiquetas para compartir en redes (Open Graph) y dirección canónica en cada página.
 
 ## Riesgos, próximos pasos y cronograma
 
@@ -153,9 +169,9 @@ El mayor riesgo no es técnico sino de configuración: cuentas, consultas de imp
 - [ ] Abrir o confirmar las cuentas de Stripe, Facturapi, Vimeo (token) y la llave de YouTube.
 - [ ] Designar al técnico que adapte la sesión y las consultas de importación.
 - [ ] Preparar el entorno de pruebas con HTTPS.
-- [ ] Actualizar la entrega al cliente (migraciones 001–009) y la guía (sin alertas).
+- [ ] Inventariar todos los temas, conceptos y contenidos del catálogo completo.
 - [ ] Concluir el módulo de roles y perfiles.
-- [ ] Publicar `robots.txt`, `llms.txt` y las primeras páginas de tema.
+- [ ] Ampliar `robots.txt` y publicar `llms.txt`, la página del autor y las páginas de tema.
 
 **Cronograma sugerido**
 

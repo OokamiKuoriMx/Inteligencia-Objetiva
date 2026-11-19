@@ -284,4 +284,4 @@ Mitigaciones incluidas:
 - Restricción de dominio en Vimeo.
 - Marca de agua con el correo del alumno.
 - Sesión única.
-- Alertas en el backoffice.
+- Latidos validados en el servidor.
