@@ -1,0 +1,66 @@
+/* Backoffice · Equipo y roles (usa los estilos del editor de contenido-editor.css) */
+.eq-barra { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px 20px; margin-bottom:16px; }
+.eq-barra > div { flex:1; min-width:240px; }
+.eq-barra h2 { margin:0 0 4px; }
+.eq-barra .bo-nota { margin:0; max-width:720px; }
+.eq-tabla td { vertical-align:middle; }
+.eq-persona { display:inline-flex; align-items:center; gap:10px; }
+.eq-persona .bo-avatar { display:grid; place-items:center; flex:0 0 32px; height:32px; border-radius:50%; color:var(--io-bo-blanco); background:var(--io-bo-marino); font-size:13px; font-weight:500; }
+.eq-persona b { font-weight:500; }
+.eq-correo { overflow-wrap:anywhere; }
+.eq-inactivo td { color:var(--io-texto-suave); }
+.eq-inactivo .bo-avatar { background:var(--io-superficie-2); color:var(--io-texto-suave); box-shadow:inset 0 0 0 1px var(--io-borde); }
+.eq-col-acciones { width:1%; white-space:nowrap; text-align:right; }
+.eq-col-acciones .bo-acciones { justify-content:flex-end; }
+/* Matriz de permisos */
+.eq-matriz { min-width:720px; }
+.eq-matriz thead th { vertical-align:bottom; }
+.eq-matriz tbody th { font-weight:400; min-width:260px; max-width:380px; padding:12px; font-size:14px; text-transform:none; letter-spacing:normal; white-space:normal; color:var(--io-texto); }
+.eq-matriz thead .eq-rol { white-space:normal; }
+.eq-matriz .eq-rol .sub { text-transform:none; letter-spacing:normal; font-weight:400; }
+.eq-matriz th[scope=row] { position:sticky; left:0; z-index:1; background:var(--io-superficie); }
+.eq-matriz tfoot th, .eq-matriz tfoot td { border-bottom:0; }
+.eq-matriz tfoot td { text-align:center; }
+.eq-matriz tbody th b { display:block; font-weight:500; }
+.eq-matriz .sub { display:block; }
+.eq-rol { text-align:center; min-width:130px; }
+.eq-rol-nombre { display:block; font-weight:500; line-height:1.3; }
+.eq-rol .bo-btn { margin-top:6px; }
+.eq-celda { text-align:center; vertical-align:middle; }
+.eq-si { display:inline-grid; place-items:center; width:26px; height:26px; border-radius:50%; font-weight:700; color:var(--io-estado-ok); background:color-mix(in srgb,var(--io-estado-ok) 12%,var(--io-superficie)); border:1px solid color-mix(in srgb,var(--io-estado-ok) 35%,transparent); }
+.eq-no { color:var(--io-texto-suave); }
+/* Modales */
+.bo-editor.eq-editor { max-width:980px; height:auto; }
+.bo-editor.eq-chico { max-width:560px; }
+.eq-chico .bo-editor-scroll { grid-template-columns:minmax(0,1fr); }
+.eq-fieldset { border:0; padding:0; min-width:0; }
+.eq-fieldset legend { float:none; width:auto; padding:0; margin:0 0 8px; }
+.eq-roles { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.eq-roles .st-opcion { min-height:44px; }
+.eq-permisos { display:grid; gap:14px; margin-top:8px; }
+.eq-resumen { margin:0; padding-left:18px; display:grid; gap:4px; font-size:14px; }
+.eq-aviso { margin:0 0 18px; padding:12px 14px; border-radius:9px; background:var(--io-superficie-2); font-size:14px; }
+.eq-mostrar { min-height:44px; margin-top:-6px; }
+.bo-btn.sec.eq-peligro { color:var(--io-bo-acento-texto) !important; border-color:var(--io-bo-rojo); }
+.eq-peligro:hover { background:color-mix(in srgb,var(--io-bo-rojo) 10%,transparent); }
+/* Perfil */
+.eq-perfil { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:0 0 20px; }
+.eq-perfil dt { font-size:12px; font-weight:500; color:var(--io-texto-suave); margin-bottom:4px; }
+.eq-perfil dd { margin:0; overflow-wrap:anywhere; }
+.eq-lista-permisos { list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+.eq-lista-permisos li { display:flex; gap:10px; align-items:flex-start; }
+.eq-lista-permisos .eq-si { flex:none; width:22px; height:22px; font-size:12px; }
+.eq-lista-permisos b { display:block; font-weight:500; }
+.eq-acciones-perfil { display:flex; flex-wrap:wrap; gap:10px; }
+/* Interruptores fijos (incluidos en el rol o en dirección) */
+.st-interruptor:has(input:disabled) { cursor:default; }
+.st-interruptor input:checked:disabled + .st-riel { background:var(--io-texto-suave); }
+.eq-editor .st-avanzado summary { min-height:44px; }
+.eq-matriz tbody .sub, .eq-editor .st-interruptor small, .eq-editor .st-opcion small, .eq-editor .st-estado { font-size:14px; }
+.eq-si svg { width:14px; height:14px; }
+@media(max-width:860px) {
+  .bo-editor.eq-editor { height:100dvh; max-width:none; }
+  .eq-editor .st-lateral { order:0; }
+  .eq-roles, .eq-perfil { grid-template-columns:minmax(0,1fr); }
+  .eq-barra .bo-btn { flex:1 1 100%; justify-content:center; }
+}

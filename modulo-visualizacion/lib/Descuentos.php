@@ -145,8 +145,7 @@ final class IODescuentos
 
     public static function guardar(array $admin, array $datos, string $motivo): int
     {
-        $u = IO::uno('SELECT rol FROM io_admins WHERE id = ? AND activo = 1', [(int) ($admin['id'] ?? 0)]);
-        if (!$u || !in_array($u['rol'], ['admin', 'editor'], true)) { throw new IOError('sin_permiso', 'Sin permiso para administrar descuentos.', 403); }
+        IOEquipo::autorizar($admin, 'politicas', 'Sin permiso para administrar descuentos.');
         $motivo = trim($motivo);
         if ($motivo === '' || mb_strlen($motivo) > 120) { throw new IOError('motivo', 'Escribe un motivo de hasta 120 caracteres.'); }
         $codigo = self::codigo((string) ($datos['codigo'] ?? ''));

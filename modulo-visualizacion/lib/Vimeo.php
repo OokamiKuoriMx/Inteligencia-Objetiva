@@ -337,8 +337,7 @@ final class IOVimeoCliente
      */
     public static function aplicarRecomendada(array $admin, string $id, ?int $productoId, string $motivo): array
     {
-        $a = IO::uno('SELECT id,email,rol FROM io_admins WHERE id = ? AND activo = 1', [(int) ($admin['id'] ?? 0)]);
-        if (!$a || !in_array($a['rol'], ['admin', 'editor'], true)) { throw new IOError('sin_permiso', 'Sin permiso para cambiar la privacidad en Vimeo.', 403); }
+        $a = IOEquipo::autorizar($admin, 'politicas', 'Sin permiso para cambiar la privacidad en Vimeo.');
         $motivo = trim($motivo);
         if ($motivo === '') { throw new IOError('motivo', 'Escribe el motivo del cambio.'); }
         if (mb_strlen($motivo, 'UTF-8') > 120) { throw new IOError('motivo', 'El motivo admite máximo 120 caracteres.'); }

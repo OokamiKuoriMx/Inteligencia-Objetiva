@@ -92,6 +92,7 @@ mysql -u USUARIO -p NOMBRE_BD < sql/006_io_facturacion.sql
 mysql -u USUARIO -p NOMBRE_BD < sql/007_io_reembolsos.sql
 mysql -u USUARIO -p NOMBRE_BD < sql/008_io_transmisiones.sql
 mysql -u USUARIO -p NOMBRE_BD < sql/009_io_ajustes.sql
+mysql -u USUARIO -p NOMBRE_BD < sql/010_io_roles.sql
 ```
 Solo crean tablas nuevas con prefijo `io_`.
 
@@ -99,7 +100,7 @@ Solo crean tablas nuevas con prefijo `io_`.
 ```bash
 php bin/crear-admin.php tu-correo@dominio.com "Tu nombre" admin
 ```
-La contraseña se pide en la terminal y debe tener mínimo 12 caracteres. Roles disponibles: `admin`, `editor`, `soporte` y `finanzas`.
+La contraseña se pide en la terminal y debe tener mínimo 12 caracteres. Roles disponibles: `admin`, `editor`, `soporte` y `finanzas`. Después de este primer usuario, el resto del equipo se da de alta desde el backoffice (ver 3.6).
 
 ### 3.5 Protección de carpetas internas
 - **Apache:** el `.htaccess` incluido bloquea `lib/`, `sql/`, `bin/`, `tests/` y `config.php`. Requiere `mod_rewrite` y `AllowOverride All`.
@@ -116,7 +117,15 @@ La contraseña se pide en la terminal y debe tener mínimo 12 caracteres. Roles 
 - Verifica: `https://inteligenciaobjetiva.com/io/config.php` y `/io/lib/IO.php` deben responder **403**.
 - En `php.ini`: `display_errors = Off` y `log_errors = On`.
 
-### 3.6 Comprobación
+### 3.6 Equipo, roles y perfiles
+Requiere la migración `010_io_roles.sql` (crea `io_roles`, `io_roles_permisos`, `io_equipo` e `io_equipo_permisos`; no modifica `io_admins` y se puede ejecutar más de una vez). Al aplicarla, cada usuario existente recibe el rol equivalente y **conserva exactamente sus permisos**: `admin` → *Dirección (administrador total)*, `editor` → *Contenido*, `soporte` → *Atención a alumnos*, `finanzas` → *Ventas y finanzas*. También se agrega *Solo lectura*. Despliega primero la migración y después el código; si el código llega antes, el backoffice sigue funcionando con los permisos anteriores, pero *Equipo y roles* no aparece hasta aplicarla.
+
+- **Backoffice → Equipo y roles** (solo con el permiso *Equipo y roles*; dirección lo tiene): alta de miembros con contraseña inicial, cambio de rol, permisos extra por persona, desactivación y contraseña nueva para otro miembro; roles nuevos y la matriz de qué puede hacer cada uno.
+- **Mi perfil** (clic en tu nombre, abajo del menú): cualquier miembro cambia su nombre y su contraseña.
+- Reglas: nadie puede desactivarse ni quitarse a sí mismo *Equipo y roles*; siempre debe quedar al menos un administrador total activo; desactivar a alguien o cambiarle la contraseña cierra sus sesiones al instante. Toda acción exige motivo y queda en la bitácora.
+- `bin/crear-admin.php` sigue sirviendo para recuperar el acceso si nadie con *Equipo y roles* puede entrar: crea o restablece un usuario con el rol indicado y cierra sus sesiones.
+
+### 3.7 Comprobación
 - [ ] `https://inteligenciaobjetiva.com/io/backoffice/` → inicio de sesión → tablero.
 - [ ] Desde una cuenta de cliente con sesión: `/io/public/mi-biblioteca.php` carga, aunque todavía esté vacía.
 
@@ -214,7 +223,7 @@ Cuando la tienda esté aprobada, agrega el bloque de `tienda/rewrite-produccion.
 `config.example.php → tienda.promocion` viene desactivado. El responsable comercial debe completar `inicio` y `fin` con fechas absolutas ISO y zona horaria (formato `AAAA-MM-DDTHH:MM:SS-06:00`), además de los IDs aprobados en `productos`. El precio efectivo y el precio anterior se cargan en `io_productos` desde la fuente real, en MXN con IVA. La campaña no modifica los importes del carrito: anuncia únicamente rebajas ya presentes en el catálogo, calcula el porcentaje desde ambos precios y dirige a `/io/tienda/ofertas.php`. Sin fechas vigentes o productos realmente rebajados, el banner permanece oculto. Las fechas no se renuevan al recargar.
 
 ### 5.6 Diagnóstico antes de publicar
-Desde `/io/` ejecuta `php bin/diagnostico.php`. Solo lee configuración, esquema y catálogo; comprueba las tablas de las migraciones 001–009, no imprime llaves, no escribe datos ni crea cargos. Devuelve `1` si encuentra pendientes automáticos y `0` si pasan esas comprobaciones. Los módulos externos vienen desactivados y se informan por separado. Los puntos marcados `MANUAL` siempre deben revisarse en el sitio instalado.
+Desde `/io/` ejecuta `php bin/diagnostico.php`. Solo lee configuración, esquema y catálogo; comprueba las tablas de las migraciones 001–010 y que exista un administrador total activo, no imprime llaves, no escribe datos ni crea cargos. Devuelve `1` si encuentra pendientes automáticos y `0` si pasan esas comprobaciones. Los módulos externos vienen desactivados y se informan por separado. Los puntos marcados `MANUAL` siempre deben revisarse en el sitio instalado.
 
 Con llaves de prueba configuradas puedes ejecutar `php bin/diagnostico.php --stripe-prueba`: consulta la conectividad de Stripe sin crear pagos. Rechaza esta consulta con llaves en vivo. Esta comprobación no reemplaza las tres compras de aceptación del apartado 5.2.
 
@@ -274,6 +283,8 @@ En el repositorio también están `prueba-condiciones.php`, `prueba-promociones.
 Las suites `prueba-descuentos.php`, `prueba-membresias.php`, `prueba-facturacion.php` y `prueba-pedidos.php` utilizan bases exclusivas y proveedores simulados; cubren concurrencia, descuentos en centavos, renovaciones, eventos fuera de orden, facturas, conciliación, permisos e idempotencia. La validación local no sustituye la aceptación de las cuentas Stripe/Facturapi del cliente.
 
 `php tests/prueba-youtube.php` simula la API de YouTube y comprueba la detección del canal, la caché, los no listados y los errores de cuota. `php tests/prueba-miniaturas.php` comprueba que solo se acepten imágenes reales (rechaza texto, PHP disfrazado, SVG, archivos vacíos o mayores de 4 MB). `php tests/prueba-transmisiones.php` cubre el reconocimiento de enlaces, reproductores, permisos por tipo de acceso, horarios, calendario y bitácora. Para la demo, `php tests/sembrar-transmisiones.php` agrega cinco transmisiones de ejemplo a `io_demo`.
+
+`php tests/prueba-roles.php` aplica 001–009, crea usuarios con los roles anteriores, aplica 010 dos veces y comprueba que conserven sus permisos; cubre altas, roles, permisos extra, que nadie se quite *Equipo y roles*, que siempre quede un administrador total, el cierre de sesiones al desactivar o cambiar contraseña, el perfil propio y la reversión si falla la bitácora.
 
 `php tests/prueba-confirmacion.php` verifica las pantallas terminales de pedidos cancelados/reembolsados, la privacidad y la conservación del carrito. `node tests/prueba-retorno.js` comprueba los destinos del acceso, las restricciones de redirección y el comportamiento con almacenamiento bloqueado, sin dependencias adicionales.
 

@@ -625,3 +625,5 @@ final class IOVimeo
         return ['titulo' => $v['titulo'], 'duracion_seg' => $v['duracion_seg'], 'miniatura' => $v['miniatura']];
     }
 }
+
+require_once __DIR__ . '/Equipo.php';

@@ -18,7 +18,7 @@ function vimeo_responder(array $respuesta, int $codigo = 200): void
 try {
     $a = admin();
     if (!$a) { throw new IOError('sin_sesion', 'Inicia sesión de nuevo.', 401); }
-    if (!in_array('politicas', IO_PERMISOS[$a['rol']] ?? [], true)) { throw new IOError('sin_permiso', 'Sin permiso para editar contenidos.', 403); }
+    if (!puede('politicas')) { throw new IOError('sin_permiso', 'Sin permiso para editar contenidos.', 403); }
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { throw new IOError('metodo', 'Método no permitido.', 405); }
     $token = $_POST['csrf'] ?? '';
     if (!is_string($token) || $token === '' || empty($_SESSION['csrf']) || !hash_equals((string) $_SESSION['csrf'], $token)) {

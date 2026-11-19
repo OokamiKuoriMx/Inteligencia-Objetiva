@@ -14,9 +14,7 @@ final class IOCargaContenidos
 
     private static function autorizado(array $actor): array
     {
-        $a = IO::uno('SELECT id,email,rol FROM io_admins WHERE id = ? AND activo = 1', [(int) ($actor['id'] ?? 0)]);
-        if (!$a || !in_array($a['rol'], ['admin', 'editor'], true)) { throw new IOError('sin_permiso', 'Sin permiso para cargar contenidos.', 403); }
-        return $a;
+        return IOEquipo::autorizar($actor, 'politicas', 'Sin permiso para cargar contenidos.');
     }
 
     public static function plantilla(string $separador = ';'): string

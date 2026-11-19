@@ -46,10 +46,11 @@ try {
     comprobar('Conexión MySQL', true);
     $tablas = ['io_politicas', 'io_accesos', 'io_sesiones', 'io_admins', 'io_bitacora', 'io_alertas', 'io_login_intentos',
         'io_productos', 'io_pedidos', 'io_pedido_items', 'io_webhooks', 'io_membresias', 'io_membresia_accesos', 'io_membresia_facturas',
-        'io_cupones', 'io_descuentos_pedidos', 'io_facturas', 'io_reembolsos', 'io_transmisiones', 'io_ajustes'];
+        'io_cupones', 'io_descuentos_pedidos', 'io_facturas', 'io_reembolsos', 'io_transmisiones', 'io_ajustes',
+        'io_roles', 'io_roles_permisos', 'io_equipo', 'io_equipo_permisos'];
     $encontradas = $db->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
     $faltantes = array_values(array_diff($tablas, $encontradas));
-    comprobar('Migraciones 001–009 aplicadas', !$faltantes, implode(', ', $faltantes));
+    comprobar('Migraciones 001–010 aplicadas', !$faltantes, implode(', ', $faltantes));
     if (!$faltantes) {
         $activos = (int) IO::uno('SELECT COUNT(*) n FROM io_productos WHERE activo = 1')['n'];
         comprobar('Catálogo importado', $activos > 0, 'ajustar las consultas de importación y ejecutar importar.php productos --simular');
@@ -58,8 +59,9 @@ try {
         comprobar('Productos vendibles con video y política', $sinPolitica === 0, "$sinPolitica productos incompletos; revisar Catálogo y reglas");
         $sinPrecio = (int) IO::uno('SELECT COUNT(*) n FROM io_productos WHERE activo = 1 AND precio_mxn <= 0')['n'];
         comprobar('Precios positivos', $sinPrecio === 0, "$sinPrecio productos sin precio de venta positivo");
-        $admin = (int) IO::uno('SELECT COUNT(*) n FROM io_admins WHERE activo = 1 AND rol = "admin"')['n'];
-        comprobar('Administrador activo', $admin > 0, 'ejecutar bin/crear-admin.php');
+        $admin = (int) IO::uno('SELECT COUNT(*) n FROM io_admins a LEFT JOIN io_equipo e ON e.admin_id = a.id
+            JOIN io_roles r ON r.id = COALESCE(e.rol_id, (SELECT r2.id FROM io_roles r2 WHERE r2.clave = a.rol)) WHERE a.activo = 1 AND r.total = 1')['n'];
+        comprobar('Administrador total activo', $admin > 0, 'ejecutar bin/crear-admin.php correo "Nombre" admin');
         $incompletos = (int) IO::uno('SELECT COUNT(*) n FROM io_productos WHERE activo = 1 AND
             (COALESCE(resumen, "") = "" OR COALESCE(imagen, "") = "")')['n'];
         comprobar('Resumen e imagen de cada producto', $incompletos === 0, "$incompletos productos sin resumen o imagen");

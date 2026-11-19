@@ -5,7 +5,7 @@ require_once __DIR__ . '/../lib/Pedidos.php';
 require_once __DIR__ . '/../lib/Facturacion.php';
 $actor = exigir('pedidos');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    exigir('reembolsos'); csrf_ok();
+    exigir(($_POST['accion'] ?? '') === 'cancelar_factura' ? 'facturas' : 'reembolsos'); csrf_ok();
     $id = (int) ($_POST['pedido_id'] ?? 0);
     try {
         $accion = (string) ($_POST['accion'] ?? '');
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         elseif ($accion === 'conciliar') { $r = IOPedidos::conciliar($actor, (int) ($_POST['reembolso_id'] ?? 0)); flash('Estado consultado: ' . $r['estado'] . '.'); }
         elseif ($accion === 'cancelar_pedido') { IOPedidos::cancelarPendiente($actor, $id, $motivo); flash('Pedido cancelado y reserva de cupón liberada.'); }
         elseif ($accion === 'cancelar_factura') {
-            if ($actor['rol'] !== 'admin') { throw new IOError('sin_permiso', 'Solo un administrador puede solicitar la cancelación fiscal.', 403); }
+            if (!puede('facturas')) { throw new IOError('sin_permiso', 'Necesitas el permiso “Cancelar facturas” para solicitar la cancelación fiscal.', 403); }
             $f = IOFacturacion::cancelar($id, (string) ($_POST['motivo_sat'] ?? ''), trim((string) ($_POST['sustitucion'] ?? '')) ?: null, $actor, $motivo);
             flash('Estado de la factura: ' . $f['estado'] . '.');
         } else { throw new IOError('accion', 'Acción no válida.'); }
@@ -48,6 +48,6 @@ $factura = IO::uno('SELECT estado,uuid FROM io_facturas WHERE pedido_id = ?', [$
 <label class="form-label">Motivo de la operación<input class="form-control" name="motivo" required maxlength="120"></label>
 <?php if ($pedido['estado'] === 'pagado'): ?><p>La devolución es por el total pagado. El acceso se revoca al confirmarse la devolución. Si existe CFDI, primero debe confirmarse su cancelación fiscal.</p><button name="accion" value="reembolsar" class="bo-btn">Solicitar devolución completa</button>
 <?php elseif (in_array($pedido['estado'], ['pendiente','fallido'], true)): ?><p>Cancela primero el intento en Stripe y después libera la reserva del cupón.</p><button name="accion" value="cancelar_pedido" class="bo-btn">Cancelar pedido pendiente</button><?php endif; ?>
-<?php if ($factura && $factura['estado'] !== 'cancelada' && $actor['rol'] === 'admin'): ?><hr><label class="form-label">Motivo SAT<select name="motivo_sat" class="form-select"><option value="">Seleccionar</option><option value="01">01 · Error con relación</option><option value="02">02 · Error sin relación</option><option value="03">03 · No se llevó a cabo la operación</option><option value="04">04 · Operación nominativa relacionada en factura global</option></select></label><label class="form-label">UUID de sustitución, cuando proceda<input class="form-control" name="sustitucion" maxlength="40"></label><button name="accion" value="cancelar_factura" class="bo-btn sec">Solicitar cancelación del CFDI</button><?php endif; ?>
+<?php if ($factura && $factura['estado'] !== 'cancelada' && puede('facturas')): ?><hr><label class="form-label">Motivo SAT<select name="motivo_sat" class="form-select"><option value="">Seleccionar</option><option value="01">01 · Error con relación</option><option value="02">02 · Error sin relación</option><option value="03">03 · No se llevó a cabo la operación</option><option value="04">04 · Operación nominativa relacionada en factura global</option></select></label><label class="form-label">UUID de sustitución, cuando proceda<input class="form-control" name="sustitucion" maxlength="40"></label><button name="accion" value="cancelar_factura" class="bo-btn sec">Solicitar cancelación del CFDI</button><?php endif; ?>
 </form><?php endif; ?></section>
 <?php }, 'pedidos.php');
