@@ -1,0 +1,36 @@
+# Inteligencia Objetiva 2.0 — reglas para servir la tienda nueva en las URL actuales del sitio.
+# Se agregan al .htaccess de la RAÍZ del sitio, ANTES de las reglas existentes, solo cuando se apruebe el cambio (fase 5 de la guía).
+# Para volver a las páginas anteriores basta con comentar este bloque.
+
+RewriteEngine On
+RewriteRule ^nosotros/?$                    /io/tienda/nosotros.php [L,QSA]
+RewriteRule ^catalogo/?$                    /io/tienda/catalogo.php [L,QSA]
+RewriteRule ^conferencias-en-linea/?$       /io/tienda/catalogo.php?categoria=conferencias [L,QSA]
+RewriteRule ^cursos-en-linea/?$             /io/tienda/catalogo.php?categoria=cursos [L,QSA]
+RewriteRule ^(documentales|introspecciones)/?$ /io/tienda/catalogo.php?categoria=documentales [L,QSA]
+RewriteRule ^audiolibro/?$                  /io/tienda/catalogo.php?categoria=audiolibro [L,QSA]
+RewriteRule ^producto/([a-z0-9-]+)/?$       /io/tienda/producto.php?p=$1 [L,QSA]
+RewriteRule ^carrito/?$                     /io/tienda/carrito.php [L,QSA]
+RewriteRule ^gracias/?$                     /io/tienda/gracias.php [L,QSA]
+RewriteRule ^(en-vivo|calendario)/?$          /io/tienda/en-vivo.php [L,QSA]
+RewriteRule ^membresias/?$                  /io/tienda/membresias.php [L,QSA]
+
+# Fichas antiguas (/conferencias-en-linea/titulo-410) → ficha nueva, con redirección permanente para SEO
+RewriteRule ^(conferencias-en-linea|cursos-en-linea|documentales|introspecciones|audiolibro)/([a-z0-9-]+-[0-9]+)/?$ /producto/$2 [R=301,L]
+
+# nginx equivalente:
+#   location ~ ^/(conferencias-en-linea|cursos-en-linea|documentales|introspecciones|audiolibro)/([a-z0-9-]+-[0-9]+)/?$ { return 301 /producto/$2$is_args$args; }
+#   location = /nosotros { rewrite ^ /io/tienda/nosotros.php last; }
+#   location = /catalogo { rewrite ^ /io/tienda/catalogo.php last; }
+#   location = /conferencias-en-linea { rewrite ^ /io/tienda/catalogo.php?categoria=conferencias last; }
+#   location = /cursos-en-linea { rewrite ^ /io/tienda/catalogo.php?categoria=cursos last; }
+#   location = /documentales { rewrite ^ /io/tienda/catalogo.php?categoria=documentales last; }
+#   location = /introspecciones { rewrite ^ /io/tienda/catalogo.php?categoria=documentales last; }
+#   location = /audiolibro { rewrite ^ /io/tienda/catalogo.php?categoria=audiolibro last; }
+#   location = /carrito  { rewrite ^ /io/tienda/carrito.php last; }
+#   location = /gracias  { rewrite ^ /io/tienda/gracias.php last; }
+#   location ~ ^/(en-vivo|calendario)/?$ { rewrite ^ /io/tienda/en-vivo.php last; }
+#   location = /membresias { rewrite ^ /io/tienda/membresias.php last; }
+#   location ~ ^/producto/([a-z0-9-]+)/?$ { rewrite ^ /io/tienda/producto.php?p=$1 last; }
+# Para aceptar barra final añade las variantes location = /ruta/ o una redirección
+# de barra final acorde con la configuración existente del servidor.

@@ -1,0 +1,199 @@
+/* Inteligencia Objetiva 2.0 — Tienda (catálogo, ficha, carrito). Usa los tokens de tema/io-theme.css y portada.css */
+.iot { background: var(--io-fondo); color: var(--io-texto); }
+.iot main { min-height: 60vh; }
+
+/* Encabezado */
+.iot-header { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--io-fondo-alt) 94%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--io-borde); }
+.iot-header .container { min-height: 96px; }
+/* Logo real del sitio (/img/icons/logo.png): "iO" + Inteligencia Objetiva ® + firma roja Martín Aparicio */
+.iot-logo { display: flex; align-items: center; text-decoration: none; }
+.iot-logo img, .iot-pie-marca img { height: 96px; width: auto; max-width: none; margin: -6px 0; } /* el PNG es cuadrado (400×400) con aire alrededor */
+.iot-nav ul { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.iot-nav .nav-link { padding: 8px 12px; border-radius: 999px; font-size: 15px; font-weight: 400; }
+.iot-nav .nav-link.active { font-weight: 500; }
+.iot-nav .iot-ayuda { margin-left: 6px; padding: 8px 18px; color: var(--io-ayuda-tx) !important; background-image: linear-gradient(135deg, var(--io-ayuda-bg-a), var(--io-ayuda-bg-b)); border: 1px solid rgba(165, 42, 43, .18); box-shadow: 0 4px 12px rgba(165, 42, 43, .12); }
+.iot-carrito { position: relative; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: var(--io-texto); }
+.iot-carrito svg { width: 24px; height: 24px; }
+.iot-carrito b { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--io-rojo); color: #fff; font-size: 11.5px; display: grid; place-items: center; }
+.iot-usuario { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--io-marino); color: var(--io-fondo); font-weight: 600; }
+html[data-io-theme="dark"] .iot-usuario { color: #111; }
+.iot-menu { display: none; width: 42px; height: 42px; border: 1px solid var(--io-borde); border-radius: 50%; background: transparent; flex-direction: column; justify-content: center; align-items: center; gap: 5px; }
+.iot-menu span { width: 16px; height: 1.5px; background: var(--io-texto); }
+
+.iot-aviso { margin: 18px 0 0; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--io-borde); background: var(--io-superficie); }
+.iot-aviso.error { border-color: rgba(207, 23, 23, .4); background: rgba(207, 23, 23, .07); }
+.iot-aviso.ok { border-color: rgba(22, 163, 74, .4); background: rgba(22, 163, 74, .07); }
+
+/* Botones */
+.iot-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 20px; border-radius: 999px; border: 1px solid var(--io-rojo); background: var(--io-rojo); color: #fff; font-weight: 500; font-size: 14.5px; text-decoration: none; cursor: pointer; transition: background .2s, transform .2s; }
+.iot-btn:hover { background: var(--io-rojo-hover); color: #fff; transform: translateY(-1px); }
+/* Secundario: blanco con sombra, como "Entrar" del sitio original */
+.iot-btn.sec { background: var(--io-superficie); color: var(--io-texto); border-color: transparent; box-shadow: 0 8px 18px -6px rgba(0, 0, 0, .28); }
+.iot-btn.sec:hover { background: var(--io-superficie); color: var(--io-rojo); }
+/* Oscuro: grafito como el botón "Comprar" original */
+.iot-btn.oscuro { background: var(--io-grafito); border-color: var(--io-grafito); }
+.iot-btn.oscuro:hover { background: var(--io-grafito-2); border-color: var(--io-grafito-2); }
+.iot-btn.grande { padding: 15px 28px; font-size: 16px; font-weight: 500; width: 100%; box-shadow: 0 10px 22px -12px rgba(207, 23, 23, .7); }
+.iot-btn[disabled] { opacity: .6; cursor: wait; }
+
+/* Encabezado de página */
+.iot-cabecera { padding: clamp(40px, 6vw, 72px) 0 28px; }
+.iot-cabecera { text-align: center; }
+.iot-cabecera h1 { font-weight: 400; font-size: clamp(28px, 3.2vw, 40px); line-height: 1.2; color: var(--io-marino) !important; margin: 0 0 10px; }
+.iot-cabecera p { color: var(--io-texto-suave); font-size: clamp(18px, 1.8vw, 24px); font-weight: 300; max-width: 40em; margin: 0 auto; }
+
+/* Filtros */
+.iot-filtros { display: grid; gap: 26px; margin: 8px 0 32px; padding: 0 0 28px; border-bottom: 1px solid var(--io-borde); }
+.iot-categorias { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.iot-chip { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--io-borde); background: var(--io-superficie); color: var(--io-texto); font-size: 14px; text-decoration: none; white-space: nowrap; }
+.iot-chip:hover { border-color: var(--io-texto-suave); color: var(--io-texto); }
+.iot-chip.on { background: var(--io-marino); color: #fff; border-color: var(--io-marino); }
+html[data-io-theme="dark"] .iot-chip.on, html[data-io-theme="dark"] a.iot-chip.on:hover { color: #111 !important; }
+.iot-controles { display: grid; grid-template-columns: minmax(240px, 1.5fr) repeat(3, minmax(180px, 1fr)); gap: 20px; padding: 24px; border: 1px solid var(--io-borde); border-radius: 18px; background: var(--io-fondo-alt); }
+.iot-campo { min-width: 0; display: grid; align-content: start; gap: 9px; }
+.iot-campo label { margin: 0; color: var(--io-texto-suave); font-size: 13px; font-weight: 500; line-height: 1.4; }
+.iot-filtros input, .iot-filtros select { width: 100%; min-width: 0; height: 48px; margin: 0; border-radius: 12px; border: 1px solid var(--io-borde); background: var(--io-superficie); color: var(--io-texto); padding: 0 14px; font-size: 14px; font-family: inherit; }
+.iot-filtros select { padding-right: 32px; text-overflow: ellipsis; }
+.iot-buscador { display: flex; align-items: center; min-width: 0; border: 1px solid var(--io-borde); border-radius: 12px; background: var(--io-superficie); }
+.iot-buscador input { border: 0; background: transparent; flex: 1; width: 0; border-radius: 12px 0 0 12px; }
+.iot-buscador button { display: grid; place-items: center; flex: 0 0 44px; align-self: stretch; border: 0; border-radius: 0 12px 12px 0; background: transparent; color: var(--io-texto); cursor: pointer; }
+.iot-buscador button:hover { color: var(--io-rojo); }
+.iot-buscador button svg { width: 20px; height: 20px; }
+.iot-buscador:focus-within { outline: 2px solid var(--io-marino); outline-offset: 3px; }
+.iot-buscador input:focus-visible { outline: none; box-shadow: none; }
+
+@media (max-width: 1199px) {
+  .iot-controles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .iot-campo-busqueda { grid-column: 1 / -1; }
+}
+@media (max-width: 767px) {
+  .iot-filtros { gap: 20px; }
+  .iot-categorias { gap: 10px; }
+  .iot-categorias .iot-chip { padding: 9px 13px; white-space: normal; }
+  .iot-controles { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 18px; gap: 18px 14px; }
+  .iot-campo:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 479px) {
+  .iot-controles { grid-template-columns: minmax(0, 1fr); }
+  .iot-filtros input, .iot-filtros select { font-size: 16px; }
+}
+
+/* Tarjetas de producto */
+.iot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+.iot-card { display: flex; flex-direction: column; border-radius: 6px; overflow: hidden; background: var(--io-superficie); border: 1px solid var(--io-borde); box-shadow: var(--io-sombra); transition: transform .25s, box-shadow .25s; }
+.iot-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -12px rgba(20, 20, 40, .25); }
+.iot-card .img { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #0b0c10; }
+.iot-card .img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+.iot-card:hover .img img { transform: scale(1.05); }
+.iot-card .img .io-badge-acceso { position: absolute; left: 12px; top: 12px; background: rgba(10, 11, 15, .72); color: #fff; border-color: rgba(255, 255, 255, .22); backdrop-filter: blur(6px); }
+.iot-card .img .io-badge-acceso.unica { color: #fecaca; border-color: rgba(239, 68, 68, .55); }
+.iot-card .img .io-badge-acceso.permanente { color: #bbf7d0; border-color: rgba(74, 222, 128, .45); }
+.iot-card .cuerpo { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 18px 18px 16px; }
+.iot-card .cat { font-size: 12px; letter-spacing: .04em; color: var(--io-texto-suave); }
+.iot-card h3 { font-size: 16.5px; font-weight: 400; line-height: 1.35; margin: 0; }
+.iot-card h3 a { color: var(--io-texto); text-decoration: none; }
+.iot-card h3 a::after { content: ""; position: absolute; inset: 0; }
+.iot-card { position: relative; }
+.iot-card p { font-size: 14px; color: var(--io-texto-suave); margin: 0; line-height: 1.55; }
+.iot-card .pie { margin-top: auto; padding-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; position: relative; z-index: 2; }
+.iot-precio { font-size: 19px; font-weight: 500; color: var(--io-rojo); }
+.iot-precio small { font-size: 12px; font-weight: 400; color: var(--io-texto-suave); }
+.iot-antes { display: block; font-size: 13px; color: var(--io-texto-suave); }
+.iot-estrellas { position: relative; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--io-texto-suave); }
+.iot-estrellas span { width: 76px; height: 14px; background: linear-gradient(90deg, var(--io-rojo) var(--r), var(--io-borde) var(--r)); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 14'%3E%3Cg fill='black'%3E%3Cpath id='s' d='M7 0l2 4.6 5 .4-3.8 3.3 1.2 4.9L7 10.6 2.6 13.2l1.2-4.9L0 5l5-.4z'/%3E%3Cuse href='%23s' x='16'/%3E%3Cuse href='%23s' x='32'/%3E%3Cuse href='%23s' x='48'/%3E%3Cuse href='%23s' x='64'/%3E%3C/g%3E%3C/svg%3E") no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 14'%3E%3Cg fill='black'%3E%3Cpath id='s' d='M7 0l2 4.6 5 .4-3.8 3.3 1.2 4.9L7 10.6 2.6 13.2l1.2-4.9L0 5l5-.4z'/%3E%3Cuse href='%23s' x='16'/%3E%3Cuse href='%23s' x='32'/%3E%3Cuse href='%23s' x='48'/%3E%3Cuse href='%23s' x='64'/%3E%3C/g%3E%3C/svg%3E") no-repeat; }
+.iot-estrellas.vacio { font-style: italic; }
+.iot-vacio { padding: 60px 20px; text-align: center; border: 1px dashed var(--io-borde); border-radius: 18px; color: var(--io-texto-suave); }
+.iot-paginas { display: flex; justify-content: center; gap: 8px; margin: 40px 0 70px; }
+
+/* Ficha de producto */
+.iot-ficha { padding-top: 34px; padding-bottom: 70px; } /* solo vertical: no pisar el padding lateral de .container */
+.iot-migas { font-size: 13px; color: var(--io-texto-suave); margin-bottom: 20px; }
+.iot-migas a { color: var(--io-texto-suave); }
+.iot-ficha h1 { font-weight: 400; font-size: clamp(28px, 3.2vw, 40px); line-height: 1.2; color: var(--io-marino) !important; margin: 10px 0 14px; }
+.iot-video { position: relative; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; background: #000; cursor: pointer; }
+.iot-video img { width: 100%; height: 100%; object-fit: cover; opacity: .85; }
+.iot-video .play { position: absolute; inset: 0; margin: auto; width: 78px; height: 78px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.5); backdrop-filter: blur(8px); color: #fff; }
+.iot-video .play svg { width: 26px; margin-left: 4px; }
+.iot-video .muestra { position: absolute; left: 14px; bottom: 14px; padding: 4px 12px; border-radius: 999px; font-size: 12.5px; color: #fff; background: rgba(0,0,0,.55); }
+.iot-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.iot-compra { position: sticky; top: 112px; padding: 26px; border-radius: 20px; background: var(--io-superficie); border: 1px solid var(--io-borde); }
+.iot-compra .iot-precio { font-size: 34px; font-weight: 500; }
+.iot-acceso { display: flex; gap: 12px; margin: 18px 0; padding: 14px; border-radius: 14px; background: var(--io-superficie-2); font-size: 14px; }
+.iot-acceso.unica { background: rgba(207, 23, 23, .07); }
+.iot-acceso svg { flex: none; width: 22px; height: 22px; color: var(--io-rojo); }
+.iot-acceso b { display: block; font-weight: 500; }
+.iot-acceso span { color: var(--io-texto-suave); }
+.iot-compra .nota { font-size: 12.5px; color: var(--io-texto-suave); margin: 12px 0 0; text-align: center; }
+.iot-aprender { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.iot-aprender li { display: flex; gap: 12px; }
+.iot-aprender li::before { content: ""; flex: none; width: 8px; height: 8px; margin-top: 9px; border-radius: 50%; background: var(--io-rojo); }
+.iot-ficha h2 { font-weight: 700; font-size: clamp(24px, 2.4vw, 32px); color: var(--io-marino) !important; margin: 40px 0 16px; }
+.iot-meta { display: flex; flex-wrap: wrap; gap: 18px; color: var(--io-texto-suave); font-size: 14px; margin-bottom: 18px; }
+
+/* Carrito / pago */
+.iot-carrito-pag { padding-top: 10px; padding-bottom: 80px; }
+.iot-linea { display: flex; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--io-borde); }
+.iot-linea img { width: 120px; aspect-ratio: 16/10; object-fit: cover; border-radius: 12px; }
+.iot-linea .info { flex: 1; min-width: 0; }
+.iot-linea .info a { color: var(--io-texto); text-decoration: none; font-weight: 500; }
+.iot-linea .info small { display: block; color: var(--io-texto-suave); margin-top: 4px; }
+.iot-linea .quitar { background: none; border: 0; color: var(--io-texto-suave); font-size: 13px; text-decoration: underline; cursor: pointer; }
+.iot-total { padding: 24px; border-radius: 20px; background: var(--io-superficie); border: 1px solid var(--io-borde); position: sticky; top: 112px; }
+.iot-total .fila { display: flex; justify-content: space-between; padding: 6px 0; color: var(--io-texto-suave); font-size: 14.5px; }
+.iot-total .fila.grande { color: var(--io-texto); font-size: 22px; font-weight: 600; border-top: 1px solid var(--io-borde); margin-top: 8px; padding-top: 14px; }
+.iot-total .fila.ahorro { color: #16a34a; }
+html[data-io-theme="dark"] .iot-total .fila.ahorro { color: #4ade80; }
+.iot-pasos { display: flex; gap: 8px; margin-bottom: 26px; font-size: 13.5px; color: var(--io-texto-suave); }
+.iot-pasos span { display: inline-flex; align-items: center; gap: 8px; }
+.iot-pasos span::after { content: ""; width: 26px; height: 1px; background: var(--io-borde); }
+.iot-pasos span:last-child::after { display: none; }
+.iot-pasos .on { color: var(--io-texto); font-weight: 500; }
+.iot-pasos i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 12px; border: 1px solid currentColor; }
+.iot-pasos .on i { background: var(--io-rojo); border-color: var(--io-rojo); color: #fff; }
+.iot-metodos { display: grid; gap: 10px; margin: 16px 0; }
+.iot-metodo { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--io-borde); border-radius: 14px; cursor: pointer; background: var(--io-superficie); }
+.iot-metodo:has(input:checked) { border-color: var(--io-rojo); box-shadow: inset 0 0 0 1px var(--io-rojo); }
+.iot-metodo b { font-weight: 500; }
+.iot-metodo small { display: block; color: var(--io-texto-suave); }
+.iot-demo { margin-top: 14px; padding: 12px 14px; border-radius: 12px; font-size: 13px; border: 1px dashed var(--io-borde); color: var(--io-texto-suave); }
+#stripe-element { padding: 4px 0 8px; }
+.iot-ficha-oxxo { padding: 22px; border-radius: 16px; border: 1px solid var(--io-borde); background: var(--io-superficie); }
+.iot-ficha-oxxo .ref { font-family: ui-monospace, monospace; font-size: 22px; letter-spacing: .12em; padding: 12px; text-align: center; border-radius: 10px; background: var(--io-superficie-2); margin: 12px 0; }
+
+/* Nosotros */
+.iot-nos-hero { padding: clamp(60px, 9vw, 120px) 0 40px; }
+.iot-nos-hero h1 { font-weight: 300; font-size: clamp(40px, 5vw, 68px); line-height: 1.1; color: var(--io-titular) !important; margin: 0 0 22px; }
+.iot-nos-hero p { font-size: clamp(17px, 1.5vw, 20px); line-height: 1.7; color: var(--io-texto-suave); max-width: 38em; }
+.iot-cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 18px; margin: 40px 0 0; }
+.iot-cifras div { padding: 22px; border-radius: 18px; border: 1px solid var(--io-borde); background: var(--io-superficie); }
+.iot-cifras b { display: block; font-size: 44px; font-weight: 300; line-height: 1; color: var(--io-rojo); }
+.iot-cifras span { font-size: 14px; color: var(--io-texto-suave); }
+.iot-fundador { padding: clamp(60px, 8vw, 110px) 0; background: var(--io-fondo-alt); }
+.iot-fundador img { width: 100%; border-radius: 24px; aspect-ratio: 4/5; object-fit: cover; background: #0b0c10; }
+.iot-fundador h2 { font-weight: 700; font-size: clamp(26px, 2.6vw, 32px); color: var(--io-marino) !important; margin: 0 0 6px; }
+.iot-fundador .rol { color: var(--io-rojo); font-size: 14.5px; margin-bottom: 22px; }
+.iot-fundador p { line-height: 1.75; }
+.iot-valores { padding: clamp(60px, 8vw, 110px) 0; }
+
+@media (max-width: 991px) {
+  .iot-header .container { min-height: 76px; }
+  .iot-logo img { height: 76px; }
+  .iot-carrito { margin-left: auto; }
+  .iot-nav { position: fixed; inset: 76px 0 auto 0; display: none; background: var(--io-superficie); border-bottom: 1px solid var(--io-borde); padding: 12px; }
+  .iot-menu-abierto .iot-nav { display: block; }
+  .iot-nav ul { flex-direction: column; align-items: stretch; }
+  .iot-menu { display: flex; }
+  .iot-compra, .iot-total { position: static; margin-top: 24px; }
+  .iot-linea img { width: 84px; }
+}
+
+/* Pie */
+.iot-pie { padding: 56px 0 28px; border-top: 1px solid var(--io-borde); background: var(--io-fondo-alt); font-size: 14px; color: var(--io-texto-suave); }
+.iot-pie b { display: block; margin-bottom: 10px; color: var(--io-texto); font-weight: 500; }
+.iot-pie a, .iot-pie span { display: block; margin-bottom: 6px; color: var(--io-texto-suave); text-decoration: none; }
+.iot-pie a:hover { color: var(--io-rojo); }
+.iot-pie-marca { display: inline-block !important; margin-bottom: 14px !important; }
+.iot-pie p { max-width: 26em; }
+.iot-legal { margin: 36px 0 0; padding-top: 20px; border-top: 1px solid var(--io-borde); font-size: 13px; }
+.iot-legal a { display: inline; color: var(--io-texto-suave); text-decoration: underline; }
+.iot-pie p.iot-legal { max-width: none; }

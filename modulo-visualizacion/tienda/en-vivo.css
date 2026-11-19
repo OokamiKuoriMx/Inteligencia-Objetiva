@@ -1,0 +1,44 @@
+/* Inteligencia Objetiva 2.0 — Página En vivo. Tokens de tema/io-theme.css */
+.iov { padding-top: 26px; }
+.iov-escena { margin: 18px 0 10px; }
+.iov-cabeza { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 10px; }
+.iov-alaire { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 999px; background: var(--io-rojo); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.iov-alaire i { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: iov-pulso 1.4s infinite; }
+@keyframes iov-pulso { 50% { opacity: .25; } }
+.iov-etiqueta { padding: 5px 12px; border-radius: 999px; background: var(--io-superficie-2); border: 1px solid var(--io-borde); font-size: 13px; font-weight: 500; color: var(--io-texto); }
+.iov-plataforma { font-size: 13px; color: var(--io-texto-suave); }
+.iov h1 { font-family: Roboto, system-ui, sans-serif; font-weight: 300; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.15; color: var(--io-texto) !important; margin: 0 0 8px; }
+.iov-fecha { color: var(--io-texto-suave); margin-bottom: 22px; }
+.iov-fecha time { color: var(--io-texto); }
+.iov-zona { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.iov-zona.con-chat { grid-template-columns: minmax(0, 1fr) 360px; }
+.iov-video { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #000; }
+.iov-video iframe, .iov-chat iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.iov-chat { position: relative; min-height: 420px; border-radius: 18px; overflow: hidden; border: 1px solid var(--io-borde); background: var(--io-superficie); }
+.iov-bloqueo, .iov-espera { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; aspect-ratio: 16 / 9; padding: 28px; border-radius: 18px; border: 1px solid var(--io-borde); background: var(--io-superficie-2); }
+.iov-bloqueo svg { width: 40px; height: 40px; color: var(--io-texto-suave); }
+.iov-bloqueo p { max-width: 30em; margin: 0; color: var(--io-texto); }
+.iov-espera { color: #fff; background: linear-gradient(0deg, rgba(10, 11, 16, .82), rgba(10, 11, 16, .55)), var(--fondo, linear-gradient(135deg, #272256, #0e0f12)) center / cover; border: 0; }
+.iov-espera span { font-size: 14px; opacity: .85; }
+.iov-espera b { font-size: clamp(22px, 3vw, 34px); font-weight: 300; }
+.iov-espera b .io-restante { color: #fff; }
+.iov-espera .iot-btn.sec { color: #fff; border-color: rgba(255, 255, 255, .5); }
+.iov-desc { margin-top: 22px; max-width: 46em; }
+.iov-h2 { font-family: Roboto, system-ui, sans-serif; font-weight: 700; font-size: 26px; color: var(--io-marino) !important; margin: 46px 0 16px; }
+.iov-lista { display: grid; gap: 12px; }
+.iov-item { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 16px; border: 1px solid var(--io-borde); background: var(--io-superficie); }
+.iov-item .dia { flex: none; width: 56px; text-align: center; border-right: 1px solid var(--io-borde); padding-right: 14px; }
+.iov-item .dia b { display: block; font-size: 26px; font-weight: 300; line-height: 1; color: var(--io-rojo); }
+.iov-item .dia span { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--io-texto-suave); }
+.iov-item .info { flex: 1; min-width: 0; }
+.iov-item .info a, .iov-item .info span { display: block; color: var(--io-texto); font-weight: 500; text-decoration: none; }
+.iov-item .info a:hover { color: var(--io-rojo); }
+.iov-item .info small { color: var(--io-texto-suave); }
+@media (max-width: 991px) {
+  .iov-zona.con-chat { grid-template-columns: 1fr; }
+  .iov-chat { min-height: 380px; }
+  .iov-bloqueo, .iov-espera { aspect-ratio: auto; min-height: 240px; }
+  .iov-item { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) { .iov-alaire i { animation: none; } }
+

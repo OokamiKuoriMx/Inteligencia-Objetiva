@@ -94,6 +94,7 @@
           return pantallaFinal(t, r.mensaje || 'Intenta de nuevo.');
         }
         estado.token = r.token; estado.reglas = r.reglas; estado.max = r.empezar_en || 0;
+        if (typeof o.alIniciar === 'function') { try { o.alIniciar(r); } catch (e) {} }
         crearPlayer(r);
       }).catch(function () { pantallaFinal('Sin conexión', 'Revisa tu internet e intenta de nuevo.'); });
     }

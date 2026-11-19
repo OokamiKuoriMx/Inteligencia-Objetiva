@@ -31,15 +31,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 pagina('Entrar', function () use ($error) { ?>
+  <section class="bo-acceso" aria-label="Acceso al equipo de Inteligencia Objetiva">
+  <div class="bo-acceso-identidad">
+    <a class="bo-acceso-logo" href="/"><img src="/tema/img/io-logo.webp" alt="Inteligencia Objetiva · Martín Aparicio" width="400" height="400"></a>
+    <span class="bo-contexto">La primera escuela del pensamiento</span>
+    <h2>El espacio de <br>nuestro equipo.</h2>
+    <p>Administra los contenidos, acompaña a los alumnos y da seguimiento a cada aprendizaje.</p>
+    <a class="bo-volver-sitio" href="/">Volver al sitio <span aria-hidden="true">↗</span></a>
+  </div>
   <form method="post" class="bo-login">
     <?= csrf_input() ?>
-    <h1>iO</h1>
-    <p class="bo-nota mb-4">Backoffice de Inteligencia Objetiva</p>
-    <?php if ($error): ?><div class="bo-flash error"><?= h($error) ?></div><?php endif; ?>
-    <label class="form-label">Correo</label>
-    <input class="form-control mb-3" type="email" name="email" required autocomplete="username">
-    <label class="form-label">Contraseña</label>
-    <input class="form-control mb-4" type="password" name="clave" required autocomplete="current-password">
-    <button class="bo-btn w-100 justify-content-center">Entrar</button>
+    <p class="bo-contexto">Administración</p>
+    <h1>Bienvenido al equipo</h1>
+    <p class="bo-login-intro">Ingresa con tu cuenta de Inteligencia Objetiva.</p>
+    <?php if ($error): ?><div class="bo-flash error" role="alert"><?= h($error) ?></div><?php endif; ?>
+    <label class="form-label" for="bo-correo">Correo electrónico</label>
+    <input class="form-control mb-3" id="bo-correo" type="email" name="email" required autocomplete="username">
+    <label class="form-label" for="bo-clave">Contraseña</label>
+    <input class="form-control mb-4" id="bo-clave" type="password" name="clave" required autocomplete="current-password">
+    <button class="bo-btn w-100 justify-content-center">Entrar al backoffice</button>
+    <p class="bo-login-pie">Uso exclusivo del equipo de Inteligencia Objetiva.</p>
   </form>
+  </section>
 <?php });

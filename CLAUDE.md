@@ -24,4 +24,5 @@ Mejoras para el sitio en producción inteligenciaobjetiva.com (PHP + MySQL + jQu
 - `php modulo-visualizacion/tests/sembrar-demo.php` + `php -S 127.0.0.1:8090 router.php` para revisar el backoffice.
 
 ## Límite conocido
-La visualización única es control de acceso, no DRM: el iframe de Vimeo no puede revocarse del lado del navegador. Mitigaciones: dominio restringido en Vimeo, marca de agua, latidos y sesión única.
+La visualización única es control de acceso: el iframe de Vimeo no puede revocarse del lado del navegador. Mitigaciones: dominio restringido en Vimeo, marca de agua, latidos y sesión única.
+Decisión del negocio (2026-11-18): no agregar capas de protección de contenido adicionales a las ya descritas.

@@ -2,8 +2,8 @@
  * Inteligencia Objetiva — Tema 2.0
  * 1) Pega en <head>, ANTES de cualquier CSS, el snippet de tema/head-snippet.html (evita parpadeo).
  * 2) Carga este archivo al final del <body>:
- *      <script src="/tema/io-theme.js?v=2.0.0" defer></script>
- * No depende de jQuery. No modifica la lógica existente del sitio.
+ *      <script src="/tema/io-theme.js?v=2.0.2" defer></script>
+ * No depende de jQuery. Reutiliza los modales de acceso existentes al volver desde el carrito.
  */
 (function () {
   'use strict';
@@ -42,7 +42,7 @@
   // El sitio tiene dos encabezados (escritorio y móvil): un botón en cada uno.
   function crearBotones() {
     var headers = document.querySelectorAll('header');
-    if (!headers.length) headers = [document.body];
+    if (!headers.length) return; // páginas sin encabezado (p. ej. el reproductor): sin botón
     Array.prototype.forEach.call(headers, crearBoton);
     aplicar(actual());
   }
@@ -109,6 +109,103 @@
     });
   }
 
+  // Fechas de vencimiento en la hora local del alumno + cuenta regresiva.
+  function fechas() {
+    var fmt = null;
+    try { fmt = new Intl.DateTimeFormat('es-MX', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }); } catch (e) {}
+    Array.prototype.forEach.call(document.querySelectorAll('time.io-fecha[datetime]'), function (el) {
+      if (el.dataset.ioListo || !fmt) return;
+      var d = new Date(el.getAttribute('datetime')); if (isNaN(d)) return;
+      el.textContent = fmt.format(d); el.title = 'Hora de tu dispositivo'; el.dataset.ioListo = '1';
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.io-restante[data-hasta]'), function (el) {
+      var s = Math.floor((new Date(el.dataset.hasta) - new Date()) / 1000);
+      if (isNaN(s)) return;
+      if (s <= 0) { el.textContent = 'tiempo agotado'; el.classList.add('agotado'); return; }
+      var d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+      el.textContent = 'te quedan ' + (d ? d + ' d ' : '') + (d || h ? h + ' h ' : '') + (m < 10 && (d || h) ? '0' : '') + m + ' min';
+      el.classList.toggle('urgente', s < 6 * 3600);
+    });
+  }
+  window.IOFechas = fechas;
+
+  // Reutiliza el acceso del sitio y conserva únicamente destinos internos aprobados.
+  function accesoConRegreso() {
+    var destinos = {
+      carrito: { url: '/io/tienda/carrito.php', texto: 'Volver a mi carrito', alias: '/carrito' },
+      membresias: { url: '/io/tienda/membresias.php', texto: 'Volver a membresías', alias: '/membresias' },
+      pedidos: { url: '/io/tienda/mis-pedidos.php', texto: 'Volver a mis pedidos y facturas' },
+      biblioteca: { url: '/io/public/mi-biblioteca.php', texto: 'Volver a mi biblioteca' }
+    };
+    function valido(clave) { return Object.prototype.hasOwnProperty.call(destinos, clave); }
+    var parametros = new URLSearchParams(window.location.search);
+    var modo = parametros.get('io_acceso');
+    var pedido = parametros.get('io_destino');
+    var destino = valido(pedido) ? pedido : 'carrito';
+    var solicitado = modo === 'login' || modo === 'registro';
+    var pendiente = solicitado || valido(pedido);
+    try {
+      if (solicitado || valido(pedido)) sessionStorage.setItem('io-volver-destino', destino);
+      var guardado = sessionStorage.getItem('io-volver-destino');
+      if (!pendiente && valido(guardado)) { destino = guardado; pendiente = true; }
+      if (!pendiente && sessionStorage.getItem('io-volver-carrito') === '1') { destino = 'carrito'; pendiente = true; }
+      var actual = window.location.pathname.replace(/\/$/, '') || '/';
+      if (actual === destinos[destino].url || actual === destinos[destino].alias) {
+        sessionStorage.removeItem('io-volver-destino'); sessionStorage.removeItem('io-volver-carrito'); return;
+      }
+    } catch (e) {}
+    if (!pendiente || window.location.pathname !== '/') return;
+    var aviso = document.createElement('div');
+    aviso.className = 'container py-3';
+    aviso.setAttribute('role', 'status');
+    var volver = document.createElement('a');
+    volver.className = 'btn btn-primary';
+    volver.href = destinos[destino].url;
+    volver.textContent = destinos[destino].texto;
+    aviso.appendChild(volver);
+    var cont = document.querySelector('main') || document.body;
+    cont.insertBefore(aviso, cont.firstChild);
+    if (!solicitado) return;
+    // Quita la orden de abrir el modal antes de que el login recargue la página.
+    var url = new URL(window.location.href);
+    url.searchParams.delete('io_acceso');
+    // La clave validada permite conservar el regreso aun si el navegador bloquea sessionStorage.
+    url.searchParams.set('io_destino', destino);
+    window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+    var modal = document.getElementById(modo);
+    if (modal && window.bootstrap && window.bootstrap.Modal) {
+      if (modo === 'login' && typeof window.recordar === 'function') window.recordar();
+      window.bootstrap.Modal.getOrCreateInstance(modal).show();
+    } else {
+      var enlace = document.querySelector('[data-bs-target="#' + modo + '"]');
+      if (enlace) enlace.click();
+    }
+  }
+
+  // Aviso "En vivo ahora" en todas las páginas cuando hay una transmisión al aire.
+  // Para desactivarlo en una página: window.IO_EN_VIVO_API = false;
+  function avisoEnVivo() {
+    var api = window.IO_EN_VIVO_API === undefined ? '/io/api/transmisiones.php?accion=ahora' : window.IO_EN_VIVO_API;
+    if (!api || !window.fetch || /^\/en-vivo/.test(location.pathname) || document.querySelector('.io-envivo-aviso')) return;
+    function pintar(d) {
+      if (!d || !d.en_vivo || !/^\/en-vivo\?t=[\w%-]+$/.test(d.url || '')) return;
+      var a = document.createElement('a');
+      a.className = 'io-envivo-aviso'; a.href = d.url;
+      var b = document.createElement('b'); b.textContent = 'En vivo';
+      var t = document.createElement('span'); t.textContent = d.titulo || 'Transmisión en vivo';
+      var u = document.createElement('u'); u.textContent = 'Ver ahora';
+      a.appendChild(b); a.appendChild(t); a.appendChild(u);
+      document.body.insertBefore(a, document.body.firstChild);
+    }
+    var c = null;
+    try { c = JSON.parse(sessionStorage.getItem('io-en-vivo') || 'null'); } catch (e) {}
+    if (c && Date.now() - c.t < 60000) { pintar(c.d); return; }
+    fetch(api, { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      try { sessionStorage.setItem('io-en-vivo', JSON.stringify({ t: Date.now(), d: d })); } catch (e) {}
+      pintar(d);
+    }).catch(function () {});
+  }
+
   // Si el usuario no ha elegido, seguir al sistema en vivo.
   if (mq && mq.addEventListener) {
     mq.addEventListener('change', function () { if (!guardado()) aplicar(sistema()); });
@@ -119,6 +216,9 @@
     crearBotones();
     corregirEstrellas();
     mejorarBanner();
+    avisoEnVivo();
+    accesoConRegreso();
+    fechas(); setInterval(fechas, 30000);
     // El catálogo pagina por AJAX: volver a corregir cuando cambie el DOM.
     if (window.MutationObserver) {
       var t;

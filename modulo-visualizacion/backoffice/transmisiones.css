@@ -1,0 +1,10 @@
+/* Backoffice · Transmisiones en vivo */
+.tx-alaire { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border-color: rgba(207, 23, 23, .45); background: rgba(207, 23, 23, .06); }
+.tx-punto { display: inline-block; width: 10px; height: 10px; margin-right: 8px; border-radius: 50%; background: var(--io-rojo); box-shadow: 0 0 0 4px rgba(207, 23, 23, .18); animation: tx-pulso 1.4s infinite; vertical-align: middle; }
+@keyframes tx-pulso { 50% { box-shadow: 0 0 0 8px rgba(207, 23, 23, 0); } }
+.tx-form .form-label { font-weight: 500; }
+.tx-detectado { margin: 6px 0 14px; font-size: 13px; color: var(--io-texto-suave); min-height: 1.2em; }
+.tx-detectado.error { color: var(--io-rojo); }
+.tx-check { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; }
+.tx-ayuda ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 14px; color: var(--io-texto); }
+@media (prefers-reduced-motion: reduce) { .tx-punto { animation: none; } }

@@ -1,0 +1,71 @@
+/* Backoffice IO 2.0 — diálogo "Otorgar acceso" (buscador de alumno y contenido). Colores vía tokens --io-*. */
+.bo-dialogo.ot { width: min(540px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); padding: 26px 26px 22px; overflow-y: auto; }
+.bo-dialogo.ot form { display: flex; flex-direction: column; gap: 14px; }
+.bo-dialogo.ot h3 { margin-bottom: 2px; }
+
+.ot-campo { position: relative; min-width: 0; }
+.ot-campo .form-label { margin-bottom: 6px; }
+.ot-opcional { font-weight: 400; color: var(--io-texto-suave); }
+.ot-ayuda { margin: 6px 0 0; font-size: 13px; color: var(--io-texto-suave); }
+.ot-error { margin: 6px 0 0; font-size: 13px; font-weight: 500; color: var(--io-bo-acento-texto, var(--io-rojo)); }
+.ot-error::before { content: "! "; font-weight: 700; }
+.ot-campo.con-error .form-control, .ot-campo.con-error .form-select { border-color: var(--io-rojo) !important; }
+
+/* Combobox */
+.ot-combo { position: relative; }
+.ot-combo .form-control { padding-left: 38px; background-image: none; }
+.ot-combo::before { content: ""; position: absolute; left: 13px; top: 50%; width: 16px; height: 16px; transform: translateY(-50%); pointer-events: none;
+  background: var(--io-texto-suave);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center / contain no-repeat; }
+.ot-combo[hidden], .ot-elegido[hidden], .ot-ayuda[hidden], .ot-error[hidden] { display: none !important; }
+
+.ot-lista { position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + 6px); margin: 0; padding: 6px; list-style: none; max-height: min(300px, 46dvh); overflow-y: auto;
+  background: var(--io-superficie); border: 1px solid var(--io-borde); border-radius: 12px; box-shadow: 0 14px 34px rgba(0, 0, 0, .16); }
+html[data-io-theme="dark"] .ot-lista { background: var(--io-superficie-2); box-shadow: 0 14px 34px rgba(0, 0, 0, .5); }
+.ot-opcion { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 10px; border-radius: 9px; cursor: pointer; color: var(--io-texto); }
+.ot-opcion:hover { background: color-mix(in srgb, var(--io-texto) 5%, transparent); }
+.ot-opcion[aria-selected="true"] { background: color-mix(in srgb, var(--io-rojo) 9%, transparent); box-shadow: inset 3px 0 0 var(--io-rojo); }
+.ot-opcion-txt { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; line-height: 1.3; }
+.ot-opcion-txt b { font-weight: 500; color: var(--io-texto); overflow-wrap: anywhere; }
+.ot-opcion-txt span { font-size: 13px; color: var(--io-texto-suave); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ot-cuenta { flex: 0 0 auto; font-size: 12.5px; color: var(--io-texto-suave); white-space: nowrap; }
+.ot-chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; flex: 0 0 auto; }
+.ot-chips .io-badge-acceso, .ot-elegido .io-badge-acceso { white-space: nowrap; }
+.ot-aviso { display: flex; flex-direction: column; gap: 4px; padding: 10px 10px 8px; font-size: 13.5px; color: var(--io-texto-suave); line-height: 1.45; }
+.ot-aviso b { color: var(--io-texto); font-weight: 500; }
+.ot-aviso-sec { font-size: 12.5px; }
+
+.ot-avatar { display: grid; place-items: center; flex: 0 0 34px; height: 34px; border-radius: 50%; font-size: 13px; font-weight: 500; letter-spacing: .02em;
+  color: var(--io-bo-blanco, #fff); background: var(--io-bo-marino, var(--io-marino)); }
+
+/* Elección hecha */
+.ot-elegido { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 9px 10px 9px 12px; border: 1px solid var(--io-borde); border-radius: 12px; background: var(--io-fondo-alt); }
+.ot-elegido-txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 1 auto; line-height: 1.3; }
+.ot-elegido-txt b { font-weight: 500; color: var(--io-texto); overflow-wrap: anywhere; }
+.ot-elegido-txt > span { font-size: 13px; color: var(--io-texto-suave); overflow-wrap: anywhere; }
+.ot-elegido .bo-btn { flex: 0 0 auto; }
+
+/* Motivo + nota */
+.ot-fila { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.ot-fila + .ot-ayuda { margin-top: -8px; }
+
+/* Resumen */
+.ot-resumen { padding: 12px 14px; border-radius: 12px; border: 1px dashed var(--io-borde); font-size: 14px; color: var(--io-texto-suave); line-height: 1.5; }
+.ot-resumen.listo { border-style: solid; border-color: color-mix(in srgb, var(--io-marino) 30%, var(--io-borde)); background: color-mix(in srgb, var(--io-marino) 5%, var(--io-superficie)); color: var(--io-texto); }
+.ot-resumen p { margin: 0; }
+.ot-resumen b { font-weight: 500; color: var(--io-texto); }
+.ot-resumen-sec { margin-top: 4px !important; font-size: 13px; color: var(--io-texto-suave); }
+.ot-resumen-aviso { margin-top: 6px !important; font-size: 13px; font-weight: 500; color: var(--io-estado-aviso, var(--io-texto)); }
+
+@media (max-width: 520px) {
+  .bo-dialogo.ot { padding: 20px 16px 16px; border-radius: 16px; }
+  .ot-fila { grid-template-columns: 1fr; }
+  .ot-fila + .ot-ayuda { margin-top: -6px; }
+  .ot-opcion { flex-wrap: wrap; }
+  .ot-chips { justify-content: flex-start; margin-left: 0; }
+  .bo-dialogo.ot .d-flex .bo-btn { flex: 1 1 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ot-opcion { transition: background-color .12s ease; }
+}

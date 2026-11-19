@@ -3,3 +3,5 @@ modulo-visualizacion/config.php
 /dist/
 /_vista/
 portada/img/*.png
+/.playwright-cli/
+graphify-out/

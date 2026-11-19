@@ -11,11 +11,13 @@ return [
         'clave'    => 'CLAVE_BD',
     ],
 
-    // Token personal de la API de Vimeo (Vimeo > Settings > Apps > Generate token, permiso "public" + "private").
-    // Solo se usa en el backoffice para leer duración y miniatura. Opcional.
+    // Token de la cuenta de Vimeo (developer.vimeo.com/apps > tu app > Generate an access token >
+    // "Authenticated (you)" con permisos Public, Private y Edit). Guía completa: VIMEO.md o backoffice > Vincular Vimeo.
+    // Solo lo usa el backoffice: lee título, duración, miniatura y privacidad, y aplica la configuración recomendada.
+    // Sin token, el editor solo puede leer videos públicos. Nunca lo compartas ni lo subas al repositorio.
     'vimeo_token' => '',
 
-    // Dominio donde se insertan los videos (también debe estar en la lista de dominios permitidos en Vimeo).
+    // Dominio donde se insertan los videos. El backoffice lo agrega a los dominios permitidos del video en Vimeo.
     'dominio' => 'https://inteligenciaobjetiva.com',
 
     // Zona horaria del negocio.
@@ -36,16 +38,76 @@ return [
         ];
     },
 
+    /**
+     * Opcional. Búsqueda de alumnos en la tabla REAL de clientes del sitio (diálogo "Otorgar acceso" del backoffice).
+     * Recibe el texto que escribe el equipo (nombre o correo, mínimo 2 caracteres) y devuelve hasta 10 clientes como
+     * [['id' => int, 'email' => string, 'nombre' => string], ...] (también se acepta [id, email, nombre]).
+     * El servidor la vuelve a llamar con el correo exacto para confirmar al alumno antes de otorgar, así que debe
+     * encontrar por correo. Sin este gancho solo aparecen alumnos que ya tienen pedidos o accesos en io_*.
+     * Usa consultas preparadas. Los nombres de tabla/columna de abajo son EJEMPLOS: reemplázalos.
+     */
+    // 'buscar_clientes' => function (string $texto): array {
+    //     $like = '%' . strtr($texto, ['\\' => '\\\\', '%' => '\%', '_' => '\_']) . '%';
+    //     return IO::todos('SELECT id, correo AS email, nombre FROM clientes WHERE correo LIKE ? OR nombre LIKE ? ORDER BY nombre LIMIT 10', [$like, $like]);
+    // },
+
     // Solo para desarrollo local: acepta peticiones desde localhost. En producción: false.
     'dev' => false,
+
+    /**
+     * Tienda y pasarela de pago (Stripe). Llaves en dashboard.stripe.com → Developers → API keys.
+     * Usa primero las llaves de PRUEBA (pk_test_ / sk_test_). Sin llaves, en producción no se puede pagar.
+     */
+    'tienda' => [
+        'stripe_publica' => 'pk_test_...',
+        'stripe_secreta' => 'sk_test_...',
+        'stripe_webhook' => 'whsec_...',       // "Signing secret" del webhook /io/api/stripe-webhook.php
+        'metodos'        => ['card', 'oxxo'],  // métodos habilitados en tu cuenta de Stripe
+        // Banner oculto mientras falten fechas o productos realmente rebajados.
+        // Usa fechas aprobadas absolutas ISO 8601 con zona, p. ej. AAAA-MM-DDTHH:MM:SS-06:00.
+        // No modifica precios: precio_mxn y precio_anterior se administran en io_productos.
+        'promocion' => [
+            'inicio' => '',
+            'fin' => '',
+            'productos' => [], // IDs del catálogo incluidos en la campaña.
+        ],
+    ],
+
+    // Stripe Billing. Configura precios recurrentes en Stripe y sus importes finales con IVA.
+    // Los ejemplos están desactivados: no representan una oferta comercial aprobada.
+    'membresias' => [
+        'habilitadas' => false,
+        'planes' => [
+            'premium' => [
+                'nombre' => 'Premium', 'stripe_price' => '', 'importe_centavos' => 0,
+                'moneda' => 'mxn', 'intervalo' => 'month', 'productos' => [],
+            ],
+            'platinum' => [
+                'nombre' => 'Platinum', 'stripe_price' => '', 'importe_centavos' => 0,
+                'moneda' => 'mxn', 'intervalo' => 'year', 'productos' => [],
+            ],
+        ],
+    ],
+
+    // CFDI 4.0 mediante Facturapi. El emisor configura su cuenta y sus certificados con el proveedor.
+    // Los códigos SAT debe confirmarlos el contador del cliente, no se asignan por suposición.
+    'facturacion' => [
+        'habilitada' => false, 'modo' => 'prueba', 'api_key' => '', 'producto_sat' => '', 'unidad_sat' => '',
+        'productos' => [], // Overrides por ID: ['producto_sat' => '...', 'unidad_sat' => '...'].
+    ],
+
+    // Devoluciones completas desde backoffice: habilitar tras las pruebas Stripe de aceptación.
+    'pedidos' => ['reembolsos_habilitados' => false],
 
     /**
      * Importación inicial (php bin/importar.php). Ajusta las consultas a las tablas reales del sitio.
      * Los nombres de tabla/columna de abajo son EJEMPLOS: reemplázalos.
      */
     'importar' => [
-        // Debe devolver: producto_id, titulo, vimeo_id, categoria  (opcionales: vimeo_hash, duracion_seg)
-        'sql_productos' => "SELECT id AS producto_id, titulo, video_vimeo AS vimeo_id, categoria FROM cursos WHERE activo = 1",
+        // Debe devolver: producto_id, titulo, vimeo_id, categoria. Opcionales: vimeo_hash, duracion_seg y, para la tienda,
+        // precio_mxn (con IVA), precio_anterior, resumen, descripcion, imagen, tema
+        'sql_productos' => "SELECT id AS producto_id, titulo, video_vimeo AS vimeo_id, categoria, ROUND(precio * 1.16, 2) AS precio_mxn,
+                                   descripcion AS resumen, descripcion, CONCAT('/admin/img/cursos/', imagen) AS imagen FROM cursos WHERE activo = 1",
         // Regla de acceso por categoría ('*' = cualquier otra)
         'regla_por_categoria' => [
             'conferencias'    => ['tipo' => 'ventana', 'horas_ventana' => 48, 'cuenta_desde' => 'primera_reproduccion'],

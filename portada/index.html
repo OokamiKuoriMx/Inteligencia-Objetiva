@@ -10,39 +10,40 @@
   <meta name="color-scheme" content="light dark">
   <!-- En el sitio real Bootstrap 5.1.3 ya está cargado; aquí se incluye para la vista previa -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../tema/io-theme.css">
-  <link rel="stylesheet" href="portada.css">
-  <link rel="preload" as="image" href="img/hero.webp" imagesrcset="img/hero-800.webp 800w, img/hero.webp 1672w" imagesizes="100vw">
-  <style>
-    /* Solo vista previa: barra superior simulada del sitio */
-    .preview-nav { position: fixed; inset: 0 0 auto 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 14px clamp(16px, 4vw, 48px); background: linear-gradient(rgba(8,9,14,.75), transparent); color: #fff; }
-    .preview-nav .marca { font-family: "Cormorant Garamond", serif; font-size: 26px; color: #fff; text-decoration: none; line-height: 1; }
-    .preview-nav .marca small { display: block; font-family: Roboto, sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .7; }
-    .preview-nav nav a { color: rgba(255,255,255,.85); text-decoration: none; font-size: 14px; margin: 0 12px; }
-    .preview-nav nav a:hover { color: #fff; }
-    .preview-nav header { display: contents; }
-    @media (max-width: 860px) { .preview-nav nav a:not(.keep) { display: none; } }
-  </style>
+  <link rel="stylesheet" href="/tema/io-theme.css">
+  <link rel="stylesheet" href="/portada/portada.css">
+  <link rel="preload" as="image" href="/portada/img/hero.webp" imagesrcset="/portada/img/hero-800.webp 800w, /portada/img/hero.webp 1672w" imagesizes="100vw">
+  <!-- Solo vista previa: el mismo encabezado que la tienda (tienda/_layout.php) -->
+  <link rel="stylesheet" href="/io/tienda/tienda.css">
 </head>
 <body class="io2">
 
 <!-- Vista previa: en producción se usa el encabezado actual del sitio -->
-<div class="preview-nav">
-  <a class="marca serif" href="/">iO<small>Inteligencia Objetiva</small></a>
-  <header>
-    <nav class="d-flex align-items-center">
-      <a href="/nosotros">Nosotros</a><a href="/conferencias-en-linea">Catálogo</a><a href="/membresias">Membresías</a><a href="/calendario">Calendario</a><a class="keep" href="/ayuda.html">Ayuda</a>
+<header class="iot-header preview-nav">
+  <div class="container d-flex align-items-center gap-3">
+    <a class="iot-logo" href="/" aria-label="Inteligencia Objetiva, inicio">
+      <img class="io-logo-img" src="/img/icons/logo.png" alt="Inteligencia Objetiva · Martín Aparicio" width="96" height="96">
+    </a>
+    <nav class="iot-nav ms-auto" aria-label="Principal">
+      <ul>
+        <li><a class="nav-link active" href="/">Inicio</a></li><li><a class="nav-link" href="/nosotros">Nosotros</a></li><li><a class="nav-link" href="/conferencias-en-linea">Catálogo</a></li><li><a class="nav-link" href="#membresias">Membresías</a></li><li><a class="nav-link" href="/io/public/mi-biblioteca.php">Mi biblioteca</a></li>
+        <li><a class="nav-link iot-ayuda" href="/ayuda.html">Ayuda</a></li>
+      </ul>
     </nav>
-  </header>
-</div>
+    <a class="iot-carrito" href="/carrito" aria-label="Carrito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/></svg>
+    </a>
+    <button class="iot-menu" type="button" aria-label="Menú" onclick="document.body.classList.toggle('iot-menu-abierto')"><span></span><span></span></button>
+  </div>
+</header>
 
 <!-- ===================== SECCIÓN: HÉROE ===================== -->
 <section class="io2-hero">
-  <div class="fondo"><img src="img/hero.webp" srcset="img/hero-800.webp 800w, img/hero.webp 1672w" sizes="100vw" alt="" fetchpriority="high"></div>
+  <div class="fondo"><img src="/portada/img/hero.webp" srcset="/portada/img/hero-800.webp 800w, /portada/img/hero.webp 1672w" sizes="100vw" alt="" fetchpriority="high"></div>
   <div class="container">
     <div class="row"><div class="col-lg-7">
-      <span class="eyebrow" data-revela>La primera escuela del pensamiento</span>
       <h1 data-revela="2">Aprende a ver la vida <em>tal como es</em></h1>
+      <p class="lema" data-revela="2">Inteligencia Objetiva · La primera escuela del pensamiento</p>
       <p class="lead-io" data-revela="3">No como te enseñaron que era. Un sistema de pensamiento para trascender el sufrimiento sin volverte frío, y convertirte en alguien fuerte, estable y un pilar para tu entorno.</p>
       <div class="acciones" data-revela="3">
         <a class="btn-io2 primario" href="/conferencias-en-linea">Explorar el catálogo
@@ -53,7 +54,7 @@
       <div class="prueba" data-revela="3">
         <div><b>250+</b>temas en línea</div>
         <div><b>4</b>caminos de estudio</div>
-        <div><b>App</b>iOS y Android</div>
+        <div><b>20+</b>años de investigación</div>
       </div>
     </div></div>
   </div>
@@ -74,9 +75,9 @@
   <div class="container">
     <div class="row g-5 align-items-center">
       <div class="col-lg-6" data-revela>
-        <!-- El video carga solo al hacer clic (no pesa en la carga inicial). data-vimeo = ID del video en Vimeo -->
-        <div class="video" data-vimeo="REEMPLAZAR_ID_VIMEO" role="button" tabindex="0" aria-label="Reproducir video: ¿Qué es Inteligencia Objetiva?">
-          <img src="img/introspecciones.webp" srcset="img/introspecciones-800.webp 800w, img/introspecciones.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
+        <!-- Video de presentación publicado en la portada actual; se carga solo al hacer clic. -->
+        <div class="video" data-youtube="o2PTnU-NHS4" role="button" tabindex="0" aria-label="Reproducir video: ¿Qué es Inteligencia Objetiva?">
+          <img src="/portada/img/introspecciones.webp" srcset="/portada/img/introspecciones-800.webp 800w, /portada/img/introspecciones.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
           <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         </div>
       </div>
@@ -103,28 +104,28 @@
     </div>
     <div class="io2-grid-caminos">
       <a class="io2-camino ancho" href="/conferencias-en-linea" data-revela>
-        <img src="img/conferencias.webp" srcset="img/conferencias-800.webp 800w, img/conferencias.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
+        <img src="/portada/img/conferencias.webp" srcset="/portada/img/conferencias-800.webp 800w, /portada/img/conferencias.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
         <span class="etiqueta">48 h desde tu primera reproducción</span>
         <div class="contenido"><span class="num">I</span><h3>Conferencias en línea</h3>
           <p>Más de 250 temas: pareja, economía, educación de los hijos, entorno laboral y desarrollo personal.</p>
           <span class="ir"><i></i>Ver conferencias</span></div>
       </a>
       <a class="io2-camino" href="/cursos-en-linea" data-revela="2">
-        <img src="img/cursos.webp" srcset="img/cursos-800.webp 800w, img/cursos.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
+        <img src="/portada/img/cursos.webp" srcset="/portada/img/cursos-800.webp 800w, /portada/img/cursos.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
         <span class="etiqueta">10 días de acceso</span>
         <div class="contenido"><span class="num">II</span><h3>Cursos en línea</h3>
           <p>Programas intensivos con cuaderno de trabajo para llevar la teoría a tu vida.</p>
           <span class="ir"><i></i>Ver cursos</span></div>
       </a>
       <a class="io2-camino" href="/documentales" data-revela>
-        <img src="img/introspecciones.webp" srcset="img/introspecciones-800.webp 800w, img/introspecciones.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
+        <img src="/portada/img/introspecciones.webp" srcset="/portada/img/introspecciones-800.webp 800w, /portada/img/introspecciones.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
         <span class="etiqueta">Acceso permanente</span>
         <div class="contenido"><span class="num">III</span><h3>Documentales e introspecciones</h3>
           <p>Para mirar hacia dentro, a tu ritmo, las veces que quieras.</p>
           <span class="ir"><i></i>Ver documentales</span></div>
       </a>
       <a class="io2-camino ancho" href="/calendario" data-revela="2">
-        <img src="img/membresias.webp" srcset="img/membresias-800.webp 800w, img/membresias.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
+        <img src="/portada/img/membresias.webp" srcset="/portada/img/membresias-800.webp 800w, /portada/img/membresias.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async">
         <span class="etiqueta">En vivo vía Zoom</span>
         <div class="contenido"><span class="num">IV</span><h3>Conferencias especiales en vivo</h3>
           <p>Aprende en tiempo real y pregunta directamente. Consulta el calendario de próximas fechas.</p>
@@ -139,18 +140,18 @@
   <div class="container">
     <div class="row g-4">
       <div class="col-md-4" data-revela><div class="io2-paso"><div class="n">01</div><h3>Elige un tema</h3><p>Empieza por lo que hoy te duele o te inquieta: pareja, dinero, trabajo, hijos o tu propia mente.</p></div></div>
-      <div class="col-md-4" data-revela="2"><div class="io2-paso"><div class="n">02</div><h3>Estudia a tu ritmo</h3><p>Desde la web o la app, con cuaderno de trabajo. Tu acceso empieza a contar cuando das play.</p></div></div>
+      <div class="col-md-4" data-revela="2"><div class="io2-paso"><div class="n">02</div><h3>Estudia a tu ritmo</h3><p>Desde tu computadora o tu celular, con cuaderno de trabajo. Tu acceso empieza a contar cuando das play.</p></div></div>
       <div class="col-md-4" data-revela="3"><div class="io2-paso"><div class="n">03</div><h3>Aplícalo a tu vida</h3><p>Observa, corrige y vuelve a observar. La comprensión se nota en tus relaciones y en tu paz.</p></div></div>
     </div>
   </div>
 </section>
 
 <!-- ===================== SECCIÓN: MEMBRESÍAS ===================== -->
-<section class="io2-membresias">
-  <div class="fondo"><img src="img/membresias.webp" srcset="img/membresias-800.webp 800w, img/membresias.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async"></div>
+<section class="io2-membresias" id="membresias">
+  <div class="fondo"><img src="/portada/img/membresias.webp" srcset="/portada/img/membresias-800.webp 800w, /portada/img/membresias.webp 1600w" sizes="(max-width: 991px) 100vw, 66vw" alt="" loading="lazy" decoding="async"></div>
   <div class="container">
     <div class="text-center mb-5" data-revela>
-      <span class="eyebrow" style="color:#ff8a8a">Membresías</span>
+      <span class="eyebrow">Membresías</span>
       <h2>Un camino constante, no un tema suelto</h2>
       <p class="lead-io mx-auto" style="max-width:36em">Acceso mensual a conferencias especiales, cursos intensivos y descuentos en todo el catálogo.</p>
     </div>
@@ -211,7 +212,7 @@
   </div>
 </section>
 
-<script src="portada.js" defer></script>
-<script src="../tema/io-theme.js" defer></script>
+<script src="/portada/portada.js?v=2.0.1" defer></script>
+<script src="/tema/io-theme.js?v=2.0.2" defer></script>
 </body>
 </html>

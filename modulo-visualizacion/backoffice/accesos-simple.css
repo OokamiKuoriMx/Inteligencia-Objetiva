@@ -1,0 +1,14 @@
+/* Accesos: vista simple (Activo / Finalizado / Revocado). Solo presentación. */
+.bo-tabla .acc-estado { white-space: nowrap; }
+
+/* Punto discreto cuando hay una reproducción en curso (antes: chip "● en vivo"). */
+.bo-tabla .acc-vivo {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+  background: var(--io-estado-ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--io-estado-ok) 18%, transparent);
+}

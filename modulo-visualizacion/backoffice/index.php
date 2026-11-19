@@ -5,9 +5,9 @@ exigir('ver');
 
 $k = IO::uno("SELECT
   (SELECT COUNT(*) FROM io_sesiones WHERE activa = 1 AND ultimo_latido > DATE_SUB(NOW(), INTERVAL 60 SECOND)) AS en_vivo,
-  (SELECT COUNT(*) FROM io_accesos WHERE estado IN ('activo','en_gracia')) AS activos,
+  (SELECT COUNT(*) FROM io_accesos WHERE estado IN ('por_empezar','activo','en_gracia')) AS activos,
   (SELECT COUNT(*) FROM io_accesos WHERE estado = 'activo' AND vence BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 24 HOUR)) AS por_vencer,
-  (SELECT COUNT(*) FROM io_accesos WHERE estado = 'visto' AND visto_en >= CURDATE()) AS vistos_hoy,
+  (SELECT COUNT(*) FROM io_accesos WHERE (estado = 'visto' AND visto_en >= CURDATE()) OR (estado = 'vencido' AND vence >= CURDATE())) AS vistos_hoy,
   (SELECT COUNT(*) FROM io_accesos WHERE estado = 'por_empezar') AS sin_empezar,
   (SELECT COUNT(*) FROM io_alertas WHERE revisada = 0) AS alertas");
 
@@ -25,9 +25,9 @@ $alertas = IO::todos("SELECT al.*, a.cliente_email, p.titulo FROM io_alertas al
 pagina('Tablero', function () use ($k, $vivo, $porVencer, $alertas) { ?>
   <div class="bo-kpis">
     <a class="bo-kpi vivo" href="en-vivo.php"><span>Viendo ahora</span><b><?= (int) $k['en_vivo'] ?></b></a>
-    <a class="bo-kpi" href="accesos.php?estado=activo"><span>Accesos activos</span><b><?= (int) $k['activos'] ?></b></a>
+    <a class="bo-kpi" href="accesos.php?estado=activos"><span>Accesos activos</span><b><?= (int) $k['activos'] ?></b></a>
     <a class="bo-kpi" href="accesos.php?vence=24"><span>Vencen en 24 h</span><b><?= (int) $k['por_vencer'] ?></b></a>
-    <a class="bo-kpi" href="accesos.php?estado=visto"><span>Únicas completadas hoy</span><b><?= (int) $k['vistos_hoy'] ?></b></a>
+    <a class="bo-kpi" href="accesos.php?estado=finalizados"><span>Finalizados hoy</span><b><?= (int) $k['vistos_hoy'] ?></b></a>
     <a class="bo-kpi" href="accesos.php?estado=por_empezar"><span>Comprados sin empezar</span><b><?= (int) $k['sin_empezar'] ?></b></a>
     <a class="bo-kpi" href="alertas.php"><span>Alertas por revisar</span><b><?= (int) $k['alertas'] ?></b></a>
   </div>

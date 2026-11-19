@@ -58,6 +58,31 @@ final class IO
 
     public static function ahora(): string { return date('Y-m-d H:i:s'); }
 
+    /** "jueves 20 de noviembre de 2026, 2:23 p. m." (hora del negocio; el navegador la convierte a la hora local del alumno). */
+    public static function fechaLarga(?string $dt): string
+    {
+        if (!$dt) { return ''; }
+        $t = strtotime($dt);
+        $dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+        $meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        $h = (int) date('G', $t); $ampm = $h < 12 ? 'a. m.' : 'p. m.'; $h12 = $h % 12 ?: 12;
+        return $dias[(int) date('w', $t)] . ' ' . date('j', $t) . ' de ' . $meses[(int) date('n', $t) - 1] . ' de ' . date('Y', $t) . ', ' . $h12 . ':' . date('i', $t) . ' ' . $ampm;
+    }
+
+    /** Marca HTML de una fecha: texto de respaldo + atributo ISO para mostrarla en la hora local del navegador. */
+    public static function htmlFecha(?string $dt): string
+    {
+        if (!$dt) { return ''; }
+        return '<time class="io-fecha" datetime="' . htmlspecialchars(date('c', strtotime($dt)), ENT_QUOTES) . '">' . htmlspecialchars(self::fechaLarga($dt), ENT_QUOTES) . '</time>';
+    }
+
+    /** Cuenta regresiva que actualiza el navegador ("te quedan 1 d 23 h 05 min"). */
+    public static function htmlRestante(?string $dt): string
+    {
+        if (!$dt) { return ''; }
+        return '<span class="io-restante" data-hasta="' . htmlspecialchars(date('c', strtotime($dt)), ENT_QUOTES) . '"></span>';
+    }
+
     public static function uno(string $sql, array $p = []): ?array
     {
         $st = self::db()->prepare($sql);
@@ -213,11 +238,11 @@ final class IOAccesos
             if ($a['estado'] === 'por_empezar' && $a['limite_inicio'] && $a['limite_inicio'] < $ahora) {
                 $nuevo = 'vencido';
             }
-            if ($p['tipo'] === 'ventana' && in_array($a['estado'], ['activo', 'en_gracia'], true) && $a['vence'] && $a['vence'] <= $ahora) {
+            if (($p['tipo'] === 'ventana' || $a['origen'] === 'membresia') && in_array($a['estado'], ['por_empezar', 'activo', 'en_gracia'], true) && $a['vence'] && $a['vence'] <= $ahora) {
                 $nuevo = 'vencido';
                 IO::ejecutar('UPDATE io_sesiones SET activa = 0, cerrada_por = ? WHERE acceso_id = ? AND activa = 1', ['vencido', $a['id']]);
             }
-            if ($p['tipo'] === 'unica') {
+            if ($p['tipo'] === 'unica' && $nuevo !== 'vencido') {
                 if ($a['estado'] === 'activo') {
                     $ses = IO::uno('SELECT ultimo_latido FROM io_sesiones WHERE acceso_id = ? AND activa = 1 ORDER BY ultimo_latido DESC LIMIT 1', [$a['id']]);
                     $ultimo = $ses['ultimo_latido'] ?? $a['actualizado'];
@@ -247,7 +272,7 @@ final class IOAccesos
     public static function delCliente(int $clienteId): array
     {
         $filas = IO::todos(
-            'SELECT a.*, p.titulo, p.tipo, p.duracion_seg, p.horas_ventana, p.cuenta_desde, p.umbral_pct
+            'SELECT a.*, p.titulo, p.tipo, p.duracion_seg, p.horas_ventana, p.cuenta_desde, p.umbral_pct, p.reanudaciones_max
              FROM io_accesos a JOIN io_politicas p ON p.producto_id = a.producto_id
              WHERE a.cliente_id = ? AND a.estado <> "revocado" ORDER BY a.actualizado DESC',
             [$clienteId]
@@ -293,7 +318,7 @@ final class IOAccesos
             if ($a['estado'] === 'por_empezar') {
                 $set['estado'] = 'activo';
                 $set['inicio'] = $ahora->format('Y-m-d H:i:s');
-                if ($p['tipo'] === 'ventana') {
+                if ($p['tipo'] === 'ventana' && $a['origen'] !== 'membresia') {
                     $set['vence'] = $ahora->modify('+' . (int) $p['horas_ventana'] . ' hours')->format('Y-m-d H:i:s');
                 }
             } elseif ($unica) {
@@ -327,7 +352,7 @@ final class IOAccesos
                 'tipo'       => $p['tipo'],
                 'estado'     => $a['estado'],
                 'empezar_en' => (int) $a['max_seg'],
-                'vence'      => $a['vence'],
+                'vence'      => $a['vence'] ? date('c', strtotime($a['vence'])) : null,
                 'marca_agua' => $cliente['email'],
                 'reglas'     => $unica ? [
                     'umbral_pct'         => (int) $p['umbral_pct'],
@@ -399,7 +424,8 @@ final class IOAccesos
 
             $credito = $reproduciendo ? (int) floor(min($transcurrido, self::SIN_LATIDO_SEG) * self::VELOCIDAD_MAX) + self::HOLGURA_SEG : 0;
             $limiteAvance = $max + $credito;
-            $vistos = $reproduciendo ? min($transcurrido, self::SIN_LATIDO_SEG) : 0;
+            // Segundos realmente vistos: el avance de la posición, nunca más que el tiempo real (un video atascado no suma).
+            $vistos = $reproduciendo ? max(0, min($transcurrido, $posicion - (int) $s['posicion_seg'])) : 0;
 
             if ($p['tipo'] !== 'unica') {
                 $nuevoMax = max($max, min($posicion, $limiteAvance));
@@ -504,6 +530,7 @@ final class IOAdmin
         self::exigirMotivo($motivo);
         IO::transaccion(function () use ($admin, $accesoId, $horas, $motivo) {
             $a = IOAccesos::bloquear($accesoId);
+            if ($a['origen'] === 'membresia') { throw new IOError('membresia', 'La vigencia de la membresía depende del período pagado. Usa una cortesía independiente.'); }
             $p = IOAccesos::politica((int) $a['producto_id']);
             if ($p['tipo'] !== 'ventana') { throw new IOError('tipo', 'Solo los accesos por tiempo se pueden extender.'); }
             if ($a['estado'] === 'revocado') { throw new IOError('revocado', 'El acceso está revocado.'); }
@@ -525,7 +552,7 @@ final class IOAdmin
             $a = IOAccesos::bloquear($accesoId);
             $p = IOAccesos::politica((int) $a['producto_id']);
             IO::ejecutar('UPDATE io_sesiones SET activa = 0, cerrada_por = "reinicio_admin" WHERE acceso_id = ? AND activa = 1', [$accesoId]);
-            IO::actualizar('io_accesos', ['estado' => 'por_empezar', 'inicio' => null, 'vence' => null, 'max_seg' => 0, 'seg_vistos' => 0,
+            IO::actualizar('io_accesos', ['estado' => 'por_empezar', 'inicio' => null, 'vence' => $a['origen'] === 'membresia' ? $a['vence'] : null, 'max_seg' => 0, 'seg_vistos' => 0,
                 'reanudaciones' => 0, 'gracia_hasta' => null, 'visto_en' => null,
                 'limite_inicio' => date('Y-m-d H:i:s', time() + 86400 * (int) $p['dias_para_empezar'])], 'id = ?', [$accesoId]);
             self::registrar($admin, 'reiniciar', $accesoId, (int) $a['producto_id'], $motivo, ['estado_anterior' => $a['estado'], 'max_seg' => (int) $a['max_seg']]);
@@ -586,21 +613,15 @@ final class IOAdmin
 /** Lectura de metadatos desde la API de Vimeo (solo backoffice). */
 final class IOVimeo
 {
+    /** Compatibilidad: delega en IOVimeoCliente (lib/Vimeo.php). Devuelve null si Vimeo no responde. */
     public static function info(string $vimeoId): ?array
     {
-        $token = IO::config()['vimeo_token'] ?? '';
-        if ($token === '' || !function_exists('curl_init')) { return null; }
-        $ch = curl_init('https://api.vimeo.com/videos/' . rawurlencode($vimeoId) . '?fields=name,duration,pictures.base_link,privacy');
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 10,
-            CURLOPT_HTTPHEADER => ['Authorization: bearer ' . $token, 'Accept: application/vnd.vimeo.*+json;version=3.4'],
-        ]);
-        $r = curl_exec($ch);
-        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        if ($code !== 200 || !$r) { return null; }
-        $j = json_decode($r, true);
-        return ['titulo' => $j['name'] ?? '', 'duracion_seg' => (int) ($j['duration'] ?? 0), 'miniatura' => $j['pictures']['base_link'] ?? null];
+        require_once __DIR__ . '/Vimeo.php';
+        try {
+            $v = IOVimeoCliente::consultar($vimeoId);
+        } catch (IOError $e) {
+            return null;
+        }
+        return ['titulo' => $v['titulo'], 'duracion_seg' => $v['duracion_seg'], 'miniatura' => $v['miniatura']];
     }
 }

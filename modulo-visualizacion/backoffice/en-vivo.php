@@ -15,7 +15,7 @@ function dispositivo(?string $ua): string
     return trim("$so $nav");
 }
 
-pagina('En vivo', function () use ($vivo) { ?>
+pagina('Reproducciones en curso', function () use ($vivo) { ?>
   <div class="bo-card">
     <h2><?= count($vivo) ?> reproducciones en curso <span class="bo-nota">Se actualiza cada 15 s</span></h2>
     <?php if (!$vivo): ?><div class="bo-vacio">Nadie está reproduciendo en este momento.</div><?php else: ?>

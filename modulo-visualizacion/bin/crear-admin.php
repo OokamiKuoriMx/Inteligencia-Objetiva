@@ -21,6 +21,7 @@ if (stripos(PHP_OS, 'WIN') === false) { system('stty echo'); }
 fwrite(STDOUT, "\n");
 if (strlen($clave) < 12) { fwrite(STDERR, "La contraseña debe tener al menos 12 caracteres.\n"); exit(1); }
 
-IO::ejecutar('INSERT INTO io_admins (email, nombre, hash, rol) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), hash = VALUES(hash), rol = VALUES(rol), activo = 1',
-    [$email, $nombre, password_hash($clave, PASSWORD_DEFAULT), $rol]);
+$hash = password_hash($clave, PASSWORD_DEFAULT);
+IO::ejecutar('INSERT INTO io_admins (email, nombre, hash, rol) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE nombre = ?, hash = ?, rol = ?, activo = 1',
+    [$email, $nombre, $hash, $rol, $nombre, $hash, $rol]);
 fwrite(STDOUT, "Usuario $email listo con rol $rol.\n");

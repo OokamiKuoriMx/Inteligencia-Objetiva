@@ -36,10 +36,24 @@ try {
             flash('Reproducción cerrada.');
             break;
         case 'otorgar':
-            $email = filter_var((string) ($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
-            if (!$email) { throw new IOError('email', 'Correo no válido.'); }
-            IOAdmin::cortesia($admin, (int) $_POST['cliente_id'], $email, trim((string) ($_POST['nombre'] ?? '')), (int) $_POST['producto_id'], $motivo);
-            flash('Acceso otorgado.');
+            require_once __DIR__ . '/../lib/Alumnos.php';
+            $email = filter_var(trim((string) ($_POST['email'] ?? '')), FILTER_VALIDATE_EMAIL);
+            if (!$email) { throw new IOError('email', 'Elige al alumno en la búsqueda: el correo no es válido.'); }
+            // No se confía en los campos ocultos: el alumno debe existir en el módulo o en el gancho del sitio.
+            $alumno = IOAlumnos::verificar((int) ($_POST['cliente_id'] ?? 0), $email);
+            if (!$alumno) { throw new IOError('alumno', 'No encontramos a ese alumno. Debe tener cuenta en el sitio; búscalo por nombre o correo.'); }
+            $productoId = (int) ($_POST['producto_id'] ?? 0);
+            $pol = IO::uno('SELECT titulo FROM io_politicas WHERE producto_id = ?', [$productoId]);
+            if (!$pol) { throw new IOError('producto', 'Elige un contenido de la lista.'); }
+            if (!in_array($motivo, IOAdmin::MOTIVOS, true)) { throw new IOError('motivo', 'Elige un motivo de la lista.'); }
+            $nota = trim(preg_replace('/\s+/u', ' ', (string) ($_POST['nota'] ?? '')));
+            if ($nota !== '') {
+                $motivo .= ': ' . $nota;
+                if (mb_strlen($motivo, 'UTF-8') > 120) { throw new IOError('nota', 'La nota es demasiado larga: motivo y nota suman máximo 120 caracteres.'); }
+            }
+            IOAdmin::cortesia($admin, $alumno['id'], $alumno['email'], $alumno['nombre'], $productoId, $motivo);
+            $volver = 'accesos.php?cliente=' . $alumno['id'];
+            flash('Acceso otorgado a '. ($alumno['nombre'] ?: $alumno['email']) . ': «' . $pol['titulo'] . '».');
             break;
         case 'politica':
             $d = [
