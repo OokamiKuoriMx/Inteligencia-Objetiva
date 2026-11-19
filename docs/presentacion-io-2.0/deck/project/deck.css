@@ -1,0 +1,76 @@
+section{--azul:#01203D;--azul2:#1A396B;--oro:#C68F11;--oro2:#D4AF37;--gris:#6B7785;--neutro:#F9F9F9;--texto:#33404F;--blanco:#FDFDFC;--linea:#DCE1E7;
+  font-family:'Segoe UI',Arial,sans-serif;color:var(--texto);background:var(--neutro);padding:128px 128px 160px;box-sizing:border-box;}
+section h1,section h2,section h3{font-family:'Segoe UI',Arial,sans-serif;margin:0;color:var(--azul);}
+.ceja{font-size:24px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--azul2);margin:0 0 20px;display:flex;align-items:center;gap:16px;}
+.ceja .num{color:var(--azul2);}
+.titulo{font-size:60px;font-weight:700;line-height:1.08;margin:0 0 28px;}
+.lead{font-size:30px;line-height:1.35;margin:0 0 28px;color:var(--texto);}
+.puntos{margin:0;padding:0 0 0 30px;font-size:26px;line-height:1.35;color:var(--texto);}
+.puntos li{margin:0 0 14px;}
+.puntos li::marker{color:var(--oro);}
+.nota{font-size:24px;line-height:1.35;color:var(--gris);margin:0;}
+.aviso{font-size:30px;line-height:1.4;color:var(--azul);margin:0;padding:28px 36px;border:2px solid var(--oro);background:#FBF6EA;border-radius:12px;}
+/* barra bicolor y pie */
+.barra{position:absolute;left:0;bottom:0;width:1920px;height:14px;display:flex;}
+.barra .o{width:960px;height:14px;background:var(--oro);}
+.barra .a{width:960px;height:14px;background:var(--azul);}
+.pie{position:absolute;left:128px;bottom:56px;width:1664px;display:flex;justify-content:space-between;align-items:center;font-size:24px;color:var(--gris);margin:0;}
+.pie b{color:var(--azul);font-weight:700;}
+/* rejilla 5+7 */
+.rejilla{display:flex;gap:72px;align-items:flex-start;height:792px;}
+.col-texto{width:600px;flex:none;display:flex;flex-direction:column;}
+.col-img{flex:1;display:flex;flex-direction:column;gap:16px;}
+.marco{background:var(--blanco);border:1px solid var(--linea);border-radius:14px;box-shadow:0 18px 40px rgba(1,32,61,.14);object-fit:contain;}
+.pie-img{font-size:24px;color:var(--gris);margin:0;}
+.duo{display:flex;gap:28px;align-items:flex-end;}
+/* tarjetas */
+.tarjetas{display:flex;gap:32px;}
+.tarjeta{flex:1;background:var(--blanco);border:1px solid var(--linea);border-top:8px solid var(--azul);border-radius:0;padding:52px 48px;min-height:300px;box-sizing:border-box;}
+.tarjeta.oro{border-top-color:var(--oro);}
+.tarjeta h3{font-size:40px;font-weight:700;margin:0 0 16px;color:var(--azul);}
+.tarjeta p{font-size:30px;line-height:1.4;margin:0;color:var(--texto);}
+/* fondo azul */
+.oscura{background:var(--azul);color:#E8EDF3;}
+.oscura h1,.oscura h2,.oscura h3{color:#FDFDFC;}
+.oscura .ceja,.oscura .ceja .num{color:var(--oro2);}
+.oscura .lead{color:#D5DEE8;}
+.oscura .pie{color:#AFC0D2;}
+.oscura .pie b{color:var(--oro2);}
+/* portada */
+.portada-t{font-size:110px;font-weight:700;line-height:1.02;margin:0 0 32px;letter-spacing:-.01em;}
+.sello{background:var(--blanco);border-radius:14px;padding:28px 36px;display:flex;align-items:center;gap:28px;}
+.sello p{font-size:24px;color:var(--azul);margin:0;font-weight:600;}
+/* antes / después */
+.etq{font-size:24px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:0;padding:10px 18px;border-radius:8px;align-self:flex-start;}
+.etq.antes{background:#E4E8ED;color:var(--azul);}
+.etq.despues{background:var(--azul);color:#FDFDFC;}
+/* tabla */
+.tabla{border-collapse:collapse;width:100%;font-size:30px;}
+.tabla th{background:var(--azul);color:#FDFDFC;text-align:left;padding:20px 26px;font-weight:700;}
+.tabla td{padding:22px 26px;border-bottom:1px solid var(--linea);vertical-align:top;line-height:1.35;background:var(--blanco);}
+.tabla td:first-child{font-weight:700;color:var(--azul);width:300px;}
+/* fases */
+.fases{display:flex;gap:0;margin-top:64px;}
+.fase{flex:1;border-top:6px solid var(--azul2);padding:22px 22px 0 0;}
+.fase .n{font-size:26px;font-weight:700;color:var(--oro);margin:0 0 8px;}
+.fase h3{font-size:34px;font-weight:700;margin:0 0 8px;}
+.fase p{font-size:28px;line-height:1.35;margin:0;color:var(--texto);}
+/* lista numerada */
+.pasos{display:flex;flex-direction:column;gap:0;}
+.paso{display:flex;gap:32px;align-items:flex-start;padding:24px 0;border-bottom:1px solid var(--linea);}
+.paso .n{width:72px;flex:none;font-size:44px;font-weight:700;color:var(--oro);line-height:1;}
+.paso h3{font-size:32px;font-weight:700;margin:0 0 6px;}
+.paso p{font-size:26px;line-height:1.35;margin:0;}
+.chip{display:inline-block;font-size:24px;font-weight:700;padding:8px 18px;border-radius:999px;background:#FBF3DF;color:#6E4F08;border:1px solid var(--oro);}
+.etiquetas{display:flex;flex-wrap:wrap;gap:12px;}
+.etiqueta{font-size:24px;line-height:1.2;padding:10px 20px;border-radius:999px;background:#EEF2F7;color:var(--azul);border:1px solid var(--linea);}
+.etiqueta.forma{background:var(--azul);color:#FDFDFC;border-color:var(--azul);font-weight:600;}
+.compactas .tarjeta{min-height:0;padding:28px 32px;}
+.compactas .tarjeta h3{font-size:30px;margin:0 0 8px;}
+.compactas .tarjeta p{font-size:24px;}
+/* movimiento */
+@keyframes sube{from{opacity:0;transform:translateY(24px)}}
+@keyframes aparece{from{opacity:0}}
+.anima-1{animation:sube .6s ease-out both;}
+.anima-2{animation:sube .6s ease-out .15s both;}
+.anima-3{animation:aparece .7s ease-out .3s both;}
