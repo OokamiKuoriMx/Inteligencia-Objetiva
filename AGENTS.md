@@ -4,6 +4,10 @@ Este repositorio contiene la actualización que se instala sobre un sitio PHP/My
 
 Si eres el agente principal y necesitas una explicación del código o un plan de adaptación, delega en el agente [Integración de Inteligencia Objetiva](.github/agents/integracion-io.agent.md) si tu entorno admite agentes de Copilot. Si usas otro agente, usa el contenido del perfil como encargo junto con este archivo. Continúa desde sus referencias y valida el diagnóstico antes de editar.
 
+## Inventario completo
+
+Para un alcance de punta a punta, usa el [inventario de 25 integraciones](docs/inventario-integraciones.md). Incluye los puntos de entrada, dependencias, criterios de aceptación y reversión. Usa este mapa breve para localizar el código antes de editar.
+
 ## Mapa por responsabilidades
 
 | Área | Archivos de inicio | Punto de integración |
