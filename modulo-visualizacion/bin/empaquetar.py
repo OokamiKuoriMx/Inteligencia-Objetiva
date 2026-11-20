@@ -1,5 +1,6 @@
 """Construye la entrega sin credenciales. Intermedios exclusivamente en LOCALAPPDATA."""
 from pathlib import Path
+import argparse
 import hashlib
 import os
 import re
@@ -34,7 +35,7 @@ def run(args):
     return result.stdout.strip()
 
 
-def main():
+def main(out):
     # El datadir debe ser local de prueba; nunca se usa config.php para las suites.
     check = run(["mysql", "--host=127.0.0.1", "--port=3307", "--user=root", "--batch", "--skip-column-names", "-e", "SELECT @@port;"])
     if check != "3307":
@@ -84,7 +85,7 @@ def main():
                 dest = stage / target / relative
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(file, dest)
-        for doc in ["GUIA-DESPLIEGUE.md", "ENTREGA-CLIENTE.md", "MEMBRESIAS.md", "DESCUENTOS.md", "FACTURACION.md", "PEDIDOS.md"]:
+        for doc in ["GUIA-DESPLIEGUE.md", "VIMEO.md", "MEMBRESIAS.md", "DESCUENTOS.md", "FACTURACION.md", "PEDIDOS.md"]:
             shutil.copy2(ROOT / doc, stage / doc)
         (stage / "VERIFICACION.txt").write_text("\n".join(report) + "\n", encoding="utf-8")
         files = sorted(f for f in stage.rglob("*") if f.is_file())
@@ -109,8 +110,7 @@ def main():
                 raise RuntimeError("Falló la verificación del ZIP")
             if any(n.endswith("/config.php") or "/tests/" in n for n in z.namelist()):
                 raise RuntimeError("El ZIP contiene archivos internos de desarrollo")
-        out = ROOT / "dist"
-        out.mkdir(exist_ok=True)
+        out.mkdir(parents=True, exist_ok=True)
         final_zip = out / archive.name
         shutil.copy2(archive, final_zip)
         shutil.copy2(stage / "plantilla-contenidos.csv", out / "plantilla-contenidos.csv")
@@ -119,4 +119,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Verifica y genera el paquete de instalación.")
+    parser.add_argument(
+        "--salida", type=Path, default=ROOT / "dist",
+        help="Carpeta de destino para los entregables finales. Por defecto, dist/ en el checkout.",
+    )
+    main(parser.parse_args().salida.resolve())

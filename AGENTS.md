@@ -1,6 +1,6 @@
 # Integración de Inteligencia Objetiva 2.0
 
-Este repositorio contiene la actualización que se instala sobre un sitio PHP/MySQL existente. Usa [la guía de despliegue](GUIA-DESPLIEGUE.md) para el orden de integración y [la entrega](ENTREGA-CLIENTE.md) para la aceptación en staging. Si tienes acceso al código del sitio original, verifica sus contratos antes de proponer cambios. La demo pública usa datos ficticios.
+Este repositorio contiene la actualización que se instala sobre un sitio PHP/MySQL existente. Usa [la guía de despliegue](GUIA-DESPLIEGUE.md) para el orden de integración y la aceptación en staging. Si tienes acceso al código del sitio original, verifica sus contratos antes de proponer cambios. La demo pública usa datos ficticios.
 
 Si eres el agente principal y necesitas una explicación del código o un plan de adaptación, delega en el agente [Integración de Inteligencia Objetiva](.github/agents/integracion-io.agent.md) si tu entorno admite agentes de Copilot. Si usas otro agente, usa el contenido del perfil como encargo junto con este archivo. Continúa desde sus referencias y valida el diagnóstico antes de editar.
 

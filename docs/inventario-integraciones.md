@@ -2,7 +2,7 @@
 
 Este inventario cubre los puntos de conexión que ofrece el repositorio. Una integración puede tener código y pruebas locales y todavía requerir configuración, mapeo o aceptación en el sitio original. Los nombres de tablas y claves de sesión que aparecen en `config.example.php` son ejemplos. Los secretos, datos personales y certificados se configuran en el entorno autorizado.
 
-Las rutas con prefijo `io/` en esta guía representan el directorio fuente `modulo-visualizacion/`, instalado como `/io/`. Las pruebas mencionadas se encuentran en [`modulo-visualizacion/tests/`](../modulo-visualizacion/tests/). Consulta [la guía de despliegue](../GUIA-DESPLIEGUE.md) y [la entrega al instalador](../ENTREGA-CLIENTE.md) para comandos y prerrequisitos.
+Las rutas con prefijo `io/` en esta guía representan el directorio fuente `modulo-visualizacion/`, instalado como `/io/`. Las pruebas mencionadas se encuentran en [`modulo-visualizacion/tests/`](../modulo-visualizacion/tests/). Consulta [la guía de despliegue](../GUIA-DESPLIEGUE.md) para comandos y prerrequisitos.
 
 ## Identidad y administración
 
@@ -97,7 +97,7 @@ Las rutas con prefijo `io/` en esta guía representan el directorio fuente `modu
 ### 15. Stripe, tarjeta y webhook firmado
 
 - **Qué conecta.** [`lib/Tienda.php`](../modulo-visualizacion/lib/Tienda.php) crea y confirma pedidos. [`api/stripe-webhook.php`](../modulo-visualizacion/api/stripe-webhook.php) verifica el evento y despacha a pagos, membresías y reembolsos. El perfil de integración documentado usa API `2024-06-20`.
-- **Adaptación.** Configura primero llaves y secreto de prueba, métodos habilitados, HTTPS y los eventos de la [guía de entrega](../ENTREGA-CLIENTE.md). Preserva monto, moneda, referencia y deduplicación de `io_webhooks`. El regreso del navegador no confirma el pago.
+- **Adaptación.** Configura primero llaves y secreto de prueba, métodos habilitados, HTTPS y los eventos de la [guía de despliegue](../GUIA-DESPLIEGUE.md#52-stripe-primero-en-modo-de-prueba). Preserva monto, moneda, referencia y deduplicación de `io_webhooks`. El regreso del navegador no confirma el pago.
 - **Aceptación y reversión.** Usa `prueba-tienda.php` y `prueba-confirmacion.php`. En Stripe de prueba valida tarjeta aprobada, rechazada, eventos repetidos y montos inesperados. Si se detienen nuevos cobros, deja operativo el procesamiento de eventos pendientes hasta conciliarlos.
 
 ### 16. OXXO, ficha y pagos pendientes
@@ -169,4 +169,4 @@ Las rutas con prefijo `io/` en esta guía representan el directorio fuente `modu
 3. **Datos y accesos.** Simula importación de productos y compras, concilia una muestra y valida biblioteca, reproducción, cortesías y permisos. Define el tratamiento del historial anterior con el responsable.
 4. **Comercio.** Define si se mantiene la pasarela anterior, se activa Stripe 2.0 o conviven. Prueba primero la confirmación y el acceso, después OXXO, cupones, suscripciones, devoluciones y CFDI, siguiendo sus dependencias.
 5. **Rutas y operación.** Valida redirecciones, menús, recursos públicos y transmisiones. Retira la fase defectuosa sin desatender pedidos, suscripciones, facturas, devoluciones ni accesos ya creados.
-6. **Acta de aceptación.** Registra por integración el archivo o ruta, dependencia, prueba, resultado observado, responsable y reversión. Cuando falte evidencia del sitio original, identifica qué debe aportar el técnico. El plan de [app móvil](../PLAN-APP.md) y cualquier inicio de sesión único o proveedor nuevo requieren diseño aparte.
+6. **Acta de aceptación.** Registra por integración el archivo o ruta, dependencia, prueba, resultado observado, responsable y reversión. Cuando falte evidencia del sitio original, identifica qué debe aportar el técnico. Una app móvil y cualquier inicio de sesión único o proveedor nuevo requieren diseño aparte.
