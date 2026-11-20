@@ -1,24 +1,12 @@
-# Informe ejecutivo · Inteligencia Objetiva 2.0
+# Informe técnico · Inteligencia Objetiva 2.0: cambios e implementación
 
 19 de noviembre de 2026 · Versión en línea: https://claude.ai/artifact/LY2Qhb8sQSgpdkUsit5nGW
 
-## Resumen ejecutivo
+## Resumen
 
-La versión 2.0 convierte inteligenciaobjetiva.com de un sitio con catálogo en una plataforma de aprendizaje con tienda propia, biblioteca del alumno, transmisiones en vivo y un panel de control para el equipo. Todo se instala encima del sitio actual, por fases reversibles, sin reescribirlo y sin tocar su información.
+Este informe documenta los cambios técnicos de la versión 2.0 de inteligenciaobjetiva.com: qué se implementó, en qué archivos y tablas, cómo se integra con el sitio actual y qué falta para ponerlo en producción. La 2.0 se monta sobre el sitio en producción (PHP, MySQL, jQuery y Bootstrap 5.1.3) sin reescribirlo: agrega tres componentes (`tema/`, `portada/` y el módulo `/io/`), diez migraciones que solo crean 24 tablas `io_*` y reglas de reescritura que se activan al final.
 
-**Qué cambia**
-
-- **Para el alumno:** una biblioteca personal con todo lo que compró, un reproductor que recuerda dónde se quedó, modo oscuro, una portada nueva y una página de transmisiones en vivo con calendario y recordatorios.
-- **Para ventas:** carrito y pago en línea con tarjeta y OXXO (Stripe), cupones y 2×1, membresías recurrentes, factura electrónica (CFDI 4.0) que el cliente solicita solo, y devoluciones controladas.
-- **Para el equipo:** una propuesta de backoffice donde se da de alta un curso pegando el enlace de Vimeo, se arrastra la miniatura, se otorgan cortesías, se programan transmisiones y se define qué puede hacer cada persona del equipo, con registro de quién hizo qué y por qué.
-- **Para la marca:** la identidad roja, marino y grafito con tipografía Roboto, aplicada de forma uniforme en todo el sitio.
-
-**Por qué importa al negocio**
-
-1. **Más ventas con menos fricción.** El pago se confirma de forma automática y el acceso aparece al instante en la biblioteca; sin esperar una validación manual.
-2. **Control del contenido de pago.** Cada curso puede venderse como acceso permanente, por ventana de tiempo o de visualización única, y el sistema lo hace cumplir.
-3. **Operación más ligera.** Altas, cortesías, cupones y directos se resuelven desde un solo panel, con bitácora para auditoría.
-4. **Riesgo bajo de adopción.** Cada fase se puede revertir en minutos y solo se agregan tablas nuevas a la base de datos.
+**Alcance implementado:** tema con modo oscuro; portada 2.0; tienda con pago en Stripe (tarjeta y OXXO), cupones y 2×1, membresías, CFDI 4.0 y devoluciones; biblioteca del alumno y reproductor de Vimeo con control de acceso (ventana de tiempo, permanente y visualización única); propuesta de backoffice (editor de contenido, miniaturas, transmisiones en vivo con detección del canal de YouTube, equipo, roles y perfiles); y acceso para buscadores y agentes de IA.
 
 **Qué falta para salir a producción:** configurar las cuentas reales (Stripe, Facturapi, Vimeo, YouTube), adaptar dos consultas de importación a las tablas reales del sitio, levantar el backoffice que hoy usa el equipo y aceptar los recorridos de compra en un entorno de pruebas. La propuesta de equipo, roles y perfiles ya está desarrollada.
 
@@ -32,36 +20,117 @@ Todavía no conocemos el backoffice que hoy usa el equipo, así que todo lo rela
 
 **Recomendación:** antes de implementar, levantar el backoffice actual: un recorrido con las personas que lo usan a diario, acceso de solo lectura para revisar sus pantallas y flujos, y una lista acordada de lo que se conserva, se sustituye o se integra.
 
-## Mejoras de la versión 2.0 frente a la anterior
+## Arquitectura e integración
 
-La 2.0 automatiza el ciclo de compra y acceso, y propone herramientas nuevas para el alumno y el equipo. La tabla resume cada mejora por quién la aprovecha; la columna «Antes» describe lo que se ve en el sitio público y, en lo que toca al backoffice, dice «Por levantar» porque aún no lo conocemos.
+La 2.0 son tres componentes que se suben junto al sitio actual: `tema/` se incluye en la plantilla común, `portada/` reemplaza el contenido central de la portada y `modulo-visualizacion/` se publica como `/io/`. El módulo reutiliza la sesión y las ventanas de inicio de sesión del sitio, lee sus tablas solo para importar y guarda todo lo nuevo en tablas `io_*` de la misma base de datos.
 
-| Mejora | Antes | Ahora | Beneficio principal |
+| Sitio actual | Relación | Componente 2.0 / servicio |
+| --- | --- | --- |
+| Plantillas del sitio | se incluyen en ellas | `tema/` (modo oscuro) y `portada/` |
+| Sesión del cliente | la lee | Módulo `/io/`: tienda y API |
+| Confirmación de pago | otorga el acceso | Módulo `/io/`: biblioteca y reproductor |
+| Tablas del sitio | se importan, solo lectura | Tablas `io_*` (24) |
+| — | cobra y factura | Stripe y Facturapi |
+| — | reproduce | Vimeo |
+| — | detecta directos | YouTube Data API |
+| — | leen lo público | Buscadores y agentes de IA |
+
+El único punto donde el código actual llama al módulo es la confirmación de pago, que otorga el acceso con `IOAccesos::otorgar`. Las URL públicas de la tienda se activan al final con las reglas de `tienda/rewrite-produccion.txt`. El backoffice es una propuesta independiente del panel que hoy usa el equipo.
+
+## Cambios e implementación por módulo
+
+Cada módulo con lo que se implementó, sus archivos principales y las tablas o la configuración que usa. Las rutas son relativas al módulo `/io/` salvo `tema/` y `portada/`.
+
+| Módulo | Implementación | Archivos principales | Tablas y configuración |
 | --- | --- | --- | --- |
-| Tema y modo oscuro | Un solo tema claro; menú con poco contraste, desplazamiento horizontal en celular | Botón sol/luna que respeta la preferencia del equipo del usuario, sin parpadeo; banner de ofertas compacto con contador | Alumno y marca |
-| Nueva portada | Portada anterior | Portada 2.0 con imágenes propias ligeras, video de presentación que carga solo al pulsarlo y animaciones que respetan a quien prefiere menos movimiento | Marca y ventas |
-| Tienda y pago con Stripe | Carrito y pasarelas actuales; flujo de confirmación por levantar | Catálogo, ficha, carrito y pago con tarjeta u OXXO; el acceso se activa solo cuando Stripe confirma el pago | Ventas |
-| Cupones y 2×1 | Por levantar | Cupones de porcentaje, monto fijo o 2×1 con fechas, productos y cupo; se crean en una ventana con resumen en lenguaje claro | Ventas |
-| Membresías, facturas y devoluciones | Membresías Premium y Platinum en el sitio; facturación y devoluciones por levantar | Membresías mensuales o anuales, CFDI 4.0 de autoservicio y devoluciones que retiran el acceso al confirmarse | Ventas y equipo |
-| Biblioteca del alumno | Enlace «Mi contenido» del perfil | Biblioteca con todo lo comprado, vigencias claras y reproductor que retoma donde se quedó | Alumno |
-| Visualización única | No identificada en el sitio público | Cursos que se ven una sola vez, con periodo de gracia si se cierra la pestaña y reanudaciones configurables | Ventas y alumno |
-| Editor de contenido estilo estudio | Por levantar | Tres pestañas (Detalles, Precio y venta, Acceso); pegar el enlace de Vimeo llena título, duración y miniatura; vista previa de la tarjeta del catálogo; carga masiva desde hoja de cálculo | Equipo |
-| Miniaturas con arrastre | Por levantar | Se arrastra la imagen, el navegador la recorta a 16:9 y el servidor solo acepta imágenes reales | Equipo |
-| Altas en ventana (modal) | Por levantar | Cupones, cortesías, transmisiones y conexión del canal de YouTube se dan de alta en ventanas cortas, sin salir de la pantalla | Equipo |
-| Transmisiones en vivo | Calendario de conferencias vía Zoom; administración por levantar | Página /en-vivo y calendario para YouTube, Facebook, Vimeo y Zoom; sala de espera 15 minutos antes; recordatorio para el calendario; aviso «En vivo» en todo el sitio; acceso público, con cuenta, para compradores o para miembros | Alumno y ventas |
-| Detección automática del canal de YouTube | Por levantar | Al conectar el canal una vez, cada directo público aparece solo en el sitio en menos de un minuto, con chat | Equipo y alumno |
-| Bitácora y reportes | Por levantar | Cada cambio de acceso exige un motivo y queda registrado con quién y cuándo | Equipo y dirección |
-| Roles y perfiles del equipo | Por levantar | **Propuesta ya desarrollada.** Página Equipo para dar de alta y editar al personal en ventanas cortas; cinco roles base (Dirección, Contenido, Atención a alumnos, Ventas y finanzas, Solo lectura) con permisos configurables; perfil propio para cambiar nombre y contraseña; nadie puede quitarse el permiso de equipo ni dejar el sistema sin un administrador total; desactivar a alguien cierra sus sesiones; cada cambio exige motivo y queda en la bitácora | Equipo y dirección |
-| Identidad de marca | Estilos dispersos | Rojo, marino y grafito definidos una sola vez y aplicados en todo el sitio, con Roboto en todos los textos | Marca |
+| Tema y modo oscuro | Colores de marca en variables `--io-*`; modo oscuro con botón sol/luna y script previo en `<head>` que evita el parpadeo; banner de ofertas compacto; corrección de contraste, desplazamiento horizontal y productos sin reseñas; aviso global «En vivo» | `tema/io-theme.css`, `tema/io-theme.js`, `tema/head-snippet.html` | Preferencia en el navegador del usuario |
+| Portada 2.0 | Secciones reutilizables; imágenes WebP en dos tamaños; video de presentación que carga al pulsarlo; animaciones que respetan «reducir movimiento»; datos estructurados | `portada/index.html`, `portada.css`, `portada.js`, `portada/img/` | — |
+| Tienda | Nosotros, catálogo con filtros (categoría, tema, tipo de acceso, búsqueda y orden), ficha, carrito, confirmación, ofertas y migas de pan; mismas URL del sitio por reescritura y 301 de fichas antiguas | `tienda/*.php`, `lib/Tienda.php`, `api/tienda.php`, `tienda/rewrite-produccion.txt` | `io_productos`, `io_pedidos`, `io_pedido_items` |
+| Pago con Stripe | Tarjeta y OXXO; el pedido solo se confirma por webhook firmado; precio leído en el servidor y validado contra el monto cobrado; cada evento se procesa una vez; la ficha OXXO se recupera en el servidor | `api/stripe-webhook.php`, `lib/Tienda.php` | `io_webhooks`; `tienda.stripe_*` |
+| Cupones y 2×1 | Porcentaje, monto fijo y 2×1 con fechas, productos y cupo; reserva de cupo; importes en centavos; alta en ventana | `lib/Descuentos.php`, `backoffice/descuentos.php` | `io_cupones`, `io_descuentos_pedidos` |
+| Campañas | Banner con fechas absolutas y productos aprobados; solo anuncia rebajas reales del catálogo | `lib/Promociones.php`, `tienda/ofertas.php` | `tienda.promocion` |
+| Membresías | Stripe Checkout y Billing, portal del cliente, renovación y cancelación al final del periodo | `lib/Membresias.php`, `api/membresias.php`, `tienda/membresias.php` | `io_membresias`, `io_membresia_facturas`, `io_membresia_accesos`; `membresias` |
+| CFDI 4.0 | Solicitud desde Mis pedidos, emisión, descarga PDF/XML y cancelación con Facturapi | `lib/Facturacion.php`, `api/facturacion.php`, `tienda/facturacion.php` | `io_facturas`; `facturacion` |
+| Pedidos y devoluciones | Devolución completa, conciliación de devoluciones hechas en Stripe y retiro del acceso al confirmarse | `lib/Pedidos.php`, `backoffice/pedidos.php` | `io_reembolsos`; `pedidos.reembolsos_habilitados` |
+| Biblioteca y reproductor | Biblioteca que se puede incrustar en el perfil; reproductor de Vimeo con latidos validados en el servidor, sesión única, periodo de gracia, reanudaciones y marca de agua | `public/mi-biblioteca.php`, `public/ver.php`, `public/io-player.js`, `api/reproduccion.php`, `lib/IO.php` | `io_politicas`, `io_accesos`, `io_sesiones` |
+| Reglas de acceso | Ventana en horas desde la compra o la primera reproducción, acceso permanente o visualización única con umbral, retroceso y reanudaciones | `lib/IO.php`, `backoffice/reglas.php` | `io_politicas` |
+| Importación | Productos y compras vigentes con simulación e idempotencia; carga masiva CSV que crea borradores | `bin/importar.php`, `bin/_importacion.php`, `lib/CargaContenidos.php` | `importar.*` |
+| Editor de contenido (propuesta) | Pestañas Detalles, Precio y venta y Acceso; el enlace de Vimeo llena título, duración y miniatura; motivo sugerido; control de versión contra sobrescrituras | `backoffice/contenido.php`, `contenido-editor.js`, `lib/Contenidos.php`, `lib/Vimeo.php` | `vimeo_token` |
+| Miniaturas (propuesta) | Recorte 16:9 en el navegador a 1280×720; el servidor acepta solo JPG, PNG o WebP reales de hasta 4 MB, con nombre aleatorio; límite de 60 por hora; limpieza diaria | `backoffice/miniatura.php`, `lib/Miniaturas.php`, `bin/limpiar-miniaturas.php` | `subidas/miniaturas/` |
+| Accesos y cortesías (propuesta) | Otorgar por búsqueda de alumno y contenido; extender, reiniciar y revocar con motivo | `backoffice/accesos.php`, `otorgar.js`, `lib/Alumnos.php` | `buscar_clientes` (opcional) |
+| Transmisiones en vivo (propuesta) | YouTube, Facebook, Vimeo y Zoom; acceso público, con cuenta, compradores o miembros; inicio y cierre automáticos; sala de espera; recordatorio `.ics`; grabación enlazada | `backoffice/transmisiones.php`, `lib/Transmisiones.php`, `api/transmisiones.php`, `tienda/en-vivo.php` | `io_transmisiones` |
+| Canal de YouTube (propuesta) | Detección de directos públicos con YouTube Data API v3; caché de 60 s; 2 unidades de cuota por revisión | `backoffice/youtube.php`, `lib/YouTube.php` | `io_ajustes`; `youtube_api_key` |
+| Equipo, roles y perfiles (propuesta) | Página Equipo; 5 roles base y 9 permisos configurables; perfil propio; siempre queda un administrador total; desactivar a alguien cierra sus sesiones | `backoffice/equipo.php`, `backoffice/perfil.php`, `lib/Equipo.php`, `bin/crear-admin.php` | `io_roles`, `io_roles_permisos`, `io_equipo`, `io_equipo_permisos` |
+| Bitácora y reportes (propuesta) | Motivo obligatorio; el registro se guarda en la misma transacción que el cambio | `backoffice/bitacora.php`, `backoffice/reportes.php` | `io_bitacora` |
+| Buscadores y agentes de IA | `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt` y datos estructurados | `lib/Agentes.php`, `tienda/agentes.php` | `agentes.robots_extra` |
 
 Todo lo relativo al backoffice (editor de contenido, miniaturas, cupones en ventana, transmisiones, canal de YouTube, equipo, roles y perfiles) es una propuesta de mejora: ya está desarrollada, pero se adaptará al backoffice real del equipo después del levantamiento.
 
-**Lectura por beneficio**
+## Base de datos
 
-- **Alumno:** compra y empieza a ver en minutos, encuentra todo en un solo lugar, recibe aviso de los directos y puede leer cómodamente de noche.
-- **Equipo interno:** con el backoffice propuesto publicaría un curso en minutos, sin conocimientos técnicos, y resolvería cortesías y aclaraciones desde el panel con respaldo en la bitácora.
-- **Ventas:** más medios de pago, promociones con fecha de inicio y fin, membresías y una ficha por producto que se puede compartir.
-- **Marca:** una sola identidad visual en portada, tienda, biblioteca y panel.
+Diez migraciones en `sql/` crean 24 tablas, todas con prefijo `io_` y con «crear si no existe», así que se pueden volver a ejecutar sin daño. Ninguna altera, borra o enlaza por llave foránea las tablas del sitio. Son compatibles con MySQL 5.7 y 8.0: no usan `VALUES()` en `ON DUPLICATE KEY UPDATE` ni `;` dentro de comentarios.
+
+| Migración | Tablas que crea | Uso |
+| --- | --- | --- |
+| `001_io_visualizacion.sql` | `io_politicas`, `io_accesos`, `io_sesiones`, `io_alertas`, `io_admins`, `io_bitacora` | Reglas de acceso, accesos de alumnos, sesiones de reproducción, usuarios del panel y bitácora. `io_alertas` conserva registros internos aunque la sección de alertas se retiró del panel |
+| `002_io_login_intentos.sql` | `io_login_intentos` | Freno persistente a intentos de inicio de sesión |
+| `003_io_tienda.sql` | `io_productos`, `io_pedidos`, `io_pedido_items`, `io_webhooks` | Catálogo, pedidos y eventos de Stripe procesados |
+| `004_io_membresias.sql` | `io_membresias`, `io_membresia_facturas`, `io_membresia_accesos` | Suscripciones y sus cobros y accesos |
+| `005_io_descuentos.sql` | `io_cupones`, `io_descuentos_pedidos` | Cupones, 2×1 y su aplicación por pedido |
+| `006_io_facturacion.sql` | `io_facturas` | CFDI emitidos y cancelados |
+| `007_io_reembolsos.sql` | `io_reembolsos` | Solicitudes y conciliación de devoluciones |
+| `008_io_transmisiones.sql` | `io_transmisiones` | Transmisiones en vivo y sus reglas de acceso |
+| `009_io_ajustes.sql` | `io_ajustes` | Ajustes del panel, como el canal de YouTube conectado |
+| `010_io_roles.sql` | `io_roles`, `io_roles_permisos`, `io_equipo`, `io_equipo_permisos` | Roles, permisos y equipo; asigna a cada usuario existente el rol equivalente y conserva sus permisos |
+
+## Configuración e integraciones externas
+
+Toda la configuración vive en `config.php`, que se crea en el servidor a partir de `config.example.php` y nunca se versiona. Los módulos externos vienen desactivados hasta configurarlos.
+
+| Clave | Para qué sirve |
+| --- | --- |
+| `db` | Conexión a la misma base de datos MySQL del sitio |
+| `dominio`, `zona_horaria`, `dev` | URL HTTPS real, hora del centro de México y modo de desarrollo (`false` en producción) |
+| `cliente_actual` | Adaptador que lee de la sesión actual del sitio el identificador, correo y nombre del cliente |
+| `buscar_clientes` | Opcional: búsqueda de alumnos en la tabla real de clientes para otorgar cortesías |
+| `importar` | Consultas a las tablas reales de catálogo y compras, y regla de acceso por categoría |
+| `tienda` | Llaves de Stripe (pública, secreta y secreto del webhook), métodos (`card`, `oxxo`) y campaña |
+| `membresias` | Planes con su precio recurrente de Stripe, importe en centavos, periodicidad y contenidos incluidos |
+| `facturacion` | Cuenta de Facturapi, modo de prueba o producción y claves SAT por defecto o por producto |
+| `pedidos.reembolsos_habilitados` | Activa las devoluciones desde el panel |
+| `vimeo_token` | Opcional: lee duración y miniatura de cada video |
+| `youtube_api_key` | Detección de directos del canal de YouTube |
+| `agentes.robots_extra` | Líneas propias que deben conservarse en `robots.txt` |
+
+**Integraciones externas**
+
+- **Stripe:** webhook `/io/api/stripe-webhook.php` con versión de API 2024-06-20 y doce eventos: cuatro de pagos individuales, cinco de membresías y tres de devoluciones (lista completa en `GUIA-DESPLIEGUE.md`).
+- **Vimeo:** cada video de pago oculto en Vimeo, con inserción solo en el dominio del sitio y sin descargas; el token es opcional.
+- **YouTube Data API v3:** llave gratuita de Google Cloud; cada revisión consume 2 de las 10 000 unidades diarias y se guarda en caché 60 segundos.
+- **Facturapi:** cuenta y CSD del emisor, con claves SAT aprobadas por el contador.
+
+## Seguridad y control de acceso
+
+- **Panel:** token CSRF en cada acción, verificación de origen, revalidación del rol y los permisos en cada petición, freno persistente a intentos de inicio de sesión y contraseñas de al menos 12 caracteres.
+- **Cambios de acceso:** transacciones con bloqueo de fila; todo cambio exige motivo y se registra en `io_bitacora` dentro de la misma transacción; si la bitácora falla, el cambio se revierte.
+- **Reproducción:** la API exige sesión y que el token pertenezca al alumno; el avance se acredita por tiempo real (latido mínimo de 10 s, velocidad máxima de 1.25×, cierre a los 60 s sin latido).
+- **Pagos:** solo el webhook firmado confirma pedidos; el monto y la moneda se validan contra el pedido y cada evento se procesa una sola vez.
+- **Archivos:** `.htaccess` bloquea `lib/`, `sql/`, `bin/`, `tests/` y `config.php` (con reglas equivalentes para nginx); la carpeta de miniaturas solo sirve imágenes con nombre aleatorio y nunca ejecuta código.
+- **Privacidad ante buscadores:** backoffice y biblioteca envían `noindex`; `robots.txt` excluye carrito, biblioteca, backoffice y API.
+
+**Límite conocido.** La visualización única es control de acceso: el iframe de Vimeo no puede revocarse del lado del navegador. Las mitigaciones son dominio restringido en Vimeo, marca de agua con el correo del alumno, latidos y sesión única. Por decisión del negocio (18 de noviembre de 2026) no se agregan capas de protección adicionales.
+
+## Pruebas
+
+`tests/` tiene 21 suites `prueba-*` más tres auxiliares para la demo local. Corren contra una base temporal de MySQL en el puerto 3307, nunca contra producción, y cada una debe terminar en «0 fallidas».
+
+- **Núcleo:** `prueba-flujo.php` cubre permisos, latidos acelerados, retroceso y adelanto, doble dispositivo, gracia, reanudaciones, ventanas de 48 h, acciones del panel y reversión si falla la bitácora.
+- **Comercio:** tienda y webhooks de Stripe, descuentos, promociones, membresías, facturación, pedidos y confirmación, con proveedores simulados.
+- **Panel:** contenidos, carga masiva, importación, otorgar acceso, miniaturas, Vimeo, transmisiones, YouTube y roles.
+- **Agentes de IA:** `prueba-agentes.php` verifica que `robots.txt`, `sitemap.xml`, `llms.txt` y los datos estructurados no expongan rutas privadas ni transmisiones de pago.
+- **Navegador:** `prueba-retorno.js` comprueba los destinos de regreso tras iniciar sesión.
+
+Al integrar roles y perfiles se reportó la batería completa en verde (20 suites, 658 pruebas) con la revisión de seguridad aplicada; la suite de agentes se agregó después. Estas cifras no se volvieron a ejecutar para este informe, y las pruebas locales no sustituyen la aceptación con las cuentas reales de Stripe y Facturapi.
 
 ## Compatibilidad con lo existente y migración
 
@@ -210,13 +279,10 @@ Siete semanas a partir de la aprobación, con una revisión entre fases; las sem
 
 El pago en vivo se activa solo después de que el diagnóstico pase y las tres compras de aceptación funcionen en modo prueba; equipo, roles y perfiles se instala con la fase 3.
 
-## Anexo técnico
+## Referencias
 
-- **Componentes:** `tema/` (estilos de marca y modo oscuro), `portada/` (portada 2.0) y `modulo-visualizacion/`, que se publica como `/io/` (biblioteca, reproductor, tienda, API y panel).
-- **Requisitos:** PHP 7.4+ (8.x recomendado) con PDO MySQL, cURL y mbstring; MySQL 5.7 u 8.0; HTTPS; Apache con `mod_rewrite` y `AllowOverride All`, o reglas equivalentes en nginx.
-- **Migraciones:** `sql/001` a `sql/010`; crean 24 tablas `io_*` (accesos, sesiones, políticas, panel, bitácora, productos, pedidos, membresías, cupones, facturas, reembolsos, transmisiones, ajustes, equipo y roles).
-- **Scripts:** `bin/crear-admin.php` (primer usuario), `bin/importar.php productos|compras [--simular]` (importación idempotente), `bin/diagnostico.php [--stripe-prueba]` (solo lectura), `bin/limpiar-miniaturas.php` (diario).
-- **Pagos:** Stripe con webhook firmado (versión de API 2024-06-20); el navegador nunca marca un pedido como pagado y cada evento se procesa una sola vez.
-- **Control de acceso al video:** dominio restringido en Vimeo, marca de agua, latidos validados en el servidor y sesión única.
-- **Pruebas:** `tests/prueba-flujo.php` y suites por módulo contra una base temporal; deben terminar en «0 fallidas»; al integrar roles se reportaron 20 suites y 658 pruebas en verde, con revisión de seguridad aplicada. Las pruebas locales no sustituyen la aceptación con las cuentas reales.
-- **Referencias:** `GUIA-DESPLIEGUE.md`, `ENTREGA-CLIENTE.md`, `MEMBRESIAS.md`, `DESCUENTOS.md`, `FACTURACION.md`, `PEDIDOS.md`.
+- `GUIA-DESPLIEGUE.md`: despliegue por fases, configuración del servidor, Stripe, transmisiones, miniaturas, buscadores y agentes de IA.
+- `ENTREGA-CLIENTE.md`: configuración a cargo del técnico del cliente y pasos de aceptación.
+- `MEMBRESIAS.md`, `DESCUENTOS.md`, `FACTURACION.md`, `PEDIDOS.md` y `VIMEO.md`: detalle de cada módulo comercial e integración.
+- `CLAUDE.md`: convenciones del proyecto y límite conocido del control de acceso al video.
+- Historial de cambios: rama `feat/io-2.0`.
