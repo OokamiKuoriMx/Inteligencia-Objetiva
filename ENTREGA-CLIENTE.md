@@ -1,6 +1,6 @@
 # Inteligencia Objetiva 2.0 · Entrega para configuración
 
-Paquete de producción: `dist/io2-completo-configurable-20261118.zip`. Esta entrega contiene el código y las instrucciones de integración. No incluye credenciales, conexión al servidor del cliente ni una publicación en producción. Los pagos, membresías, cupones, facturas y reembolsos se verificaron localmente con proveedores simulados; el técnico del cliente debe aceptar después los recorridos con sus cuentas Stripe y Facturapi de prueba.
+Paquete de instalación: `io2-completo-configurable-20261119.zip`, disponible con su suma SHA-256 en la [release de entrega](https://github.com/OokamiKuoriMx/Inteligencia-Objetiva/releases/tag/io2-entrega-20261119). Esta entrega contiene el código y las instrucciones de integración. No incluye credenciales, conexión al servidor del cliente ni una publicación en producción. Los pagos, membresías, cupones, facturas y reembolsos se verificaron localmente con proveedores simulados; el técnico del cliente debe aceptar después los recorridos con sus cuentas Stripe y Facturapi de prueba.
 
 ## Qué incluye
 
